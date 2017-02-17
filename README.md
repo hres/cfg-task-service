@@ -36,6 +36,7 @@ The service speaks XML and JSON.  To get JSON, set the request header `Accept` t
 
 * Retrieve an array of sample food items from [http://localhost:8080/food-classification-service-poc/service/flags](http://localhost:8080/food-classification-service-poc/service/flags)
 
+<pre>
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <tieredFoods>
         <tieredFood>
@@ -67,6 +68,7 @@ The service speaks XML and JSON.  To get JSON, set the request header `Accept` t
             <sugarAdded>true</sugarAdded> <tsatTier>1</tsatTier>
         </tieredFood>
     </tieredFoods>
+</pre>
 
 ---
 
