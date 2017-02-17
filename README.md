@@ -37,37 +37,37 @@ The service speaks XML and JSON.  To get JSON, set the request header `Accept` t
 * Retrieve an array of sample food items from [http://localhost:8080/food-classification-service-poc/service/flags](http://localhost:8080/food-classification-service-poc/service/flags)
 
 <pre>
-    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-    <tieredFoods>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier> <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded> <label>dried, sweetened</label>
-            <lowFat>false</lowFat> <lowSugar>false</lowSugar>
-            <name>Crystalized Pineapple</name> <subGroup>112</subGroup>
-            <sugarAdded>true</sugarAdded> <tsatTier>1</tsatTier>
-        </tieredFood>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier> <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded> <label>canned, sweetened</label>
-            <lowFat>false</lowFat> <lowSugar>false</lowSugar>
-            <name>Canned Peach</name> <subGroup>112</subGroup>
-            <sugarAdded>true</sugarAdded> <tsatTier>1</tsatTier>
-        </tieredFood>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier> <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded> <label>canned, juice pack</label>
-            <lowFat>false</lowFat> <lowSugar>false</lowSugar>
-            <name>Canned Orange Juice</name> <subGroup>112</subGroup>
-            <sugarAdded>false</sugarAdded> <tsatTier>1</tsatTier>
-        </tieredFood>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier> <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded> <label>canned, heavy syrup</label>
-            <lowFat>false</lowFat> <lowSugar>false</lowSugar>
-            <name>Heavy Syrup Pack</name> <subGroup>112</subGroup>
-            <sugarAdded>true</sugarAdded> <tsatTier>1</tsatTier>
-        </tieredFood>
-    </tieredFoods>
+    &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+    &lt;tieredFoods&gt;
+        &lt;tieredFood&gt;
+            &lt;adjustedTier&gt;1&lt;/adjustedTier&gt; &lt;exclusion1&gt;&lt;/exclusion1&gt;
+            &lt;fatAdded&gt;false&lt;/fatAdded&gt; &lt;label&gt;dried, sweetened&lt;/label&gt;
+            &lt;lowFat&gt;false&lt;/lowFat&gt; &lt;lowSugar&gt;false&lt;/lowSugar&gt;
+            &lt;name&gt;Crystalized Pineapple&lt;/name&gt; &lt;subGroup&gt;112&lt;/subGroup&gt;
+            &lt;sugarAdded&gt;true&lt;/sugarAdded&gt; &lt;tsatTier&gt;1&lt;/tsatTier&gt;
+        &lt;/tieredFood&gt;
+        &lt;tieredFood&gt;
+            &lt;adjustedTier&gt;1&lt;/adjustedTier&gt; &lt;exclusion1&gt;&lt;/exclusion1&gt;
+            &lt;fatAdded&gt;false&lt;/fatAdded&gt; &lt;label&gt;canned, sweetened&lt;/label&gt;
+            &lt;lowFat&gt;false&lt;/lowFat&gt; &lt;lowSugar&gt;false&lt;/lowSugar&gt;
+            &lt;name&gt;Canned Peach&lt;/name&gt; &lt;subGroup&gt;112&lt;/subGroup&gt;
+            &lt;sugarAdded&gt;true&lt;/sugarAdded&gt; &lt;tsatTier&gt;1&lt;/tsatTier&gt;
+        &lt;/tieredFood&gt;
+        &lt;tieredFood&gt;
+            &lt;adjustedTier&gt;1&lt;/adjustedTier&gt; &lt;exclusion1&gt;&lt;/exclusion1&gt;
+            &lt;fatAdded&gt;false&lt;/fatAdded&gt; &lt;label&gt;canned, juice pack&lt;/label&gt;
+            &lt;lowFat&gt;false&lt;/lowFat&gt; &lt;lowSugar&gt;false&lt;/lowSugar&gt;
+            &lt;name&gt;Canned Orange Juice&lt;/name&gt; &lt;subGroup&gt;112&lt;/subGroup&gt;
+            &lt;sugarAdded&gt;false&lt;/sugarAdded&gt; &lt;tsatTier&gt;1&lt;/tsatTier&gt;
+        &lt;/tieredFood&gt;
+        &lt;tieredFood&gt;
+            &lt;adjustedTier&gt;1&lt;/adjustedTier&gt; &lt;exclusion1&gt;&lt;/exclusion1&gt;
+            &lt;fatAdded&gt;false&lt;/fatAdded&gt; &lt;label&gt;canned, heavy syrup&lt;/label&gt;
+            &lt;lowFat&gt;false&lt;/lowFat&gt; &lt;lowSugar&gt;false&lt;/lowSugar&gt;
+            &lt;name&gt;Heavy Syrup Pack&lt;/name&gt; &lt;subGroup&gt;112&lt;/subGroup&gt;
+            &lt;sugarAdded&gt;true&lt;/sugarAdded&gt; &lt;tsatTier&gt;1&lt;/tsatTier&gt;
+        &lt;/tieredFood&gt;
+    &lt;/tieredFoods&gt;
 </pre>
 
 ---
