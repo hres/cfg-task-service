@@ -38,36 +38,36 @@ The service speaks XML and JSON.  To get JSON, set the request header `Accept` t
 
 ```
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-    <tieredFoods>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded>          <label>dried, sweetened</label>
-            <lowFat>false</lowFat>              <lowSugar>false</lowSugar>
-            <name>Crystalized Pineapple</name>  <subGroup>112</subGroup>
-            <sugarAdded>true</sugarAdded>       <tsatTier>1</tsatTier>
-        </tieredFood>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded>          <label>canned, sweetened</label>
-            <lowFat>false</lowFat>              <lowSugar>false</lowSugar>
-            <name>Canned Peach</name>           <subGroup>112</subGroup>
-            <sugarAdded>true</sugarAdded>       <tsatTier>1</tsatTier>
-        </tieredFood>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded>          <label>canned, juice pack</label>
-            <lowFat>false</lowFat>              <lowSugar>false</lowSugar>
-            <name>Canned Orange Juice</name>    <subGroup>112</subGroup>
-            <sugarAdded>false</sugarAdded>      <tsatTier>1</tsatTier>
-        </tieredFood>
-        <tieredFood>
-            <adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
-            <fatAdded>false</fatAdded>          <label>canned, heavy syrup</label>
-            <lowFat>false</lowFat>              <lowSugar>false</lowSugar>
-            <name>Heavy Syrup Pack</name>       <subGroup>112</subGroup>
-            <sugarAdded>true</sugarAdded>       <tsatTier>1</tsatTier>
-        </tieredFood>
-    </tieredFoods>
+<tieredFoods>
+	<tieredFood>
+		<adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
+		<fatAdded>false</fatAdded>          <label>dried, sweetened</label>
+		<lowFat>false</lowFat>              <lowSugar>false</lowSugar>
+		<name>Crystalized Pineapple</name>  <subGroup>112</subGroup>
+		<sugarAdded>true</sugarAdded>       <tsatTier>1</tsatTier>
+	</tieredFood>
+	<tieredFood>
+		<adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
+		<fatAdded>false</fatAdded>          <label>canned, sweetened</label>
+		<lowFat>false</lowFat>              <lowSugar>false</lowSugar>
+		<name>Canned Peach</name>           <subGroup>112</subGroup>
+		<sugarAdded>true</sugarAdded>       <tsatTier>1</tsatTier>
+	</tieredFood>
+	<tieredFood>
+		<adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
+		<fatAdded>false</fatAdded>          <label>canned, juice pack</label>
+		<lowFat>false</lowFat>              <lowSugar>false</lowSugar>
+		<name>Canned Orange Juice</name>    <subGroup>112</subGroup>
+		<sugarAdded>false</sugarAdded>      <tsatTier>1</tsatTier>
+	</tieredFood>
+	<tieredFood>
+		<adjustedTier>1</adjustedTier>      <exclusion1></exclusion1>
+		<fatAdded>false</fatAdded>          <label>canned, heavy syrup</label>
+		<lowFat>false</lowFat>              <lowSugar>false</lowSugar>
+		<name>Heavy Syrup Pack</name>       <subGroup>112</subGroup>
+		<sugarAdded>true</sugarAdded>       <tsatTier>1</tsatTier>
+	</tieredFood>
+</tieredFoods>
 ```
 
 ---
