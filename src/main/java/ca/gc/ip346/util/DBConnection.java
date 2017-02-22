@@ -4,12 +4,12 @@ import java.io.*;
 import java.util.Properties;
 import java.sql.*;
 
-class DBConnection {
+public class DBConnection {
 	public static Connection getConnections() throws SQLException, Exception, IOException {
 
 		Connection conn = null;
 
-		Properties props = new Properties();
+		Properties props   = new Properties();
 		FileInputStream in = new FileInputStream("db.properties");
 		props.load(in);
 		in.close();

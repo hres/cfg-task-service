@@ -1,5 +1,6 @@
 package ca.gc.ip346.classification.resource;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.gc.ip346.classification.model.TieredFood;
+import ca.gc.ip346.util.DBConnection;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -33,6 +35,20 @@ import com.google.gson.GsonBuilder;
 @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class FlagsResource {
 	private static final Logger logger = LogManager.getLogger(FlagsResource.class);
+
+	Connection conn = null;
+
+	public FlagsResource() {
+		try {
+			conn = DBConnection.getConnections();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,7 +89,7 @@ public class FlagsResource {
 		try {
 			DataHandler dh = new DataHandler();
 			dh.getDBConnection();
-			Connection conn = dh.getConn();
+			// Connection conn = dh.getConn();
 			// Create Oracle DatabaseMetaData object
 			DatabaseMetaData meta = conn.getMetaData();
 
@@ -113,7 +129,7 @@ public class FlagsResource {
 		try {
 			DataHandler dh = new DataHandler();
 			dh.getDBConnection();
-			Connection conn = dh.getConn();
+			// Connection conn = dh.getConn();
 			// Create Oracle DatabaseMetaData object
 			DatabaseMetaData meta = conn.getMetaData();
 
@@ -151,7 +167,7 @@ public class FlagsResource {
 		try {
 			DataHandler dh = new DataHandler();
 			dh.getDBConnection();
-			Connection conn = dh.getConn();
+			// Connection conn = dh.getConn();
 			// Create Oracle DatabaseMetaData object
 			DatabaseMetaData meta = conn.getMetaData();
 

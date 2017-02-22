@@ -1,5 +1,6 @@
 package ca.gc.ip346.classification.resource;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import ca.gc.ip346.classification.model.CanadaFoodGroup;
+import ca.gc.ip346.util.DBConnection;
 
 @Path("/groups")
 
@@ -35,13 +37,18 @@ public class GroupsResource {
 
 	public GroupsResource() {
 		try {
-			Context initCtx = new InitialContext();
-			Context envCtx  = (Context) initCtx.lookup("java:comp/env");
-			DataSource ds   = (DataSource) envCtx.lookup("jdbc/FoodDB");
-			conn            = ds.getConnection();
+			// Context initCtx = new InitialContext();
+			// Context envCtx  = (Context) initCtx.lookup("java:comp/env");
+			// DataSource ds   = (DataSource) envCtx.lookup("jdbc/FoodDB");
+			// conn            = ds.getConnection();
+			conn = DBConnection.getConnections();
 		} catch(NamingException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
