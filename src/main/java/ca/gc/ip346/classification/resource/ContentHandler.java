@@ -10,15 +10,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ContentHandler {
-	private static final Logger logger =
-		LogManager.getLogger(ContentHandler.class);
+	private static final Logger logger = LogManager.getLogger(ContentHandler.class);
 
 	public static String read(String file, Class<?> cls) {
-		Path path = null;
+		Path path       = null;
 		byte[] contents = null;
 
 		try {
-			path = Paths.get(cls.getResource(file).toURI());
+			path     = Paths.get(cls.getResource(file).toURI());
 			contents = Files.readAllBytes(path);
 		} catch(URISyntaxException e) {
 			e.printStackTrace();

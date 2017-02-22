@@ -36,10 +36,10 @@ public class SubgroupsResource {
 
 	public SubgroupsResource() {
 		try {
-			Context initCtx = new InitialContext();
-			Context envCtx  = (Context)initCtx.lookup("java:comp/env");
-			DataSource ds   = (DataSource)envCtx.lookup("jdbc/FoodDB");
-			conn = ds.getConnection();
+			// Context initCtx = new InitialContext();
+			// Context envCtx  = (Context)initCtx.lookup("java:comp/env");
+			// DataSource ds   = (DataSource)envCtx.lookup("jdbc/FoodDB");
+			// conn = ds.getConnection();
 			conn = DBConnection.getConnections();
 		} catch(NamingException e) {
 			e.printStackTrace();
