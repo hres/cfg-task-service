@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ca.gc.hc-sc.ip346</groupId>
-	<artifactId>food-classification-service-poc</artifactId>
+	<artifactId>cfg-task-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>food-classification-service-poc</name>
+	<name>cfg-task-service</name>
 	<packaging>war</packaging>
 
 	<properties>
@@ -163,11 +163,6 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>${version.log4j}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
