@@ -65,7 +65,7 @@ public class GroupsResource {
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				CanadaFoodGroup group = new CanadaFoodGroup();
 				group.setCanadaFoodGroupId(rs.getInt("CANADA_FOOD_GROUP_ID"));
