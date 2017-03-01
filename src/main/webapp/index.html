@@ -1,0 +1,252 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+		<script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+		<!-- <script type="text/javascript" src="jquery-2.2.4.min.js"></script> -->
+		<!-- <script type="text/javascript" src="jquery-1.12.4.min.js"></script> -->
+		<script type="text/javascript">
+		$(document).ready(function() {
+			function foo() {
+				if ($("#data-source").val() == "cnf") {
+					$("#non-cnf").hide();
+				} else {
+					$("#non-cnf").show();
+				}
+			}
+
+			foo();
+
+			$("#data-source").on("change", function() {
+				foo();
+			});
+		});
+		</script>
+		<style type="text/css">
+		body {
+			font-size:16pt;
+		}
+		div {
+			border:solid white 6pt;
+		}
+		.keepaligned {
+			display:inline-block;
+		}
+		.padding {
+			padding-left:20pt;
+		}
+		</style>
+	</head>
+	<body>
+		<form method="get">
+			<div style="width:75%">
+				<div style="">
+					<div style="" class="keepaligned">
+						Datasets &gt; Create Production Dataset
+					</div>
+					<div style="float:right" class="keepaligned">
+						<button>Cancel</button>
+					</div>
+					<div style="float:right" class="keepaligned">
+						<button>Search</button>
+					</div>
+					<div style="float:right" class="keepaligned">
+						<button>Reset</button>
+					</div>
+				</div>
+				<div style="">
+					<div class="padding keepaligned">
+						<label for="data-source">Data Source:</label>
+						<select name="data-source" id="data-source">
+							<option value="cnf">CNF</option>
+							<option value="nss">NSS</option>
+							<option value="both">both</option>
+						</select>
+					</div>
+					<div class="padding keepaligned">
+						<label for="food-recipe-name">Food/Recipe Name:</label>
+						<input type="text" name="food-recipe-name" id="food-recipe-name"/>
+					</div>
+					<div class="padding keepaligned">
+						<label for="food-recipe-code">Food/Recipe Code:</label>
+						<input type="text" name="food-recipe-code" id="food-recipe-code"/>
+					</div>
+				</div>
+				<div style="">
+					<div class="padding keepaligned">
+						<label for="commit-date">Commit Date:</label>
+						<input type="date" name="commit-date" id="commit-date"/>
+					</div>
+					<div class="padding keepaligned">
+						<label for="cnf-code">CNF Code:</label>
+						<input type="text" name="cnf-code" id="cnf-code"/>
+					</div>
+				</div>
+				<div style="">
+					<div class="padding keepaligned">
+						<label for="subgroup-code">Subgroup Code:</label>
+						<input type="text" name="subgroup-code" id="subgroup-code"/>
+					</div>
+					<div class="padding keepaligned">
+						<label for="cfg-tier">CFG Tier:</label>
+						<select name="cfg-tier" id="cfg-tier">
+							<option value="0">All</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="9">Missing</option>
+							<option value="99">(Custom)</option>
+						</select>
+					</div>
+					<div class="padding keepaligned" id="non-cnf">
+						<label for="recipe">Recipe:</label>
+						<select name="recipe" id="recipe">
+							<option value="0"></option>
+							<option value="1">Rolled Up</option>
+							<option value="2">Rolled Down</option>
+							<option value="3">Rolled Up/Down</option>
+						</select>
+					</div>
+				</div>
+				<div style="">
+					<div style="width:8cm" class="keepaligned">
+						<div style="">
+							<select name="sodium" id="sodium">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
+							<label for="sodium">Sodium</label>
+						</div>
+						<div style="">
+							<select name="sugar" id="sugar">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
+							<label for="sugar">Sugar</label>
+						</div>
+						<div style="">
+							<select name="fat" id="fat">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
+							<label for="fat">Fat</label>
+						</div>
+						<div style="">
+							<select name="transfat" id="transfat">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
+							<label for="transfat">Transfat</label>
+						</div>
+						<div style="">
+							<select name="caffeine" id="caffeine">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
+							<label for="caffeine">Caffeine</label>
+						</div>
+						<div style="">
+							<select name="free-sugars" id="free-sugars">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
+							<label for="free-sugars">Free Sugars</label>
+						</div>
+						<div style="">
+							<select name="sugar-substitutes" id="sugar-substitutes">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
+							<label for="sugar-substitutes">Sugar Substitutes</label>
+						</div>
+					</div>
+					<div style="width:8cm" class="keepaligned">
+						<div style="">
+							<input type="checkbox" name="reference-amount" id="reference-amount"/>
+							<label for="reference-amount">Reference Amount</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="cfg-serving" id="cfg-serving"/>
+							<label for="cfg-serving">CFG Serving</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="tier-4-serving" id="tier-4-serving"/>
+							<label for="tier-4-serving">Tier 4 Serving</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="energy-value" id="energy-value"/>
+							<label for="energy-value">Energy Value</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="cnf-code" id="cnf-code"/>
+							<label for="cnf-code">CNF Code</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="recipe-rolled-up-down" id="recipe-rolled-up-down"/>
+							<label for="recipe-rolled-up-down">Recipe Rolled Up/Down</label>
+						</div>
+					</div>
+					<div style="width:6cm" class="keepaligned">
+						<div style="">
+							<input type="checkbox" name="sodium-value" id="sodium-value"/>
+							<label for="sodium-value">Sodium Value</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="sugar-value" id="sugar-value"/>
+							<label for="sugar-value">Sugar Value</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="fat-value" id="fat-value"/>
+							<label for="fat-value">Fat Value</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="transfat-value" id="transfat-value"/>
+							<label for="transfat-value">Transfat Value</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="satfat-value" id="satfat-value"/>
+							<label for="satfat-value">Satfat Value</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="transat-value" id="transat-value"/>
+							<label for="transat-value">Transat Value</label>
+						</div>
+					</div>
+					<div style="width:9cm" class="keepaligned">
+						<div style="">
+							<input type="checkbox" name="added-sodium" id="added-sodium"/>
+							<label for="added-sodium">Added Sodium</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="added-sugar" id="added-sugar"/>
+							<label for="added-sugar">Added Sugar</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="added-transfat" id="added-transfat"/>
+							<label for="added-transfat">Added Transfat</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="added-caffeine" id="added-caffeine"/>
+							<label for="added-caffeine">Added Caffeine</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="added-free-sugars" id="added-free-sugars"/>
+							<label for="added-free-sugars">Added Free Sugars</label>
+						</div>
+						<div style="">
+							<input type="checkbox" name="added-sugar-substitutes" id="added-sugar-substitutes"/>
+							<label for="added-sugar-substitutes">Added Sugar Substitutes</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</body>
+</html>
