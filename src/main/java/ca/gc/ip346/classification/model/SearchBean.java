@@ -9,8 +9,10 @@ public class SearchBean {
 	private String foodRecipeName;
 	@QueryParam("food-recipe-code")
 	private String foodRecipeCode;
-	@QueryParam("commit-date")
-	private String commitDate;
+	@QueryParam("commit-date-begin")
+	private String commitDateBegin;
+	@QueryParam("commit-date-end")
+	private String commitDateEnd;
 	@QueryParam("cnf-code")
 	private String cnfCode;
 	@QueryParam("subgroup-code")
@@ -113,17 +115,31 @@ public class SearchBean {
 	}
 
 	/**
-	 * @return the commitDate
+	 * @return the commitDateBegin
 	 */
-	public String getCommitDate() {
-		return commitDate;
+	public String getCommitDateBegin() {
+		return commitDateBegin;
 	}
 
 	/**
-	 * @param commitDate the commitDate to set
+	 * @param commitDateBegin the commitDateBegin to set
 	 */
-	public void setCommitDate(String commitDate) {
-		this.commitDate = commitDate;
+	public void setCommitDateBegin(String commitDateBegin) {
+		this.commitDateBegin = commitDateBegin;
+	}
+
+	/**
+	 * @return the commitDateEnd
+	 */
+	public String getCommitDateEnd() {
+		return commitDateEnd;
+	}
+
+	/**
+	 * @param commitDateEnd the commitDateEnd to set
+	 */
+	public void setCommitDateEnd(String commitDateEnd) {
+		this.commitDateEnd = commitDateEnd;
 	}
 
 	/**

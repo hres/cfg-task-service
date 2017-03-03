@@ -2,43 +2,88 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 		<script type="text/javascript" src="jquery-3.1.1.min.js"></script>
-		<!-- <script type="text/javascript" src="jquery-2.2.4.min.js"></script> -->
-		<!-- <script type="text/javascript" src="jquery-1.12.4.min.js"></script> -->
+		<script type="text/javascript" src="jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="jquery-1.12.4.min.js"></script>
 		<script type="text/javascript">
-		$(document).ready(function() {
-			function foo() {
-				if ($("#data-source").val() == "cnf") {
-					$("#non-cnf").hide();
-				} else {
-					$("#non-cnf").show();
+			$(document).ready(function() {
+				function foo() {
+					if ($("#data-source").val() == "cnf") {
+						$("#non-cnf").hide();
+					} else {
+						$("#non-cnf").show();
+					}
 				}
-			}
 
-			foo();
-
-			$("#data-source").on("change", function() {
 				foo();
+
+				$("#data-source").on("change", function() {
+					foo();
+				});
+
+				$("#select-all-missing").on("click", function() {
+					if ($("#select-all-missing").prop("checked")) {
+						$("#select-all-missing").prop("checked", true);
+
+						$("#reference-amount-missing").prop("checked", true);
+						$("#cfg-serving-missing").prop("checked", true);
+						$("#tier-4-serving-missing").prop("checked", true);
+						$("#energy-value-missing").prop("checked", true);
+						$("#cnf-code-missing").prop("checked", true);
+						$("#recipe-rolled-up-down-missing").prop("checked", true);
+						$("#sodium-value-missing").prop("checked", true);
+						$("#sugar-value-missing").prop("checked", true);
+						$("#fat-value-missing").prop("checked", true);
+						$("#transfat-value-missing").prop("checked", true);
+						$("#satfat-value-missing").prop("checked", true);
+						$("#select-all-missing").prop("checked", true);
+						$("#added-sodium-missing").prop("checked", true);
+						$("#added-sugar-missing").prop("checked", true);
+						$("#added-transfat-missing").prop("checked", true);
+						$("#added-caffeine-missing").prop("checked", true);
+						$("#added-free-sugars-missing").prop("checked", true);
+						$("#added-sugar-substitutes-missing").prop("checked", true);
+					} else {
+						$("#select-all-missing").prop("checked", false);
+						$("#reference-amount-missing").prop("checked", false);
+						$("#cfg-serving-missing").prop("checked", false);
+						$("#tier-4-serving-missing").prop("checked", false);
+						$("#energy-value-missing").prop("checked", false);
+						$("#cnf-code-missing").prop("checked", false);
+						$("#recipe-rolled-up-down-missing").prop("checked", false);
+						$("#sodium-value-missing").prop("checked", false);
+						$("#sugar-value-missing").prop("checked", false);
+						$("#fat-value-missing").prop("checked", false);
+						$("#transfat-value-missing").prop("checked", false);
+						$("#satfat-value-missing").prop("checked", false);
+						$("#select-all-missing").prop("checked", false);
+						$("#added-sodium-missing").prop("checked", false);
+						$("#added-sugar-missing").prop("checked", false);
+						$("#added-transfat-missing").prop("checked", false);
+						$("#added-caffeine-missing").prop("checked", false);
+						$("#added-free-sugars-missing").prop("checked", false);
+						$("#added-sugar-substitutes-missing").prop("checked", false);
+					}
+				});
 			});
-		});
 		</script>
 		<style type="text/css">
-		body {
-			font-size:16pt;
-		}
-		div {
-			border:solid white 6pt;
-		}
-		.keepaligned {
-			display:inline-block;
-		}
-		.padding {
-			padding-left:20pt;
-		}
+			body {
+				font-size:16pt;
+			}
+			div {
+				border:solid white 5pt;
+			}
+			.keepaligned {
+				display:inline-block;
+			}
+			.padding {
+				padding-left:20pt;
+			}
 		</style>
 	</head>
 	<body>
-		<form method="get">
-			<div style="width:75%">
+		<form method="get" action="/cfg-task-service/service/foods">
+			<div style="width:77%">
 				<div style="">
 					<div style="" class="keepaligned">
 						Datasets &gt; Create Production Dataset
@@ -57,9 +102,9 @@
 					<div class="padding keepaligned">
 						<label for="data-source">Data Source:</label>
 						<select name="data-source" id="data-source">
-							<option value="cnf">CNF</option>
-							<option value="nss">NSS</option>
-							<option value="both">both</option>
+							<option value="both"></option>
+							<option value="cnf">Food</option>
+							<option value="nss">Recipe</option>
 						</select>
 					</div>
 					<div class="padding keepaligned">
@@ -73,8 +118,12 @@
 				</div>
 				<div style="">
 					<div class="padding keepaligned">
-						<label for="commit-date">Commit Date:</label>
-						<input type="date" name="commit-date" id="commit-date"/>
+						<label for="commit-date-begin">Commit Date Begin:</label>
+						<input type="date" name="commit-date-begin" id="commit-date-begin"/>
+					</div>
+					<div class="padding keepaligned">
+						<label for="commit-date-begin">Commit Date End:</label>
+						<input type="date" name="commit-date-end" id="commit-date-end"/>
 					</div>
 					<div class="padding keepaligned">
 						<label for="cnf-code">CNF Code:</label>
@@ -109,7 +158,7 @@
 					</div>
 				</div>
 				<div style="">
-					<div style="width:8cm" class="keepaligned">
+					<div style="width:7.5cm" class="keepaligned">
 						<div style="">
 							<select name="sodium" id="sodium">
 								<option value="0"></option>
@@ -169,80 +218,80 @@
 					</div>
 					<div style="width:8cm" class="keepaligned">
 						<div style="">
-							<input type="checkbox" name="reference-amount" id="reference-amount"/>
-							<label for="reference-amount">Reference Amount</label>
+							<input type="checkbox" name="reference-amount-missing" id="reference-amount-missing"/>
+							<label for="reference-amount-missing">Reference Amount</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="cfg-serving" id="cfg-serving"/>
-							<label for="cfg-serving">CFG Serving</label>
+							<input type="checkbox" name="cfg-serving-missing" id="cfg-serving-missing"/>
+							<label for="cfg-serving-missing">CFG Serving</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="tier-4-serving" id="tier-4-serving"/>
-							<label for="tier-4-serving">Tier 4 Serving</label>
+							<input type="checkbox" name="tier-4-serving-missing" id="tier-4-serving-missing"/>
+							<label for="tier-4-serving-missing">Tier 4 Serving</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="energy-value" id="energy-value"/>
-							<label for="energy-value">Energy Value</label>
+							<input type="checkbox" name="energy-value-missing" id="energy-value-missing"/>
+							<label for="energy-value-missing">Energy Value</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="cnf-code" id="cnf-code"/>
-							<label for="cnf-code">CNF Code</label>
+							<input type="checkbox" name="cnf-code-missing" id="cnf-code-missing"/>
+							<label for="cnf-code-missing">CNF Code</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="recipe-rolled-up-down" id="recipe-rolled-up-down"/>
-							<label for="recipe-rolled-up-down">Recipe Rolled Up/Down</label>
+							<input type="checkbox" name="recipe-rolled-up-down-missing" id="recipe-rolled-up-down-missing"/>
+							<label for="recipe-rolled-up-down-missing">Recipe Rolled Up/Down</label>
 						</div>
 					</div>
 					<div style="width:6cm" class="keepaligned">
 						<div style="">
-							<input type="checkbox" name="sodium-value" id="sodium-value"/>
-							<label for="sodium-value">Sodium Value</label>
+							<input type="checkbox" name="sodium-value-missing" id="sodium-value-missing"/>
+							<label for="sodium-value-missing">Sodium Value</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="sugar-value" id="sugar-value"/>
-							<label for="sugar-value">Sugar Value</label>
+							<input type="checkbox" name="sugar-value-missing" id="sugar-value-missing"/>
+							<label for="sugar-value-missing">Sugar Value</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="fat-value" id="fat-value"/>
-							<label for="fat-value">Fat Value</label>
+							<input type="checkbox" name="fat-value-missing" id="fat-value-missing"/>
+							<label for="fat-value-missing">Fat Value</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="transfat-value" id="transfat-value"/>
-							<label for="transfat-value">Transfat Value</label>
+							<input type="checkbox" name="transfat-value-missing" id="transfat-value-missing"/>
+							<label for="transfat-value-missing">Transfat Value</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="satfat-value" id="satfat-value"/>
-							<label for="satfat-value">Satfat Value</label>
+							<input type="checkbox" name="satfat-value-missing" id="satfat-value-missing"/>
+							<label for="satfat-value-missing">Satfat Value</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="transat-value" id="transat-value"/>
-							<label for="transat-value">Transat Value</label>
+							<input type="checkbox" name="select-all-missing" id="select-all-missing"/>
+							<label for="select-all-missing">Select All</label>
 						</div>
 					</div>
 					<div style="width:9cm" class="keepaligned">
 						<div style="">
-							<input type="checkbox" name="added-sodium" id="added-sodium"/>
-							<label for="added-sodium">Added Sodium</label>
+							<input type="checkbox" name="added-sodium-missing" id="added-sodium-missing"/>
+							<label for="added-sodium-missing">Added Sodium</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="added-sugar" id="added-sugar"/>
-							<label for="added-sugar">Added Sugar</label>
+							<input type="checkbox" name="added-sugar-missing" id="added-sugar-missing"/>
+							<label for="added-sugar-missing">Added Sugar</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="added-transfat" id="added-transfat"/>
-							<label for="added-transfat">Added Transfat</label>
+							<input type="checkbox" name="added-transfat-missing" id="added-transfat-missing"/>
+							<label for="added-transfat-missing">Added Transfat</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="added-caffeine" id="added-caffeine"/>
-							<label for="added-caffeine">Added Caffeine</label>
+							<input type="checkbox" name="added-caffeine-missing" id="added-caffeine-missing"/>
+							<label for="added-caffeine-missing">Added Caffeine</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="added-free-sugars" id="added-free-sugars"/>
-							<label for="added-free-sugars">Added Free Sugars</label>
+							<input type="checkbox" name="added-free-sugars-missing" id="added-free-sugars-missing"/>
+							<label for="added-free-sugars-missing">Added Free Sugars</label>
 						</div>
 						<div style="">
-							<input type="checkbox" name="added-sugar-substitutes" id="added-sugar-substitutes"/>
-							<label for="added-sugar-substitutes">Added Sugar Substitutes</label>
+							<input type="checkbox" name="added-sugar-substitutes-missing" id="added-sugar-substitutes-missing"/>
+							<label for="added-sugar-substitutes-missing">Added Sugar Substitutes</label>
 						</div>
 					</div>
 				</div>
