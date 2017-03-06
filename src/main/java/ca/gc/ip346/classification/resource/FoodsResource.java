@@ -198,55 +198,55 @@ public class FoodsResource {
 
 //				 list.add(food);
 
-				foodItem.setFoodRecipeType(rs.getInt("fn_recipe_flg") == 0);                                           // Boolean foodRecipeType
-				foodItem.setCode(rs.getString("code"));                                                                // String code
-				foodItem.setName(rs.getString("name"));                                                                // String name
-				foodItem.setCnfCode(rs.getString("cnf_code"));                                                         // String cnfCode
-				foodItem.setCfgCode(rs.getString("cfg_code"));                                                         // String cfgCode
-				foodItem.setCfgCodeCommitDate(rs.getDate("cfg_code_commit_date"));                                     // Date cfgCodeCommitDate
-				foodItem.setEnergyKcal(rs.getDouble("energy_kcal"));                                                   // Double energyKcal
-				foodItem.setSodiumAmountPer100g(rs.getDouble("sodium_amount_per_100g"));                               // Double sodiumAmountPer100g
-				foodItem.setSodiumImputationReference(rs.getString("sodium_imputation_reference"));                    // String sodiumImputationReference
-				foodItem.setSodiumImputationDate(rs.getDate("sodium_imputation_date"));                                // Date sodiumImputationDate
-				foodItem.setSugarAmountPer100g(rs.getDouble("sugar_amount_per_100g"));                                 // Double sugarAmountPer100g
-				foodItem.setSugarImputationReference(rs.getString("sugar_imputation_reference"));                      // String sugarImputationReference
-				foodItem.setSugarImputationDate(rs.getDate("sugar_imputation_date"));                                  // Date sugarImputationDate
-				foodItem.setTransfatAmountPer100g(rs.getDouble("transfat_amount_per_100g"));                           // Double transfatAmountPer100g
-				foodItem.setTransfatImputationReference(rs.getString("transfat_imputation_reference"));                // String transfatImputationReference
-				foodItem.setTransfatImputationDate(rs.getDate("transfat_imputation_date"));                            // Date transfatImputationDate
-				foodItem.setSatfatAmoutPer100g(rs.getDouble("satfat_amout_per_100g"));                                 // Double satfatAmoutPer100g
-				foodItem.setSatfatImputationReference(rs.getString("satfat_imputation_reference"));                    // String satfatImputationReference
-				foodItem.setSatfatImputationDate(rs.getDate("satfat_imputation_date"));                                // Date satfatImputationDate
-				foodItem.setTotalfatAmoutPer100g(rs.getDouble("totalfat_amout_per_100g"));                             // Double totalfatAmoutPer100g
-				foodItem.setTotalfatImputationReference(rs.getString("totalfat_imputation_reference"));                // String totalfatImputationReference
-				foodItem.setTotalfatImputationDate(rs.getDate("totalfat_imputation_date"));                            // Date totalfatImputationDate
-				foodItem.setContainsAddedSodium(rs.getInt("contains_added_sodium") == 0);                              // Boolean containsAddedSodium
-				foodItem.setContainsAddedSodiumCommitDate(rs.getDate("contains_added_sodium_commit_date"));            // Date containsAddedSodiumCommitDate
-				foodItem.setContainsAddedSugar(rs.getInt("contains_added_sugar") == 0);                                // Boolean containsAddedSugar
-				foodItem.setContainsAddedSugarCommitDate(rs.getDate("contains_added_sugar_commit_date"));              // Date containsAddedSugarCommitDate
-				foodItem.setContainsFreeSugars(rs.getInt("contains_free_sugars") == 0);                                // Boolean containsFreeSugars
-				foodItem.setContainsFreeSugarsCommitDate(rs.getDate("contains_free_sugars_commit_date"));              // Date containsFreeSugarsCommitDate
-				foodItem.setContainsAddedFat(rs.getInt("contains_added_fat") == 0);                                    // Boolean containsAddedFat
-				foodItem.setContainsAddedFatCommitDate(rs.getDate("contains_added_fat_commit_date"));                  // Date containsAddedFatCommitDate
-				foodItem.setContainsAddedTransfat(rs.getInt("contains_added_transfat") == 0);                          // Boolean containsAddedTransfat
-				foodItem.setContainsAddedTransfatCommitDate(rs.getDate("contains_added_transfat_commit_date"));        // Date containsAddedTransfatCommitDate
-				foodItem.setContainsCaffeine(rs.getInt("contains_caffeine") == 0);                                     // Boolean containsCaffeine
-				foodItem.setContainsCaffeineCommitDate(rs.getDate("contains_caffeine_commit_date"));                   // Date containsCaffeineCommitDate
-				foodItem.setContainsSugarSubstitutes(rs.getInt("contains_sugar_substitutes") == 0);                    // Boolean containsSugarSubstitutes
-				foodItem.setContainsSugarSubstitutesCommitDate(rs.getDate("contains_sugar_substitutes_commit_date"));  // Date containsSugarSubstitutesCommitDate
-				foodItem.setReferenceAmountG(rs.getDouble("reference_amount_g"));                                      // Double referenceAmountG
-				foodItem.setReferenceAmountMeasure(rs.getString("reference_amount_measure"));                          // String referenceAmountMeasure
-				foodItem.setReferenceAmountCommitDate(rs.getDate("reference_amount_commit_date"));                     // Date referenceAmountCommitDate
-				foodItem.setFoodGuideServingG(rs.getDouble("food_guide_serving_g"));                                   // Double foodGuideServingG
-				foodItem.setFoodGuideServingMeasure(rs.getString("food_guide_serving_measure"));                       // String foodGuideServingMeasure
-				foodItem.setFoodGuideCommitDate(rs.getDate("food_guide_commit_date"));                                 // Date foodGuideCommitDate
-				foodItem.setTier4ServingG(rs.getDouble("tier_4_serving_g"));                                           // Double tier4ServingG
-				foodItem.setTier4ServingMeasure(rs.getString("tier_4_serving_measure"));                               // String tier4ServingMeasure
-				foodItem.setTier4ServingCommitDate(rs.getDate("tier_4_serving_commit_date"));                          // Date tier4ServingCommitDate
-				foodItem.setRolledUp(rs.getInt("rolled_up") == 0);                                                     // Boolean rolledUp
-				foodItem.setRolledUpCommitDate(rs.getDate("rolled_up_commit_date"));                                   // Date rolledUpCommitDate
-				foodItem.setApplySmallRaAdjustment(rs.getInt("apply_small_ra_adjustment") == 0);                       // Boolean applySmallRaAdjustment
-				foodItem.setComments(rs.getString("comments"));                                                        // String comments
+				foodItem.setFoodRecipeType(rs.getInt("fn_recipe_flg") == 0);                                           // Boolean   foodRecipeType
+				foodItem.setCode(rs.getString("code"));                                                                // String    code
+				foodItem.setName(rs.getString("name"));                                                                // String    name
+				foodItem.setCnfCode(rs.getString("cnf_code"));                                                         // String    cnfCode
+				foodItem.setCfgCode(rs.getString("cfg_code"));                                                         // String    cfgCode
+				foodItem.setCfgCodeCommitDate(rs.getDate("cfg_code_commit_date"));                                     // Date      cfgCodeCommitDate
+				foodItem.setEnergyKcal(rs.getDouble("energy_kcal"));                                                   // Double    energyKcal
+				foodItem.setSodiumAmountPer100g(rs.getDouble("sodium_amount_per_100g"));                               // Double    sodiumAmountPer100g
+				foodItem.setSodiumImputationReference(rs.getString("sodium_imputation_reference"));                    // String    sodiumImputationReference
+				foodItem.setSodiumImputationDate(rs.getDate("sodium_imputation_date"));                                // Date      sodiumImputationDate
+				foodItem.setSugarAmountPer100g(rs.getDouble("sugar_amount_per_100g"));                                 // Double    sugarAmountPer100g
+				foodItem.setSugarImputationReference(rs.getString("sugar_imputation_reference"));                      // String    sugarImputationReference
+				foodItem.setSugarImputationDate(rs.getDate("sugar_imputation_date"));                                  // Date      sugarImputationDate
+				foodItem.setTransfatAmountPer100g(rs.getDouble("transfat_amount_per_100g"));                           // Double    transfatAmountPer100g
+				foodItem.setTransfatImputationReference(rs.getString("transfat_imputation_reference"));                // String    transfatImputationReference
+				foodItem.setTransfatImputationDate(rs.getDate("transfat_imputation_date"));                            // Date      transfatImputationDate
+				foodItem.setSatfatAmoutPer100g(rs.getDouble("satfat_amout_per_100g"));                                 // Double    satfatAmoutPer100g
+				foodItem.setSatfatImputationReference(rs.getString("satfat_imputation_reference"));                    // String    satfatImputationReference
+				foodItem.setSatfatImputationDate(rs.getDate("satfat_imputation_date"));                                // Date      satfatImputationDate
+				foodItem.setTotalfatAmoutPer100g(rs.getDouble("totalfat_amout_per_100g"));                             // Double    totalfatAmoutPer100g
+				foodItem.setTotalfatImputationReference(rs.getString("totalfat_imputation_reference"));                // String    totalfatImputationReference
+				foodItem.setTotalfatImputationDate(rs.getDate("totalfat_imputation_date"));                            // Date      totalfatImputationDate
+				foodItem.setContainsAddedSodium(rs.getInt("contains_added_sodium") == 0);                              // Boolean   containsAddedSodium
+				foodItem.setContainsAddedSodiumCommitDate(rs.getDate("contains_added_sodium_commit_date"));            // Date      containsAddedSodiumCommitDate
+				foodItem.setContainsAddedSugar(rs.getInt("contains_added_sugar") == 0);                                // Boolean   containsAddedSugar
+				foodItem.setContainsAddedSugarCommitDate(rs.getDate("contains_added_sugar_commit_date"));              // Date      containsAddedSugarCommitDate
+				foodItem.setContainsFreeSugars(rs.getInt("contains_free_sugars") == 0);                                // Boolean   containsFreeSugars
+				foodItem.setContainsFreeSugarsCommitDate(rs.getDate("contains_free_sugars_commit_date"));              // Date      containsFreeSugarsCommitDate
+				foodItem.setContainsAddedFat(rs.getInt("contains_added_fat") == 0);                                    // Boolean   containsAddedFat
+				foodItem.setContainsAddedFatCommitDate(rs.getDate("contains_added_fat_commit_date"));                  // Date      containsAddedFatCommitDate
+				foodItem.setContainsAddedTransfat(rs.getInt("contains_added_transfat") == 0);                          // Boolean   containsAddedTransfat
+				foodItem.setContainsAddedTransfatCommitDate(rs.getDate("contains_added_transfat_commit_date"));        // Date      containsAddedTransfatCommitDate
+				foodItem.setContainsCaffeine(rs.getInt("contains_caffeine") == 0);                                     // Boolean   containsCaffeine
+				foodItem.setContainsCaffeineCommitDate(rs.getDate("contains_caffeine_commit_date"));                   // Date      containsCaffeineCommitDate
+				foodItem.setContainsSugarSubstitutes(rs.getInt("contains_sugar_substitutes") == 0);                    // Boolean   containsSugarSubstitutes
+				foodItem.setContainsSugarSubstitutesCommitDate(rs.getDate("contains_sugar_substitutes_commit_date"));  // Date      containsSugarSubstitutesCommitDate
+				foodItem.setReferenceAmountG(rs.getDouble("reference_amount_g"));                                      // Double    referenceAmountG
+				foodItem.setReferenceAmountMeasure(rs.getString("reference_amount_measure"));                          // String    referenceAmountMeasure
+				foodItem.setReferenceAmountCommitDate(rs.getDate("reference_amount_commit_date"));                     // Date      referenceAmountCommitDate
+				foodItem.setFoodGuideServingG(rs.getDouble("food_guide_serving_g"));                                   // Double    foodGuideServingG
+				foodItem.setFoodGuideServingMeasure(rs.getString("food_guide_serving_measure"));                       // String    foodGuideServingMeasure
+				foodItem.setFoodGuideCommitDate(rs.getDate("food_guide_commit_date"));                                 // Date      foodGuideCommitDate
+				foodItem.setTier4ServingG(rs.getDouble("tier_4_serving_g"));                                           // Double    tier4ServingG
+				foodItem.setTier4ServingMeasure(rs.getString("tier_4_serving_measure"));                               // String    tier4ServingMeasure
+				foodItem.setTier4ServingCommitDate(rs.getDate("tier_4_serving_commit_date"));                          // Date      tier4ServingCommitDate
+				foodItem.setRolledUp(rs.getInt("rolled_up") == 0);                                                     // Boolean   rolledUp
+				foodItem.setRolledUpCommitDate(rs.getDate("rolled_up_commit_date"));                                   // Date      rolledUpCommitDate
+				foodItem.setApplySmallRaAdjustment(rs.getInt("apply_small_ra_adjustment") == 0);                       // Boolean   applySmallRaAdjustment
+				foodItem.setComments(rs.getString("comments"));                                                        // String    comments
 
 				list.add(foodItem);
 			}

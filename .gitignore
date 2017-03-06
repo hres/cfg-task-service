@@ -2,3 +2,4 @@
 /target
 /.settings
 *.sw[a-z]
+.exrc
