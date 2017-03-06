@@ -17,24 +17,26 @@ public class SearchBean {
 	private String cnfCode;
 	@QueryParam("subgroup-code")
 	private String subgroupCode;
+
 	@QueryParam("cfg-tier")
-	private String cfgTier;
+	private Added cfgTier;
 	@QueryParam("recipe")
-	private String recipe;
+	private Added recipe;
 	@QueryParam("sodium")
-	private String sodium;
+	private Added sodium;
 	@QueryParam("sugar")
-	private String sugar;
+	private Added sugar;
 	@QueryParam("fat")
-	private String fat;
+	private Added fat;
 	@QueryParam("transfat")
-	private String transfat;
+	private Added transfat;
 	@QueryParam("caffeine")
-	private String caffeine;
+	private Added caffeine;
 	@QueryParam("free-sugars")
-	private String freeSugars;
+	private Added freeSugars;
 	@QueryParam("sugar-substitutes")
-	private String sugarSubstitutes;
+	private Added sugarSubstitutes;
+
 	@QueryParam("reference-amount-missing")
 	private String referenceAmountMissing;
 	@QueryParam("cfg-serving-missing")
@@ -173,126 +175,126 @@ public class SearchBean {
 	/**
 	 * @return the cfgTier
 	 */
-	public String getCfgTier() {
+	public Added getCfgTier() {
 		return cfgTier;
 	}
 
 	/**
 	 * @param cfgTier the cfgTier to set
 	 */
-	public void setCfgTier(String cfgTier) {
+	public void setCfgTier(Added cfgTier) {
 		this.cfgTier = cfgTier;
 	}
 
 	/**
 	 * @return the recipe
 	 */
-	public String getRecipe() {
+	public Added getRecipe() {
 		return recipe;
 	}
 
 	/**
 	 * @param recipe the recipe to set
 	 */
-	public void setRecipe(String recipe) {
+	public void setRecipe(Added recipe) {
 		this.recipe = recipe;
 	}
 
 	/**
 	 * @return the sodium
 	 */
-	public String getSodium() {
+	public Added getSodium() {
 		return sodium;
 	}
 
 	/**
 	 * @param sodium the sodium to set
 	 */
-	public void setSodium(String sodium) {
+	public void setSodium(Added sodium) {
 		this.sodium = sodium;
 	}
 
 	/**
 	 * @return the sugar
 	 */
-	public String getSugar() {
+	public Added getSugar() {
 		return sugar;
 	}
 
 	/**
 	 * @param sugar the sugar to set
 	 */
-	public void setSugar(String sugar) {
+	public void setSugar(Added sugar) {
 		this.sugar = sugar;
 	}
 
 	/**
 	 * @return the fat
 	 */
-	public String getFat() {
+	public Added getFat() {
 		return fat;
 	}
 
 	/**
 	 * @param fat the fat to set
 	 */
-	public void setFat(String fat) {
+	public void setFat(Added fat) {
 		this.fat = fat;
 	}
 
 	/**
 	 * @return the transfat
 	 */
-	public String getTransfat() {
+	public Added getTransfat() {
 		return transfat;
 	}
 
 	/**
 	 * @param transfat the transfat to set
 	 */
-	public void setTransfat(String transfat) {
+	public void setTransfat(Added transfat) {
 		this.transfat = transfat;
 	}
 
 	/**
 	 * @return the caffeine
 	 */
-	public String getCaffeine() {
+	public Added getCaffeine() {
 		return caffeine;
 	}
 
 	/**
 	 * @param caffeine the caffeine to set
 	 */
-	public void setCaffeine(String caffeine) {
+	public void setCaffeine(Added caffeine) {
 		this.caffeine = caffeine;
 	}
 
 	/**
 	 * @return the freeSugars
 	 */
-	public String getFreeSugars() {
+	public Added getFreeSugars() {
 		return freeSugars;
 	}
 
 	/**
 	 * @param freeSugars the freeSugars to set
 	 */
-	public void setFreeSugars(String freeSugars) {
+	public void setFreeSugars(Added freeSugars) {
 		this.freeSugars = freeSugars;
 	}
 
 	/**
 	 * @return the sugarSubstitutes
 	 */
-	public String getSugarSubstitutes() {
+	public Added getSugarSubstitutes() {
 		return sugarSubstitutes;
 	}
 
 	/**
 	 * @param sugarSubstitutes the sugarSubstitutes to set
 	 */
-	public void setSugarSubstitutes(String sugarSubstitutes) {
+	public void setSugarSubstitutes(Added sugarSubstitutes) {
 		this.sugarSubstitutes = sugarSubstitutes;
 	}
 

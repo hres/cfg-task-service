@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 
+import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideFoodItem;
 import ca.gc.ip346.classification.model.FoodItem;
 // import ca.gc.ip346.classification.model.NewAndImprovedFoodItem;
@@ -66,6 +67,7 @@ public class FoodsResource {
 // commit-date-end=
 // cnf-code=
 // subgroup-code=
+//
 // cfg-tier=0
 // recipe=0
 // sodium=0
@@ -75,6 +77,7 @@ public class FoodsResource {
 // caffeine=0
 // free-sugars=0
 // sugar-substitutes=0
+//
 // reference-amount-missing=on
 // cfg-serving-missing=on
 // tier-4-serving-missing=on
@@ -104,48 +107,80 @@ public class FoodsResource {
 		int i = 0; // keeps count of the number of placeholders
 
 		String sql = ContentHandler.read("canada_food_guide.sql", getClass());
-		StringBuffer sb = new StringBuffer(sql);
 
-		sb.append(" WHERE 2 > 1 ").append("\n");
-		if (!search.getDataSource().equals("both")) {
-			sb.append("   AND fn_recipe_flg = ?").append("\n");
-		}
-		if (!search.getFoodRecipeName().isEmpty()) {
-			sb.append("   AND LOWER(food_desc) like ? OR LOWER(eng_name) like ?").append("\n");
-		}
-		if (!search.getFoodRecipeCode().isEmpty()) {
-			sb.append("   AND food_c = ?").append("\n");
-		}
-		if (!search.getCnfCode().isEmpty()) {
-			sb.append("   AND ").append("\n");
-		}
-		if (!search.getSubgroupCode().isEmpty()) {
-		}
+		if (search != null) {
+			StringBuffer sb = new StringBuffer(sql);
 
-		logger.error("\n" + sb);
-		sql = sb.toString();
-		logger.error("data source: " + search.getDataSource());
+			sb.append(" WHERE 2 > 1 ").append("\n");
+			if (!search.getDataSource().equals("both")) {
+				sb.append("   AND fn_recipe_flg = ?").append("\n");
+			}
+			if (!search.getFoodRecipeName().isEmpty()) {
+				sb.append("   AND LOWER(food_desc) like ? OR LOWER(eng_name) like ?").append("\n");
+			}
+			if (!search.getFoodRecipeCode().isEmpty()) {
+				sb.append("   AND food_c = ?").append("\n");
+			}
+			if (!search.getCnfCode().isEmpty()) {
+				sb.append("   AND group_c = ?").append("\n");
+			}
+			if (!search.getSubgroupCode().isEmpty()) {
+				sb.append("   AND canada_food_subgroup_id = ?").append("\n");
+			}
+			if (!search.getCfgTier().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getRecipe().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getSodium().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getSugar().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getFat().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getTransfat().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getCaffeine().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getFreeSugars().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getSugarSubstitutes().equals(Added.IGNORE.getCode())) {
+			}
+
+			logger.error("\n" + sb);
+
+			sql = sb.toString();
+
+			logger.error("data source: " + search.getDataSource());
+		}
 
 		try {
 			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
 			logger.trace("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
 			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
 
-			if (!search.getDataSource().equals("both")) {
-				stmt.setInt(++i, search.getDataSource().equals("cnf") ? 0 : 1);
-			}
-			if (!search.getFoodRecipeName().isEmpty()) {
-				stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
-				stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
-			}
-			if (!search.getFoodRecipeCode().isEmpty()) {
-				stmt.setInt(++i, Integer.parseInt(search.getFoodRecipeCode()));
+			if (search != null) {
+				if (!search.getDataSource().equals("both")) {
+					stmt.setInt(++i, search.getDataSource().equals("cnf") ? 0 : 1);
+				}
+				if (!search.getFoodRecipeName().isEmpty()) {
+					stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
+					stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
+				}
+				if (!search.getFoodRecipeCode().isEmpty()) {
+					stmt.setInt(++i, Integer.parseInt(search.getFoodRecipeCode()));
+				}
+				if (!search.getCnfCode().isEmpty()) {
+					stmt.setInt(++i, Integer.parseInt(search.getCnfCode()));
+				}
+				if (!search.getSubgroupCode().isEmpty()) {
+					stmt.setInt(++i, Integer.parseInt(search.getSubgroupCode()));
+				}
 			}
 
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-//				 NewAndImprovedFoodItem food = new NewAndImprovedFoodItem();
 				CanadaFoodGuideFoodItem foodItem = new CanadaFoodGuideFoodItem();
+//				 NewAndImprovedFoodItem food = new NewAndImprovedFoodItem();
 
 //				 food.setFoodC(rs.getDouble("food_c"));
 //				 food.setEngName(rs.getString("eng_name"));

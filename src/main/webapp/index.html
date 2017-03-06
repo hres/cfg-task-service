@@ -20,6 +20,17 @@
 					foo();
 				});
 
+				$("#additives").on("change", function() {
+					$("#Classification_Name").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#sodium").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#sugar").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#fat").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#transfat").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#caffeine").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#free-sugars").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#sugar-substitutes").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+				});
+
 				$("#select-all-missing").on("click", function() {
 					if ($("#select-all-missing").prop("checked")) {
 						$("#select-all-missing").prop("checked", true);
@@ -163,6 +174,11 @@
 							<label for="contains-added">
 								Contains Added:
 							</label>
+							<select name="additives" id="additives">
+								<option value="0"></option>
+								<option value="1">Yes</option>
+								<option value="2">No</option>
+							</select>
 						</div>
 						<div style="">
 							<select name="sodium" id="sodium">
