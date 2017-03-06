@@ -66,15 +66,17 @@ The service speaks XML and JSON:
   "containsAddedSodiumCommitDate" : null,
   "containsAddedSugar" : true,
   "containsAddedSugarCommitDate" : null,
-  .
-  .
-  .
+
+  &hellip;
+
+```
 
 ---
 
-  .
-  .
-  .
+```json
+
+  &hellip;
+
   "containsFreeSugars" : true,
   "containsFreeSugarsCommitDate" : null,
   "containsAddedFat" : true,
@@ -98,7 +100,7 @@ The service speaks XML and JSON:
   "rolledUpCommitDate" : null,
   "applySmallRaAdjustment" : true,
   "comments" : null
-}, ...
+}, &hellip;
 ```
 
 ---
