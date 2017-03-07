@@ -24,9 +24,8 @@ This project uses the following components and features:
 
 ## Maven Build and Deployment
 
-1. mvn clean install
-2. rename target/*.war to cfg-task-service.war
-3. move cfg-task-service.war to webapps directory of tomcat 8
+1. `mvn clean install`
+2. copy `target/cfg-task-service.war` to `webapps` directory of tomcat 8
 
 ## How to Test Service
 
