@@ -2,7 +2,7 @@ package ca.gc.ip346.classification.model;
 
 import javax.ws.rs.QueryParam;
 
-public class SearchBean {
+public class CfgFilter {
 	@QueryParam("data-source")
 	private String dataSource;
 	@QueryParam("food-recipe-name")
@@ -19,23 +19,24 @@ public class SearchBean {
 	private String subgroupCode;
 
 	@QueryParam("cfg-tier")
-	private Added cfgTier;
+	private /* CfgTier */ Integer cfgTier;
 	@QueryParam("recipe")
-	private Added recipe;
+	private /* RecipeRolled */ Integer recipe;
+
 	@QueryParam("sodium")
-	private Added sodium;
+	private /* Added */ Integer sodium;
 	@QueryParam("sugar")
-	private Added sugar;
+	private /* Added */ Integer sugar;
 	@QueryParam("fat")
-	private Added fat;
+	private /* Added */ Integer fat;
 	@QueryParam("transfat")
-	private Added transfat;
+	private /* Added */ Integer transfat;
 	@QueryParam("caffeine")
-	private Added caffeine;
+	private /* Added */ Integer caffeine;
 	@QueryParam("free-sugars")
-	private Added freeSugars;
+	private /* Added */ Integer freeSugars;
 	@QueryParam("sugar-substitutes")
-	private Added sugarSubstitutes;
+	private /* Added */ Integer sugarSubstitutes;
 
 	@QueryParam("reference-amount-missing")
 	private String referenceAmountMissing;
@@ -175,126 +176,126 @@ public class SearchBean {
 	/**
 	 * @return the cfgTier
 	 */
-	public Added getCfgTier() {
+	public /* CfgTier */ Integer getCfgTier() {
 		return cfgTier;
 	}
 
 	/**
 	 * @param cfgTier the cfgTier to set
 	 */
-	public void setCfgTier(Added cfgTier) {
+	public void setCfgTier(/* CfgTier */ Integer cfgTier) {
 		this.cfgTier = cfgTier;
 	}
 
 	/**
 	 * @return the recipe
 	 */
-	public Added getRecipe() {
+	public /* RecipeRolled */ Integer getRecipe() {
 		return recipe;
 	}
 
 	/**
 	 * @param recipe the recipe to set
 	 */
-	public void setRecipe(Added recipe) {
+	public void setRecipe(/* RecipeRolled */ Integer recipe) {
 		this.recipe = recipe;
 	}
 
 	/**
 	 * @return the sodium
 	 */
-	public Added getSodium() {
+	public /* Added */ Integer getSodium() {
 		return sodium;
 	}
 
 	/**
 	 * @param sodium the sodium to set
 	 */
-	public void setSodium(Added sodium) {
+	public void setSodium(/* Added */ Integer sodium) {
 		this.sodium = sodium;
 	}
 
 	/**
 	 * @return the sugar
 	 */
-	public Added getSugar() {
+	public /* Added */ Integer getSugar() {
 		return sugar;
 	}
 
 	/**
 	 * @param sugar the sugar to set
 	 */
-	public void setSugar(Added sugar) {
+	public void setSugar(/* Added */ Integer sugar) {
 		this.sugar = sugar;
 	}
 
 	/**
 	 * @return the fat
 	 */
-	public Added getFat() {
+	public /* Added */ Integer getFat() {
 		return fat;
 	}
 
 	/**
 	 * @param fat the fat to set
 	 */
-	public void setFat(Added fat) {
+	public void setFat(/* Added */ Integer fat) {
 		this.fat = fat;
 	}
 
 	/**
 	 * @return the transfat
 	 */
-	public Added getTransfat() {
+	public /* Added */ Integer getTransfat() {
 		return transfat;
 	}
 
 	/**
 	 * @param transfat the transfat to set
 	 */
-	public void setTransfat(Added transfat) {
+	public void setTransfat(/* Added */ Integer transfat) {
 		this.transfat = transfat;
 	}
 
 	/**
 	 * @return the caffeine
 	 */
-	public Added getCaffeine() {
+	public /* Added */ Integer getCaffeine() {
 		return caffeine;
 	}
 
 	/**
 	 * @param caffeine the caffeine to set
 	 */
-	public void setCaffeine(Added caffeine) {
+	public void setCaffeine(/* Added */ Integer caffeine) {
 		this.caffeine = caffeine;
 	}
 
 	/**
 	 * @return the freeSugars
 	 */
-	public Added getFreeSugars() {
+	public /* Added */ Integer getFreeSugars() {
 		return freeSugars;
 	}
 
 	/**
 	 * @param freeSugars the freeSugars to set
 	 */
-	public void setFreeSugars(Added freeSugars) {
+	public void setFreeSugars(/* Added */ Integer freeSugars) {
 		this.freeSugars = freeSugars;
 	}
 
 	/**
 	 * @return the sugarSubstitutes
 	 */
-	public Added getSugarSubstitutes() {
+	public /* Added */ Integer getSugarSubstitutes() {
 		return sugarSubstitutes;
 	}
 
 	/**
 	 * @param sugarSubstitutes the sugarSubstitutes to set
 	 */
-	public void setSugarSubstitutes(Added sugarSubstitutes) {
+	public void setSugarSubstitutes(/* Added */ Integer sugarSubstitutes) {
 		this.sugarSubstitutes = sugarSubstitutes;
 	}
 
