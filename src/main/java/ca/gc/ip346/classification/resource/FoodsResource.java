@@ -28,9 +28,11 @@ import com.google.gson.GsonBuilder;
 
 import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideFoodItem;
+import ca.gc.ip346.classification.model.CfgTier;
 import ca.gc.ip346.classification.model.FoodItem;
+import ca.gc.ip346.classification.model.RecipeRolled;
 // import ca.gc.ip346.classification.model.NewAndImprovedFoodItem;
-import ca.gc.ip346.classification.model.SearchBean;
+import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
 
 @Path("/foods")
@@ -101,7 +103,7 @@ public class FoodsResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	// @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<CanadaFoodGuideFoodItem> getFoodList(@BeanParam SearchBean search) {
+	public List<CanadaFoodGuideFoodItem> getFoodList(@BeanParam CfgFilter search) {
 		List<CanadaFoodGuideFoodItem> list = new ArrayList<CanadaFoodGuideFoodItem>(); // Create list
 
 		int i = 0; // keeps count of the number of placeholders
@@ -127,9 +129,9 @@ public class FoodsResource {
 			if (!search.getSubgroupCode().isEmpty()) {
 				sb.append("   AND canada_food_subgroup_id = ?").append("\n");
 			}
-			if (!search.getCfgTier().equals(Added.IGNORE.getCode())) {
+			if (!search.getCfgTier().equals(CfgTier.ALL.getCode())) {
 			}
-			if (!search.getRecipe().equals(Added.IGNORE.getCode())) {
+			if (!search.getRecipe().equals(RecipeRolled.IGNORE.getCode())) {
 			}
 			if (!search.getSodium().equals(Added.IGNORE.getCode())) {
 			}
