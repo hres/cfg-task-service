@@ -39,7 +39,7 @@ The service speaks XML and JSON:
 
 ---
 
-* To retrieve an array of sample food items from [http://localhost:8080/cfg-task-service](http://localhost:8080/cfg-task-service)
+* To retrieve an array of sample food items: (from [http://localhost:8080/cfg-task-service](http://localhost:8080/cfg-task-service))
 	* request with a criteria object:
 
 ```json
