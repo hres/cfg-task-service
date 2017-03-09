@@ -17,6 +17,8 @@ This project uses the following components and features:
 * MongoDB 3.4.2 LTS
 * JAX-RS REST Service with Jersey and Jackson consuming and producing XML and JSON.
 
+These need be setup for development.  For runtime, see below.
+
 <!-- ## How to Set up Eclipse Plugins -->
 
 <!-- * Install GEF [http://download.eclipse.org/tools/gef/updates/releases/](http://download.eclipse.org/tools/gef/updates/releases/) -->
@@ -24,8 +26,10 @@ This project uses the following components and features:
 
 ## Maven Build and Deployment
 
+For a standalone deployment, do the following:
+
 1. `mvn clean install`
-2. copy `target/cfg-task-service.war` to `webapps` directory of tomcat 8
+2. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0
 
 ## How to Test Service
 
