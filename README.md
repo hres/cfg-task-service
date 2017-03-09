@@ -38,12 +38,12 @@ The service speaks XML and JSON:
 * Retrieve an array of sample food items from [http://localhost:8080/cfg-task-service](http://localhost:8080/cfg-task-service)
 
 ```json
-{
-  "foodRecipeType" : true,
-  "code" : "1712",
-  "name" : "Fruit salad (peach, pear, apricot, pineapple, cherry), canned, juice pack, solids and liquid",
-  "cnfCode" : "9",
-  "cfgCode" : "9",
+ {
+  "type" : "CNF",
+  "code" : "2",
+  "name" : "Cheese souffle",
+  "cnfCode" : "22",
+  "cfgCode" : "8000",
   "cfgCodeCommitDate" : null,
   "energyKcal" : 0.0,
   "sodiumAmountPer100g" : 0.0,
@@ -75,18 +75,19 @@ The service speaks XML and JSON:
   "containsCaffeineCommitDate" : null,
   "containsSugarSubstitutes" : true,
   "containsSugarSubstitutesCommitDate" : null,
-  "referenceAmountG" : 0.0,
-  "referenceAmountMeasure" : null,
+  "referenceAmountG" : 100.38,
+  "referenceAmountMeasure" : "250ml",
   "referenceAmountCommitDate" : null,
   "foodGuideServingG" : 0.0,
-  "foodGuideServingMeasure" : null,
+  "foodGuideServingMeasure" : "no serving specified",
   "foodGuideCommitDate" : null,
   "tier4ServingG" : 0.0,
-  "tier4ServingMeasure" : null,
+  "tier4ServingMeasure" : "0",
   "tier4ServingCommitDate" : null,
   "rolledUp" : true,
   "rolledUpCommitDate" : null,
   "applySmallRaAdjustment" : true,
+  "replacementCode" : null,
   "comments" : null
 }, ...
 ```
