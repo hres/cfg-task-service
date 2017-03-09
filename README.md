@@ -157,6 +157,61 @@ The service speaks XML and JSON:
 	}, ...
 	```
 
+	```json
+	{
+		"type"                               : "CNF",
+		"code"                               : "2",
+		"name"                               : "Cheese souffle",
+		"cnfCode"                            : "22",
+		"cfgCode"                            : "8000",
+		"cfgCodeCommitDate"                  : null,
+		"energyKcal"                         : 0.0,
+		"sodiumAmountPer100g"                : 0.0,
+		"sodiumImputationReference"          : null,
+		"sodiumImputationDate"               : null,
+		"sugarAmountPer100g"                 : 0.0,
+		"sugarImputationReference"           : null,
+		"sugarImputationDate"                : null,
+		"transfatAmountPer100g"              : 0.0,
+		"transfatImputationReference"        : null,
+		"transfatImputationDate"             : null,
+		"satfatAmoutPer100g"                 : 0.0,
+		"satfatImputationReference"          : null,
+		"satfatImputationDate"               : null,
+		"totalfatAmoutPer100g"               : 0.0,
+		"totalfatImputationReference"        : null,
+		"totalfatImputationDate"             : null,
+		"containsAddedSodium"                : true,
+		"containsAddedSodiumCommitDate"      : null,
+		"containsAddedSugar"                 : true,
+		"containsAddedSugarCommitDate"       : null,
+		"containsFreeSugars"                 : true,
+		"containsFreeSugarsCommitDate"       : null,
+		"containsAddedFat"                   : true,
+		"containsAddedFatCommitDate"         : null,
+		"containsAddedTransfat"              : true,
+		"containsAddedTransfatCommitDate"    : null,
+		"containsCaffeine"                   : true,
+		"containsCaffeineCommitDate"         : null,
+		"containsSugarSubstitutes"           : true,
+		"containsSugarSubstitutesCommitDate" : null,
+		"referenceAmountG"                   : 100.38,
+		"referenceAmountMeasure"             : "250ml",
+		"referenceAmountCommitDate"          : null,
+		"foodGuideServingG"                  : 0.0,
+		"foodGuideServingMeasure"            : "no serving specified",
+		"foodGuideCommitDate"                : null,
+		"tier4ServingG"                      : 0.0,
+		"tier4ServingMeasure"                : "0",
+		"tier4ServingCommitDate"             : null,
+		"rolledUp"                           : true,
+		"rolledUpCommitDate"                 : null,
+		"applySmallRaAdjustment"             : true,
+		"replacementCode"                    : null,
+		"comments"                           : null
+	}, ...
+	```
+
 ---
 
 <!-- * Set Food Flags -->
