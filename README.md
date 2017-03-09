@@ -34,11 +34,8 @@ For a standalone deployment, do the following:
 ## How to Test Service
 
 The service speaks XML and JSON:
-* To get JSON, set the request header `Accept` to `application/json`.
-* To post JSON input, set the request header `Content-Type` to `application/json`.
-
----
-
+* To `GET` JSON, set the request header `Accept` to `application/json`.
+* To `POST` JSON input, set the request header `Content-Type` to `application/json`.
 * To retrieve an array of sample food items: (from [http://localhost:8080/cfg-task-service](http://localhost:8080/cfg-task-service))
 	* request with a criteria object:
 
