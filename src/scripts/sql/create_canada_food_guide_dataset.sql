@@ -1,4 +1,4 @@
-CREATE TABLE cfg_data_set (
+CREATE TABLE canada_food_guide_dataset (
 	type                                   	 smallint,
 	code                                   	 int4,
 	name                                   	 text,
@@ -26,7 +26,7 @@ CREATE TABLE cfg_data_set (
 	contains_added_sugar                   	 smallint,
 	contains_added_sugar_update_date       	 date,
 	contains_free_sugars                   	 smallint,
-	contains_free_sugars_commit_date       	 date,
+	contains_free_sugars_update_date       	 date,
 	contains_added_fat                     	 smallint,
 	contains_added_fat_update_date         	 date,
 	contains_added_transfat                	 smallint,
