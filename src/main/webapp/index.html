@@ -33,46 +33,89 @@
 
 				$("#select-all-missing").on("click", function() {
 					if ($("#select-all-missing").prop("checked")) {
-						$("#select-all-missing").prop("checked", true);
-
-						$("#reference-amount-missing").prop("checked", true);
-						$("#cfg-serving-missing").prop("checked", true);
-						$("#tier-4-serving-missing").prop("checked", true);
-						$("#energy-value-missing").prop("checked", true);
-						$("#cnf-code-missing").prop("checked", true);
-						$("#recipe-rolled-up-down-missing").prop("checked", true);
-						$("#sodium-value-missing").prop("checked", true);
-						$("#sugar-value-missing").prop("checked", true);
-						$("#fat-value-missing").prop("checked", true);
-						$("#transfat-value-missing").prop("checked", true);
-						$("#satfat-value-missing").prop("checked", true);
-						$("#select-all-missing").prop("checked", true);
-						$("#added-sodium-missing").prop("checked", true);
-						$("#added-sugar-missing").prop("checked", true);
-						$("#added-transfat-missing").prop("checked", true);
-						$("#added-caffeine-missing").prop("checked", true);
-						$("#added-free-sugars-missing").prop("checked", true);
-						$("#added-sugar-substitutes-missing").prop("checked", true);
+						$("#select-all-missing").prop("checked"              , true);
+						$("#reference-amount-missing").prop("checked"        , true);
+						$("#cfg-serving-missing").prop("checked"             , true);
+						$("#tier-4-serving-missing").prop("checked"          , true);
+						$("#energy-value-missing").prop("checked"            , true);
+						$("#cnf-code-missing").prop("checked"                , true);
+						$("#recipe-rolled-up-down-missing").prop("checked"   , true);
+						$("#sodium-value-missing").prop("checked"            , true);
+						$("#sugar-value-missing").prop("checked"             , true);
+						$("#fat-value-missing").prop("checked"               , true);
+						$("#transfat-value-missing").prop("checked"          , true);
+						$("#satfat-value-missing").prop("checked"            , true);
+						$("#select-all-missing").prop("checked"              , true);
+						$("#added-sodium-missing").prop("checked"            , true);
+						$("#added-sugar-missing").prop("checked"             , true);
+						$("#added-transfat-missing").prop("checked"          , true);
+						$("#added-caffeine-missing").prop("checked"          , true);
+						$("#added-free-sugars-missing").prop("checked"       , true);
+						$("#added-sugar-substitutes-missing").prop("checked" , true);
 					} else {
-						$("#select-all-missing").prop("checked", false);
-						$("#reference-amount-missing").prop("checked", false);
-						$("#cfg-serving-missing").prop("checked", false);
-						$("#tier-4-serving-missing").prop("checked", false);
-						$("#energy-value-missing").prop("checked", false);
-						$("#cnf-code-missing").prop("checked", false);
-						$("#recipe-rolled-up-down-missing").prop("checked", false);
-						$("#sodium-value-missing").prop("checked", false);
-						$("#sugar-value-missing").prop("checked", false);
-						$("#fat-value-missing").prop("checked", false);
-						$("#transfat-value-missing").prop("checked", false);
-						$("#satfat-value-missing").prop("checked", false);
-						$("#select-all-missing").prop("checked", false);
-						$("#added-sodium-missing").prop("checked", false);
-						$("#added-sugar-missing").prop("checked", false);
-						$("#added-transfat-missing").prop("checked", false);
-						$("#added-caffeine-missing").prop("checked", false);
-						$("#added-free-sugars-missing").prop("checked", false);
-						$("#added-sugar-substitutes-missing").prop("checked", false);
+						$("#select-all-missing").prop("checked"              , false);
+						$("#reference-amount-missing").prop("checked"        , false);
+						$("#cfg-serving-missing").prop("checked"             , false);
+						$("#tier-4-serving-missing").prop("checked"          , false);
+						$("#energy-value-missing").prop("checked"            , false);
+						$("#cnf-code-missing").prop("checked"                , false);
+						$("#recipe-rolled-up-down-missing").prop("checked"   , false);
+						$("#sodium-value-missing").prop("checked"            , false);
+						$("#sugar-value-missing").prop("checked"             , false);
+						$("#fat-value-missing").prop("checked"               , false);
+						$("#transfat-value-missing").prop("checked"          , false);
+						$("#satfat-value-missing").prop("checked"            , false);
+						$("#select-all-missing").prop("checked"              , false);
+						$("#added-sodium-missing").prop("checked"            , false);
+						$("#added-sugar-missing").prop("checked"             , false);
+						$("#added-transfat-missing").prop("checked"          , false);
+						$("#added-caffeine-missing").prop("checked"          , false);
+						$("#added-free-sugars-missing").prop("checked"       , false);
+						$("#added-sugar-substitutes-missing").prop("checked" , false);
+					}
+				});
+
+				$("#select-all-last-updated").on("click", function() {
+					if ($("#select-all-last-updated").prop("checked")) {
+						$("#select-all-last-updated").prop("checked"              , true);
+						$("#reference-amount-last-updated").prop("checked"        , true);
+						$("#cfg-serving-last-updated").prop("checked"             , true);
+						$("#tier-4-serving-last-updated").prop("checked"          , true);
+						$("#energy-value-last-updated").prop("checked"            , true);
+						$("#cnf-code-last-updated").prop("checked"                , true);
+						$("#recipe-rolled-up-down-last-updated").prop("checked"   , true);
+						$("#sodium-value-last-updated").prop("checked"            , true);
+						$("#sugar-value-last-updated").prop("checked"             , true);
+						$("#fat-value-last-updated").prop("checked"               , true);
+						$("#transfat-value-last-updated").prop("checked"          , true);
+						$("#satfat-value-last-updated").prop("checked"            , true);
+						$("#select-all-last-updated").prop("checked"              , true);
+						$("#added-sodium-last-updated").prop("checked"            , true);
+						$("#added-sugar-last-updated").prop("checked"             , true);
+						$("#added-transfat-last-updated").prop("checked"          , true);
+						$("#added-caffeine-last-updated").prop("checked"          , true);
+						$("#added-free-sugars-last-updated").prop("checked"       , true);
+						$("#added-sugar-substitutes-last-updated").prop("checked" , true);
+					} else {
+						$("#select-all-last-updated").prop("checked"              , false);
+						$("#reference-amount-last-updated").prop("checked"        , false);
+						$("#cfg-serving-last-updated").prop("checked"             , false);
+						$("#tier-4-serving-last-updated").prop("checked"          , false);
+						$("#energy-value-last-updated").prop("checked"            , false);
+						$("#cnf-code-last-updated").prop("checked"                , false);
+						$("#recipe-rolled-up-down-last-updated").prop("checked"   , false);
+						$("#sodium-value-last-updated").prop("checked"            , false);
+						$("#sugar-value-last-updated").prop("checked"             , false);
+						$("#fat-value-last-updated").prop("checked"               , false);
+						$("#transfat-value-last-updated").prop("checked"          , false);
+						$("#satfat-value-last-updated").prop("checked"            , false);
+						$("#select-all-last-updated").prop("checked"              , false);
+						$("#added-sodium-last-updated").prop("checked"            , false);
+						$("#added-sugar-last-updated").prop("checked"             , false);
+						$("#added-transfat-last-updated").prop("checked"          , false);
+						$("#added-caffeine-last-updated").prop("checked"          , false);
+						$("#added-free-sugars-last-updated").prop("checked"       , false);
+						$("#added-sugar-substitutes-last-updated").prop("checked" , false);
 					}
 				});
 			});
@@ -129,12 +172,12 @@
 				</div>
 				<div style="">
 					<div class="padding keepaligned">
-						<label for="commit-date-begin">Commit Date Begin:</label>
-						<input type="date" name="commit-date-begin" id="commit-date-begin"/>
+						<label for="commit-date-from">Commit Date From:</label>
+						<input type="date" name="commit-date-from" id="commit-date-from"/>
 					</div>
 					<div class="padding keepaligned">
-						<label for="commit-date-end">Commit Date End:</label>
-						<input type="date" name="commit-date-end" id="commit-date-end"/>
+						<label for="commit-date-to">Commit Date To:</label>
+						<input type="date" name="commit-date-to" id="commit-date-to"/>
 					</div>
 					<div class="padding keepaligned">
 						<label for="cnf-code">CNF Code:</label>
@@ -174,7 +217,7 @@
 							<label for="contains-added">
 								Contains Added:
 							</label>
-							<select name="additives" id="additives">
+							<select id="additives">
 								<option value="0"></option>
 								<option value="1">Yes</option>
 								<option value="2">No</option>
@@ -325,26 +368,26 @@
 				</div>
 				<div style="">
 					<div class="keepaligned" id="comments-area">
-					<div>
-						Comments:
-					</div>
-					<div style="border:solid black 1pt">
-						<textarea name="comments" id="comments" cols="36" rows="11"></textarea>
-					</div>
+						<div>
+							Comments:
+						</div>
+						<div style="border:solid black 1pt">
+							<textarea name="comments" id="comments" cols="36" rows="11"></textarea>
+						</div>
 					</div>
 					<div style="width:24cm; border:solid black 1pt" class="keepaligned">
-						<div style="">
+						<div style="width:5cm" class="padding keepaligned">
 							<label for="last-updated">
 								Last Updated:
 							</label>
-							<div class="padding keepaligned">
-								<label for="commit-date-from">From:</label>
-								<input type="date" name="commit-date-from" id="commit-date-from"/>
-							</div>
-							<div class="padding keepaligned">
-								<label for="commit-date-to">To:</label>
-								<input type="date" name="commit-date-to" id="commit-date-to"/>
-							</div>
+						</div>
+						<div class="padding keepaligned">
+							<label for="last-update-date-From">From:</label>
+							<input type="date" name="last-update-date-From" id="last-update-date-From"/>
+						</div>
+						<div class="padding keepaligned">
+							<label for="last-update-date-To">To:</label>
+							<input type="date" name="last-update-date-To" id="last-update-date-To"/>
 						</div>
 						<div style="width:8cm" class="keepaligned">
 							<div style="">
