@@ -1,0 +1,62 @@
+package ca.gc.ip346.classification.model;
+
+public class NewAndImprovedCfgFilter {
+
+// data-source=both;
+// food-recipe-name=;
+// food-recipe-code=;
+// commit-date-begin=;
+// commit-date-end=;
+// cnf-code=;
+// subgroup-code=;
+// cfg-tier=0;
+// recipe=0;
+// additives=1;
+// sodium=1;
+// sugar=1;
+// fat=1;
+// transfat=1;
+// caffeine=1;
+// free-sugars=1;
+// sugar-substitutes=1;
+// reference-amount-missing=on;
+// cfg-serving-missing=on;
+// tier-4-serving-missing=on;
+// energy-value-missing=on;
+// cnf-code-missing=on;
+// recipe-rolled-up-down-missing=on;
+// sodium-value-missing=on;
+// sugar-value-missing=on;
+// fat-value-missing=on;
+// transfat-value-missing=on;
+// satfat-value-missing=on;
+// select-all-missing=on;
+// added-sodium-missing=on;
+// added-sugar-missing=on;
+// added-transfat-missing=on;
+// added-caffeine-missing=on;
+// added-free-sugars-missing=on;
+// added-sugar-substitutes-missing=on;
+// comments=hello;
+// commit-date-from=;
+// commit-date-to=;
+// reference-amount-last-updated=on;
+// cfg-serving-last-updated=on;
+// tier-4-serving-last-updated=on;
+// energy-value-last-updated=on;
+// cnf-code-last-updated=on;
+// recipe-rolled-up-down-last-updated=on;
+// sodium-value-last-updated=on;
+// sugar-value-last-updated=on;
+// fat-value-last-updated=on;
+// transfat-value-last-updated=on;
+// satfat-value-last-updated=on;
+// select-all-last-updated=on;
+// added-sodium-last-updated=on;
+// added-sugar-last-updated=on;
+// added-transfat-last-updated=on;
+// added-caffeine-last-updated=on;
+// added-free-sugars-last-updated=on;
+// added-sugar-substitutes-last-updated=on;
+
+}

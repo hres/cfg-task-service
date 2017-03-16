@@ -2,12 +2,12 @@ package ca.gc.ip346.classification.model;
 
 import java.util.Date;
 
-public class CanadaFoodGuideFoodItem {
+public class NewAndImprovedCfgFoodItem {
 	private /* text             */ String type;
-	private /* integer          */ String code;
+	private /* integer          */ Integer code;
 	private /* text             */ String name;
-	private /* integer          */ String cnfCode;
-	private /* integer          */ String cfgCode;
+	private /* integer          */ Integer cnfGroupCode;
+	private /* integer          */ Integer cfgCode;
 	private /* date             */ Date cfgCodeCommitDate;
 	private /* double precision */ Double energyKcal;
 	private /* double precision */ Double sodiumAmountPer100g;
@@ -25,19 +25,19 @@ public class CanadaFoodGuideFoodItem {
 	private /* double precision */ Double totalfatAmoutPer100g;
 	private /* text             */ String totalfatImputationReference;
 	private /* date             */ Date totalfatImputationDate;
-	private /* smallint         */ Boolean containsAddedSodium;
+	private /* smallint         */ Integer containsAddedSodium;
 	private /* date             */ Date containsAddedSodiumCommitDate;
-	private /* smallint         */ Boolean containsAddedSugar;
+	private /* smallint         */ Integer containsAddedSugar;
 	private /* date             */ Date containsAddedSugarCommitDate;
-	private /* smallint         */ Boolean containsFreeSugars;
+	private /* smallint         */ Integer containsFreeSugars;
 	private /* date             */ Date containsFreeSugarsCommitDate;
-	private /* smallint         */ Boolean containsAddedFat;
+	private /* smallint         */ Integer containsAddedFat;
 	private /* date             */ Date containsAddedFatCommitDate;
-	private /* smallint         */ Boolean containsAddedTransfat;
+	private /* smallint         */ Integer containsAddedTransfat;
 	private /* date             */ Date containsAddedTransfatCommitDate;
-	private /* smallint         */ Boolean containsCaffeine;
+	private /* smallint         */ Integer containsCaffeine;
 	private /* date             */ Date containsCaffeineCommitDate;
-	private /* smallint         */ Boolean containsSugarSubstitutes;
+	private /* smallint         */ Integer containsSugarSubstitutes;
 	private /* date             */ Date containsSugarSubstitutesCommitDate;
 	private /* double precision */ Double referenceAmountG;
 	private /* text             */ String referenceAmountMeasure;
@@ -48,9 +48,9 @@ public class CanadaFoodGuideFoodItem {
 	private /* double precision */ Double tier4ServingG;
 	private /* text             */ String tier4ServingMeasure;
 	private /* date             */ Date tier4ServingCommitDate;
-	private /* smallint         */ Boolean rolledUp;
+	private /* smallint         */ Integer rolledUp;
 	private /* date             */ Date rolledUpCommitDate;
-	private /* text             */ Boolean applySmallRaAdjustment;
+	private /* text             */ String applySmallRaAdjustment;
 	private /* integer          */ Integer replacementCode;
 	private /* text             */ String comments;
 
@@ -71,14 +71,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the code
 	 */
-	public String getCode() {
+	public Integer getCode() {
 		return code;
 	}
 
 	/**
 	 * @param code the code to set
 	 */
-	public void setCode(String code) {
+	public void setCode(Integer code) {
 		this.code = code;
 	}
 
@@ -97,30 +97,30 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the cnfCode
+	 * @return the cnfGroupCode
 	 */
-	public String getCnfCode() {
-		return cnfCode;
+	public Integer getCnfGroupCode() {
+		return cnfGroupCode;
 	}
 
 	/**
-	 * @param cnfCode the cnfCode to set
+	 * @param cnfGroupCode the cnfGroupCode to set
 	 */
-	public void setCnfCode(String cnfCode) {
-		this.cnfCode = cnfCode;
+	public void setCnfGroupCode(Integer cnfGroupCode) {
+		this.cnfGroupCode = cnfGroupCode;
 	}
 
 	/**
 	 * @return the cfgCode
 	 */
-	public String getCfgCode() {
+	public Integer getCfgCode() {
 		return cfgCode;
 	}
 
 	/**
 	 * @param cfgCode the cfgCode to set
 	 */
-	public void setCfgCode(String cfgCode) {
+	public void setCfgCode(Integer cfgCode) {
 		this.cfgCode = cfgCode;
 	}
 
@@ -365,14 +365,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the containsAddedSodium
 	 */
-	public Boolean getContainsAddedSodium() {
+	public Integer getContainsAddedSodium() {
 		return containsAddedSodium;
 	}
 
 	/**
 	 * @param containsAddedSodium the containsAddedSodium to set
 	 */
-	public void setContainsAddedSodium(Boolean containsAddedSodium) {
+	public void setContainsAddedSodium(Integer containsAddedSodium) {
 		this.containsAddedSodium = containsAddedSodium;
 	}
 
@@ -393,14 +393,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the containsAddedSugar
 	 */
-	public Boolean getContainsAddedSugar() {
+	public Integer getContainsAddedSugar() {
 		return containsAddedSugar;
 	}
 
 	/**
 	 * @param containsAddedSugar the containsAddedSugar to set
 	 */
-	public void setContainsAddedSugar(Boolean containsAddedSugar) {
+	public void setContainsAddedSugar(Integer containsAddedSugar) {
 		this.containsAddedSugar = containsAddedSugar;
 	}
 
@@ -421,14 +421,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the containsFreeSugars
 	 */
-	public Boolean getContainsFreeSugars() {
+	public Integer getContainsFreeSugars() {
 		return containsFreeSugars;
 	}
 
 	/**
 	 * @param containsFreeSugars the containsFreeSugars to set
 	 */
-	public void setContainsFreeSugars(Boolean containsFreeSugars) {
+	public void setContainsFreeSugars(Integer containsFreeSugars) {
 		this.containsFreeSugars = containsFreeSugars;
 	}
 
@@ -449,14 +449,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the containsAddedFat
 	 */
-	public Boolean getContainsAddedFat() {
+	public Integer getContainsAddedFat() {
 		return containsAddedFat;
 	}
 
 	/**
 	 * @param containsAddedFat the containsAddedFat to set
 	 */
-	public void setContainsAddedFat(Boolean containsAddedFat) {
+	public void setContainsAddedFat(Integer containsAddedFat) {
 		this.containsAddedFat = containsAddedFat;
 	}
 
@@ -477,14 +477,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the containsAddedTransfat
 	 */
-	public Boolean getContainsAddedTransfat() {
+	public Integer getContainsAddedTransfat() {
 		return containsAddedTransfat;
 	}
 
 	/**
 	 * @param containsAddedTransfat the containsAddedTransfat to set
 	 */
-	public void setContainsAddedTransfat(Boolean containsAddedTransfat) {
+	public void setContainsAddedTransfat(Integer containsAddedTransfat) {
 		this.containsAddedTransfat = containsAddedTransfat;
 	}
 
@@ -505,14 +505,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the containsCaffeine
 	 */
-	public Boolean getContainsCaffeine() {
+	public Integer getContainsCaffeine() {
 		return containsCaffeine;
 	}
 
 	/**
 	 * @param containsCaffeine the containsCaffeine to set
 	 */
-	public void setContainsCaffeine(Boolean containsCaffeine) {
+	public void setContainsCaffeine(Integer containsCaffeine) {
 		this.containsCaffeine = containsCaffeine;
 	}
 
@@ -533,14 +533,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the containsSugarSubstitutes
 	 */
-	public Boolean getContainsSugarSubstitutes() {
+	public Integer getContainsSugarSubstitutes() {
 		return containsSugarSubstitutes;
 	}
 
 	/**
 	 * @param containsSugarSubstitutes the containsSugarSubstitutes to set
 	 */
-	public void setContainsSugarSubstitutes(Boolean containsSugarSubstitutes) {
+	public void setContainsSugarSubstitutes(Integer containsSugarSubstitutes) {
 		this.containsSugarSubstitutes = containsSugarSubstitutes;
 	}
 
@@ -687,14 +687,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the rolledUp
 	 */
-	public Boolean getRolledUp() {
+	public Integer getRolledUp() {
 		return rolledUp;
 	}
 
 	/**
 	 * @param rolledUp the rolledUp to set
 	 */
-	public void setRolledUp(Boolean rolledUp) {
+	public void setRolledUp(Integer rolledUp) {
 		this.rolledUp = rolledUp;
 	}
 
@@ -715,14 +715,14 @@ public class CanadaFoodGuideFoodItem {
 	/**
 	 * @return the applySmallRaAdjustment
 	 */
-	public Boolean getApplySmallRaAdjustment() {
+	public String getApplySmallRaAdjustment() {
 		return applySmallRaAdjustment;
 	}
 
 	/**
 	 * @param applySmallRaAdjustment the applySmallRaAdjustment to set
 	 */
-	public void setApplySmallRaAdjustment(Boolean applySmallRaAdjustment) {
+	public void setApplySmallRaAdjustment(String applySmallRaAdjustment) {
 		this.applySmallRaAdjustment = applySmallRaAdjustment;
 	}
 

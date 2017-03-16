@@ -2,57 +2,58 @@ package ca.gc.ip346.classification.model;
 
 import java.util.Date;
 
-public class CanadaFoodGuideFoodItem {
-	private /* text             */ String type;
-	private /* integer          */ String code;
-	private /* text             */ String name;
-	private /* integer          */ String cnfCode;
-	private /* integer          */ String cfgCode;
-	private /* date             */ Date cfgCodeCommitDate;
-	private /* double precision */ Double energyKcal;
-	private /* double precision */ Double sodiumAmountPer100g;
-	private /* text             */ String sodiumImputationReference;
-	private /* date             */ Date sodiumImputationDate;
-	private /* double precision */ Double sugarAmountPer100g;
-	private /* text             */ String sugarImputationReference;
-	private /* date             */ Date sugarImputationDate;
-	private /* double precision */ Double transfatAmountPer100g;
-	private /* text             */ String transfatImputationReference;
-	private /* date             */ Date transfatImputationDate;
-	private /* double precision */ Double satfatAmoutPer100g;
-	private /* text             */ String satfatImputationReference;
-	private /* date             */ Date satfatImputationDate;
-	private /* double precision */ Double totalfatAmoutPer100g;
-	private /* text             */ String totalfatImputationReference;
-	private /* date             */ Date totalfatImputationDate;
-	private /* smallint         */ Boolean containsAddedSodium;
-	private /* date             */ Date containsAddedSodiumCommitDate;
-	private /* smallint         */ Boolean containsAddedSugar;
-	private /* date             */ Date containsAddedSugarCommitDate;
-	private /* smallint         */ Boolean containsFreeSugars;
-	private /* date             */ Date containsFreeSugarsCommitDate;
-	private /* smallint         */ Boolean containsAddedFat;
-	private /* date             */ Date containsAddedFatCommitDate;
-	private /* smallint         */ Boolean containsAddedTransfat;
-	private /* date             */ Date containsAddedTransfatCommitDate;
-	private /* smallint         */ Boolean containsCaffeine;
-	private /* date             */ Date containsCaffeineCommitDate;
-	private /* smallint         */ Boolean containsSugarSubstitutes;
-	private /* date             */ Date containsSugarSubstitutesCommitDate;
-	private /* double precision */ Double referenceAmountG;
-	private /* text             */ String referenceAmountMeasure;
-	private /* date             */ Date referenceAmountCommitDate;
-	private /* double precision */ Double foodGuideServingG;
-	private /* text             */ String foodGuideServingMeasure;
-	private /* date             */ Date foodGuideCommitDate;
-	private /* double precision */ Double tier4ServingG;
-	private /* text             */ String tier4ServingMeasure;
-	private /* date             */ Date tier4ServingCommitDate;
-	private /* smallint         */ Boolean rolledUp;
-	private /* date             */ Date rolledUpCommitDate;
-	private /* text             */ Boolean applySmallRaAdjustment;
-	private /* integer          */ Integer replacementCode;
-	private /* text             */ String comments;
+public class NewAndImprovedCanadaFoodGuideFoodItem {
+	private /* Type                                   	 String  */ String  type;
+	private /* Code                                   	 String  */ String  code;
+	private /* Name                                   	 String  */ String  name;
+	private /* Group_Code                             	 String  */ String  groupCode;
+	private /* CFG_Code                               	 String  */ String  cfgCode;
+	private /* CFG_Code_Update_Date                   	 Date    */ Date    cfgCodeUpdateDate;
+	private /* Energy_Kcal                            	 Number  */ Double  energyKcal;
+	private /* Sodium_Amount_per_100g                 	 Number  */ Double  sodiumAmountPer100g;
+	private /* Sodium_Imputation_Reference            	 String  */ String  sodiumImputationReference;
+	private /* Sodium_Imputation_Date                 	 Date    */ Date    sodiumImputationDate;
+	private /* Sugar_Amount_per_100g                  	 Number  */ Double  sugarAmountPer100g;
+	private /* Sugar_Imputation_Reference             	 String  */ String  sugarImputationReference;
+	private /* Sugar_Imputation_Date                  	 Date    */ Date    sugarImputationDate;
+	private /* TransFat_Amount_per_100g               	 Number  */ Double  transfatAmountPer100g;
+	private /* Transfat_Imputation_Reference          	 String  */ String  transfatImputationReference;
+	private /* TransFat_Imputation_Date               	 Date    */ Date    transfatImputationDate;
+	private /* SatFat_Amout_per_100g                  	 Number  */ Double  satfatAmoutPer100g;
+	private /* SatFat_Imputation_Reference            	 String  */ String  satfatImputationReference;
+	private /* SatFat_Imputation_Date                 	 Date    */ Date    satfatImputationDate;
+	private /* TotalFat_Amout_per_100g                	 Number  */ Double  totalfatAmoutPer100g;
+	private /* TotalFat_Imputation_Reference          	 String  */ String  totalfatImputationReference;
+	private /* TotalFat_Imputation_Date               	 Date    */ Date    totalfatImputationDate;
+	private /* Contains_Added_Sodium                  	 Boolean */ Boolean containsAddedSodium;
+	private /* Contains_Added_Sodium_Update_Date      	 Date    */ Date    containsAddedSodiumUpdateDate;
+	private /* Contains_Added_Sugar                   	 Boolean */ Boolean containsAddedSugar;
+	private /* Contains_Added_Sugar_Update_Date       	 Date    */ Date    containsAddedSugarUpdateDate;
+	private /* Contains_Free_Sugars                   	 Boolean */ Boolean containsFreeSugars;
+	private /* Contains_Free_Sugars_Commit_Date       	 Date    */ Date    containsFreeSugarsCommitDate;
+	private /* Contains_Added_Fat                     	 Boolean */ Boolean containsAddedFat;
+	private /* Contains_Added_Fat_Update_Date         	 Date    */ Date    containsAddedFatUpdateDate;
+	private /* Contains_Added_Transfat                	 Boolean */ Boolean containsAddedTransfat;
+	private /* Contains_Added_Transfat_Update_Date    	 Date    */ Date    containsAddedTransfatUpdateDate;
+	private /* Contains_Caffeine                      	 Boolean */ Boolean containsCaffeine;
+	private /* Contains_Caffeine_Update_Date          	 Date    */ Date    containsCaffeineUpdateDate;
+	private /* Contains_Sugar_Substitutes             	 Boolean */ Boolean containsSugarSubstitutes;
+	private /* Contains_Sugar_Substitutes_Update_Date 	 Date    */ Date    containsSugarSubstitutesUpdateDate;
+	private /* Reference_Amount_g                     	 Number  */ Double  referenceAmountG;
+	private /* Reference_Amount_measure               	 String  */ String  referenceAmountMeasure;
+	private /* Reference_Amount_Update_Date           	 Date    */ Date    referenceAmountUpdateDate;
+	private /* Food_Guide_Serving_g                   	 Number  */ Double  foodGuideServingG;
+	private /* Food_Guide_Serving_measure             	 String  */ String  foodGuideServingMeasure;
+	private /* Food_Guide_Update_Date                 	 Date    */ Date    foodGuideUpdateDate;
+	private /* Tier_4_Serving_g                       	 Number  */ Double  tier4ServingG;
+	private /* Tier_4_Serving_measure                 	 String  */ String  tier4ServingMeasure;
+	private /* Tier_4_Serving_Update_Date             	 Date    */ Date    tier4ServingUpdateDate;
+	private /* Rolled_Up                              	 Boolean */ Boolean rolledUp;
+	private /* Rolled_Up_Update_Date                  	 Date    */ Date    rolledUpUpdateDate;
+	private /* Apply_Small_RA_Adjustment              	 Boolean */ Boolean applySmallRaAdjustment;
+	private /* Replacement_Code                       	 Number  */ Integer replacementCode;
+	private /* Commit_Date                            	 Date    */ Date    commitDate;
+	private /* Comments                               	 String  */ String comments;
 
 	/**
 	 * @return the type
@@ -97,17 +98,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the cnfCode
+	 * @return the groupCode
 	 */
-	public String getCnfCode() {
-		return cnfCode;
+	public String getGroupCode() {
+		return groupCode;
 	}
 
 	/**
-	 * @param cnfCode the cnfCode to set
+	 * @param groupCode the groupCode to set
 	 */
-	public void setCnfCode(String cnfCode) {
-		this.cnfCode = cnfCode;
+	public void setGroupCode(String groupCode) {
+		this.groupCode = groupCode;
 	}
 
 	/**
@@ -125,17 +126,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the cfgCodeCommitDate
+	 * @return the cfgCodeUpdateDate
 	 */
-	public Date getCfgCodeCommitDate() {
-		return cfgCodeCommitDate;
+	public Date getCfgCodeUpdateDate() {
+		return cfgCodeUpdateDate;
 	}
 
 	/**
-	 * @param cfgCodeCommitDate the cfgCodeCommitDate to set
+	 * @param cfgCodeUpdateDate the cfgCodeUpdateDate to set
 	 */
-	public void setCfgCodeCommitDate(Date cfgCodeCommitDate) {
-		this.cfgCodeCommitDate = cfgCodeCommitDate;
+	public void setCfgCodeUpdateDate(Date cfgCodeUpdateDate) {
+		this.cfgCodeUpdateDate = cfgCodeUpdateDate;
 	}
 
 	/**
@@ -377,17 +378,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the containsAddedSodiumCommitDate
+	 * @return the containsAddedSodiumUpdateDate
 	 */
-	public Date getContainsAddedSodiumCommitDate() {
-		return containsAddedSodiumCommitDate;
+	public Date getContainsAddedSodiumUpdateDate() {
+		return containsAddedSodiumUpdateDate;
 	}
 
 	/**
-	 * @param containsAddedSodiumCommitDate the containsAddedSodiumCommitDate to set
+	 * @param containsAddedSodiumUpdateDate the containsAddedSodiumUpdateDate to set
 	 */
-	public void setContainsAddedSodiumCommitDate(Date containsAddedSodiumCommitDate) {
-		this.containsAddedSodiumCommitDate = containsAddedSodiumCommitDate;
+	public void setContainsAddedSodiumUpdateDate(Date containsAddedSodiumUpdateDate) {
+		this.containsAddedSodiumUpdateDate = containsAddedSodiumUpdateDate;
 	}
 
 	/**
@@ -405,17 +406,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the containsAddedSugarCommitDate
+	 * @return the containsAddedSugarUpdateDate
 	 */
-	public Date getContainsAddedSugarCommitDate() {
-		return containsAddedSugarCommitDate;
+	public Date getContainsAddedSugarUpdateDate() {
+		return containsAddedSugarUpdateDate;
 	}
 
 	/**
-	 * @param containsAddedSugarCommitDate the containsAddedSugarCommitDate to set
+	 * @param containsAddedSugarUpdateDate the containsAddedSugarUpdateDate to set
 	 */
-	public void setContainsAddedSugarCommitDate(Date containsAddedSugarCommitDate) {
-		this.containsAddedSugarCommitDate = containsAddedSugarCommitDate;
+	public void setContainsAddedSugarUpdateDate(Date containsAddedSugarUpdateDate) {
+		this.containsAddedSugarUpdateDate = containsAddedSugarUpdateDate;
 	}
 
 	/**
@@ -461,17 +462,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the containsAddedFatCommitDate
+	 * @return the containsAddedFatUpdateDate
 	 */
-	public Date getContainsAddedFatCommitDate() {
-		return containsAddedFatCommitDate;
+	public Date getContainsAddedFatUpdateDate() {
+		return containsAddedFatUpdateDate;
 	}
 
 	/**
-	 * @param containsAddedFatCommitDate the containsAddedFatCommitDate to set
+	 * @param containsAddedFatUpdateDate the containsAddedFatUpdateDate to set
 	 */
-	public void setContainsAddedFatCommitDate(Date containsAddedFatCommitDate) {
-		this.containsAddedFatCommitDate = containsAddedFatCommitDate;
+	public void setContainsAddedFatUpdateDate(Date containsAddedFatUpdateDate) {
+		this.containsAddedFatUpdateDate = containsAddedFatUpdateDate;
 	}
 
 	/**
@@ -489,17 +490,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the containsAddedTransfatCommitDate
+	 * @return the containsAddedTransfatUpdateDate
 	 */
-	public Date getContainsAddedTransfatCommitDate() {
-		return containsAddedTransfatCommitDate;
+	public Date getContainsAddedTransfatUpdateDate() {
+		return containsAddedTransfatUpdateDate;
 	}
 
 	/**
-	 * @param containsAddedTransfatCommitDate the containsAddedTransfatCommitDate to set
+	 * @param containsAddedTransfatUpdateDate the containsAddedTransfatUpdateDate to set
 	 */
-	public void setContainsAddedTransfatCommitDate(Date containsAddedTransfatCommitDate) {
-		this.containsAddedTransfatCommitDate = containsAddedTransfatCommitDate;
+	public void setContainsAddedTransfatUpdateDate(Date containsAddedTransfatUpdateDate) {
+		this.containsAddedTransfatUpdateDate = containsAddedTransfatUpdateDate;
 	}
 
 	/**
@@ -517,17 +518,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the containsCaffeineCommitDate
+	 * @return the containsCaffeineUpdateDate
 	 */
-	public Date getContainsCaffeineCommitDate() {
-		return containsCaffeineCommitDate;
+	public Date getContainsCaffeineUpdateDate() {
+		return containsCaffeineUpdateDate;
 	}
 
 	/**
-	 * @param containsCaffeineCommitDate the containsCaffeineCommitDate to set
+	 * @param containsCaffeineUpdateDate the containsCaffeineUpdateDate to set
 	 */
-	public void setContainsCaffeineCommitDate(Date containsCaffeineCommitDate) {
-		this.containsCaffeineCommitDate = containsCaffeineCommitDate;
+	public void setContainsCaffeineUpdateDate(Date containsCaffeineUpdateDate) {
+		this.containsCaffeineUpdateDate = containsCaffeineUpdateDate;
 	}
 
 	/**
@@ -545,17 +546,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the containsSugarSubstitutesCommitDate
+	 * @return the containsSugarSubstitutesUpdateDate
 	 */
-	public Date getContainsSugarSubstitutesCommitDate() {
-		return containsSugarSubstitutesCommitDate;
+	public Date getContainsSugarSubstitutesUpdateDate() {
+		return containsSugarSubstitutesUpdateDate;
 	}
 
 	/**
-	 * @param containsSugarSubstitutesCommitDate the containsSugarSubstitutesCommitDate to set
+	 * @param containsSugarSubstitutesUpdateDate the containsSugarSubstitutesUpdateDate to set
 	 */
-	public void setContainsSugarSubstitutesCommitDate(Date containsSugarSubstitutesCommitDate) {
-		this.containsSugarSubstitutesCommitDate = containsSugarSubstitutesCommitDate;
+	public void setContainsSugarSubstitutesUpdateDate(Date containsSugarSubstitutesUpdateDate) {
+		this.containsSugarSubstitutesUpdateDate = containsSugarSubstitutesUpdateDate;
 	}
 
 	/**
@@ -587,17 +588,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the referenceAmountCommitDate
+	 * @return the referenceAmountUpdateDate
 	 */
-	public Date getReferenceAmountCommitDate() {
-		return referenceAmountCommitDate;
+	public Date getReferenceAmountUpdateDate() {
+		return referenceAmountUpdateDate;
 	}
 
 	/**
-	 * @param referenceAmountCommitDate the referenceAmountCommitDate to set
+	 * @param referenceAmountUpdateDate the referenceAmountUpdateDate to set
 	 */
-	public void setReferenceAmountCommitDate(Date referenceAmountCommitDate) {
-		this.referenceAmountCommitDate = referenceAmountCommitDate;
+	public void setReferenceAmountUpdateDate(Date referenceAmountUpdateDate) {
+		this.referenceAmountUpdateDate = referenceAmountUpdateDate;
 	}
 
 	/**
@@ -629,17 +630,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the foodGuideCommitDate
+	 * @return the foodGuideUpdateDate
 	 */
-	public Date getFoodGuideCommitDate() {
-		return foodGuideCommitDate;
+	public Date getFoodGuideUpdateDate() {
+		return foodGuideUpdateDate;
 	}
 
 	/**
-	 * @param foodGuideCommitDate the foodGuideCommitDate to set
+	 * @param foodGuideUpdateDate the foodGuideUpdateDate to set
 	 */
-	public void setFoodGuideCommitDate(Date foodGuideCommitDate) {
-		this.foodGuideCommitDate = foodGuideCommitDate;
+	public void setFoodGuideUpdateDate(Date foodGuideUpdateDate) {
+		this.foodGuideUpdateDate = foodGuideUpdateDate;
 	}
 
 	/**
@@ -671,17 +672,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the tier4ServingCommitDate
+	 * @return the tier4ServingUpdateDate
 	 */
-	public Date getTier4ServingCommitDate() {
-		return tier4ServingCommitDate;
+	public Date getTier4ServingUpdateDate() {
+		return tier4ServingUpdateDate;
 	}
 
 	/**
-	 * @param tier4ServingCommitDate the tier4ServingCommitDate to set
+	 * @param tier4ServingUpdateDate the tier4ServingUpdateDate to set
 	 */
-	public void setTier4ServingCommitDate(Date tier4ServingCommitDate) {
-		this.tier4ServingCommitDate = tier4ServingCommitDate;
+	public void setTier4ServingUpdateDate(Date tier4ServingUpdateDate) {
+		this.tier4ServingUpdateDate = tier4ServingUpdateDate;
 	}
 
 	/**
@@ -699,17 +700,17 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the rolledUpCommitDate
+	 * @return the rolledUpUpdateDate
 	 */
-	public Date getRolledUpCommitDate() {
-		return rolledUpCommitDate;
+	public Date getRolledUpUpdateDate() {
+		return rolledUpUpdateDate;
 	}
 
 	/**
-	 * @param rolledUpCommitDate the rolledUpCommitDate to set
+	 * @param rolledUpUpdateDate the rolledUpUpdateDate to set
 	 */
-	public void setRolledUpCommitDate(Date rolledUpCommitDate) {
-		this.rolledUpCommitDate = rolledUpCommitDate;
+	public void setRolledUpUpdateDate(Date rolledUpUpdateDate) {
+		this.rolledUpUpdateDate = rolledUpUpdateDate;
 	}
 
 	/**
@@ -738,6 +739,20 @@ public class CanadaFoodGuideFoodItem {
 	 */
 	public void setReplacementCode(Integer replacementCode) {
 		this.replacementCode = replacementCode;
+	}
+
+	/**
+	 * @return the commitDate
+	 */
+	public Date getCommitDate() {
+		return commitDate;
+	}
+
+	/**
+	 * @param commitDate the commitDate to set
+	 */
+	public void setCommitDate(Date commitDate) {
+		this.commitDate = commitDate;
 	}
 
 	/**
