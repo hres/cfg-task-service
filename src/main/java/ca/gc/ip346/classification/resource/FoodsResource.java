@@ -27,7 +27,7 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 
 import ca.gc.ip346.classification.model.Added;
-import ca.gc.ip346.classification.model.CanadaFoodGuideFoodItem;
+import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
 import ca.gc.ip346.classification.model.CfgTier;
 import ca.gc.ip346.classification.model.FoodItem;
 import ca.gc.ip346.classification.model.RecipeRolled;
@@ -35,7 +35,7 @@ import ca.gc.ip346.classification.model.RecipeRolled;
 import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
 
-@Path("/foods")
+@Path("/datasets")
 @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class FoodsResource {
 	private static final Logger logger = LogManager.getLogger(FoodsResource.class);
@@ -61,7 +61,6 @@ public class FoodsResource {
 		}
 	}
 
-// http://localhost:8080/cfg-task-service/service/foods?
 // data-source=both
 // food-recipe-name=
 // food-recipe-code=1684
@@ -99,201 +98,123 @@ public class FoodsResource {
 // added-free-sugars-missing=on
 // added-sugar-substitutes-missing=on
 
+//         id="data-source"
+//         id="food-recipe-name"
+//         id="food-recipe-code"
+//         id="commit-date-from"
+//         id="commit-date-to"
+//         id="cnf-code"
+//         id="subgroup-code"
+//         id="cfg-tier"
+//         id="recipe"
+//         id="sodium"
+//         id="sugar"
+//         id="fat"
+//         id="transfat"
+//         id="caffeine"
+//         id="free-sugars"
+//         id="sugar-substitutes"
+//         id="reference-amount-missing"
+//         id="cfg-serving-missing"
+//         id="tier-4-serving-missing"
+//         id="energy-value-missing"
+//         id="cnf-code-missing"
+//         id="recipe-rolled-up-down-missing"
+//         id="sodium-value-missing"
+//         id="sugar-value-missing"
+//         id="fat-value-missing"
+//         id="transfat-value-missing"
+//         id="satfat-value-missing"
+//         id="added-sodium-missing"
+//         id="added-sugar-missing"
+//         id="added-transfat-missing"
+//         id="added-caffeine-missing"
+//         id="added-free-sugars-missing"
+//         id="added-sugar-substitutes-missing"
+//         id="comments"
+//         id="last-update-date-From"
+//         id="last-update-date-To"
+//         id="reference-amount-last-updated"
+//         id="cfg-serving-last-updated"
+//         id="tier-4-serving-last-updated"
+//         id="energy-value-last-updated"
+//         id="cnf-code-last-updated"
+//         id="recipe-rolled-up-down-last-updated"
+//         id="sodium-value-last-updated"
+//         id="sugar-value-last-updated"
+//         id="fat-value-last-updated"
+//         id="transfat-value-last-updated"
+//         id="satfat-value-last-updated"
+//         id="added-sodium-last-updated"
+//         id="added-sugar-last-updated"
+//         id="added-transfat-last-updated"
+//         id="added-caffeine-last-updated"
+//         id="added-free-sugars-last-updated"
+//         id="added-sugar-substitutes-last-updated"
+
+//             data-source=both
+//             food-recipe-name=
+//             food-recipe-code=
+//             commit-date-from=
+//             commit-date-to=
+//             cnf-code=
+//             subgroup-code=
+//             cfg-tier=0
+//             recipe=0
+//             sodium=1
+//             sugar=1
+//             fat=1
+//             transfat=1
+//             caffeine=1
+//             free-sugars=1
+//             sugar-substitutes=1
+//             reference-amount-missing=on
+//             cfg-serving-missing=on
+//             tier-4-serving-missing=on
+//             energy-value-missing=on
+//             cnf-code-missing=on
+//             recipe-rolled-up-down-missing=on
+//             sodium-value-missing=on
+//             sugar-value-missing=on
+//             fat-value-missing=on
+//             transfat-value-missing=on
+//             satfat-value-missing=on
+//             added-sodium-missing=on
+//             added-sugar-missing=on
+//             added-transfat-missing=on
+//             added-caffeine-missing=on
+//             added-free-sugars-missing=on
+//             added-sugar-substitutes-missing=on
+//             comments=
+//             last-update-date-From=
+//             last-update-date-To=
+//             reference-amount-last-updated=on
+//             cfg-serving-last-updated=on
+//             tier-4-serving-last-updated=on
+//             energy-value-last-updated=on
+//             cnf-code-last-updated=on
+//             recipe-rolled-up-down-last-updated=on
+//             sodium-value-last-updated=on
+//             sugar-value-last-updated=on
+//             fat-value-last-updated=on
+//             transfat-value-last-updated=on
+//             satfat-value-last-updated=on
+//             added-sodium-last-updated=on
+//             added-sugar-last-updated=on
+//             added-transfat-last-updated=on
+//             added-caffeine-last-updated=on
+//             added-free-sugars-last-updated=on
+//             added-sugar-substitutes-last-updated=on
+
 	@GET
+	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
 	// @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<CanadaFoodGuideFoodItem> getFoodList(@BeanParam CfgFilter search) {
-		List<CanadaFoodGuideFoodItem> list = new ArrayList<CanadaFoodGuideFoodItem>(); // Create list
-
-		int i = 0; // keeps count of the number of placeholders
-
-		String sql = ContentHandler.read("canada_food_guide.sql", getClass());
-
-		if (search != null) {
-			StringBuffer sb = new StringBuffer(sql);
-
-			sb.append(" WHERE 2 > 1 ").append("\n");
-			if (!search.getDataSource().equals("both")) {
-				sb.append("   AND fn_recipe_flg = ?").append("\n");
-			}
-			if (!search.getFoodRecipeName().isEmpty()) {
-				sb.append("   AND LOWER(food_desc) like ? OR LOWER(eng_name) like ?").append("\n");
-			}
-			if (!search.getFoodRecipeCode().isEmpty()) {
-				sb.append("   AND food_c = ?").append("\n");
-			}
-			if (!search.getCnfCode().isEmpty()) {
-				sb.append("   AND group_c = ?").append("\n");
-			}
-			if (!search.getSubgroupCode().isEmpty()) {
-				sb.append("   AND canada_food_subgroup_id = ?").append("\n");
-			}
-			if (!search.getCfgTier().equals(CfgTier.ALL.getCode())) {
-			}
-			if (!search.getRecipe().equals(RecipeRolled.IGNORE.getCode())) {
-			}
-			if (!search.getSodium().equals(Added.IGNORE.getCode())) {
-			}
-			if (!search.getSugar().equals(Added.IGNORE.getCode())) {
-			}
-			if (!search.getFat().equals(Added.IGNORE.getCode())) {
-			}
-			if (!search.getTransfat().equals(Added.IGNORE.getCode())) {
-			}
-			if (!search.getCaffeine().equals(Added.IGNORE.getCode())) {
-			}
-			if (!search.getFreeSugars().equals(Added.IGNORE.getCode())) {
-			}
-			if (!search.getSugarSubstitutes().equals(Added.IGNORE.getCode())) {
-			}
-
-			logger.error("\n" + sb);
-
-			sql = sb.toString();
-
-			logger.error("data source: " + search.getDataSource());
-		}
-
-		try {
-			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.trace("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
-			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
-
-			if (search != null) {
-				if (!search.getDataSource().equals("both")) {
-					stmt.setInt(++i, search.getDataSource().equals("cnf") ? 0 : 1);
-				}
-				if (!search.getFoodRecipeName().isEmpty()) {
-					stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
-					stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
-				}
-				if (!search.getFoodRecipeCode().isEmpty()) {
-					stmt.setInt(++i, Integer.parseInt(search.getFoodRecipeCode()));
-				}
-				if (!search.getCnfCode().isEmpty()) {
-					stmt.setInt(++i, Integer.parseInt(search.getCnfCode()));
-				}
-				if (!search.getSubgroupCode().isEmpty()) {
-					stmt.setInt(++i, Integer.parseInt(search.getSubgroupCode()));
-				}
-			}
-
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				CanadaFoodGuideFoodItem foodItem = new CanadaFoodGuideFoodItem();
-//				 NewAndImprovedFoodItem food = new NewAndImprovedFoodItem();
-
-//				 food.setFoodC(rs.getDouble("food_c"));
-//				 food.setEngName(rs.getString("eng_name"));
-//				 food.setFrName(rs.getString("fr_name"));
-//				 food.setFoodDesc(rs.getString("food_desc"));
-//				 food.setFoodDescF(rs.getString("food_desc_f"));
-//				 food.setNutCanC(rs.getDouble("nut_can_c"));
-//				 food.setCnfFlag(rs.getInt("cnf_flag"));
-//				 food.setDateEntry(rs.getDate("date_entry"));
-//				 food.setDateChange(rs.getDate("date_change"));
-//				 food.setDateEnd(rs.getDate("date_end"));
-//				 food.setDatePublic(rs.getDate("date_public"));
-//				 food.setCommentT(rs.getString("comment_t"));
-//				 food.setGroupC(rs.getInt("group_c"));
-//				 food.setSourceC(rs.getInt("source_c"));
-//				 food.setItemC(rs.getInt("item_c"));
-//				 food.setCountryC(rs.getString("country_c"));
-//				 food.setCnfRelease(rs.getString("cnf_release"));
-//				 food.setFoodReference(rs.getString("food_reference"));
-//				 food.setScientificName(rs.getString("scientific_name"));
-//				 food.setPublicationFlag(rs.getString("publication_flag"));
-//				 food.setPublicationCode(rs.getString("publication_code"));
-//				 food.setSequenceC(rs.getInt("sequence_c"));
-//				 food.setLegacyGroupC(rs.getDouble("legacy_group_c"));
-//				 food.setFnCommentF(rs.getString("fn_comment_f"));
-//				 food.setFnDbSourceC(rs.getInt("fn_db_source_c"));
-//				 food.setFnRecipeFlg(rs.getInt("fn_recipe_flg"));
-//				 food.setFnSystemViewC(rs.getInt("fn_system_view_c"));
-//				 food.setFnFatChange(rs.getDouble("fn_fat_change"));
-//				 food.setFnMoistureChange(rs.getDouble("fn_moisture_change"));
-//				 food.setFnSysUserCreateC(rs.getInt("fn_sys_user_create_c"));
-//				 food.setFnSysUserEditC(rs.getInt("fn_sys_user_edit_c"));
-//				 food.setFnTemplateC(rs.getDouble("fn_template_c"));
-//				 food.setFnTemp(rs.getInt("fn_temp"));
-//				 food.setFnArchived(rs.getDate("fn_archived"));
-//				 food.setFnLegacyC(rs.getString("fn_legacy_c"));
-//				 food.setUsRecipeC(rs.getDouble("us_recipe_c"));
-//				 food.setUsdaModified(rs.getInt("usda_modified"));
-//				 food.setUsdaTemp(rs.getString("usda_temp"));
-//				 food.setCanadaFoodSubgroupId(rs.getDouble("canada_food_subgroup_id"));
-//				 food.setCfgheFlag(rs.getInt("cfghe_flag"));
-//				 food.setOrigCanadaFoodSubgroupId(rs.getDouble("orig_canada_food_subgroup_id"));
-//				 food.setFoodOwner(rs.getInt("food_owner"));
-//				 food.setSharedFood(rs.getInt("shared_food"));
-//				 food.setCommonNmE(rs.getString("common_nm_e"));
-//				 food.setCommonNmF(rs.getString("common_nm_f"));
-//				 food.setCandiRecNum(rs.getString("candi_rec_num"));
-//				 food.setInheritanceFlag(rs.getInt("inheritance_flag"));
-//				 food.setFoodCode(rs.getDouble("food_code"));
-
-//				 list.add(food);
-
-				foodItem.setFoodRecipeType(rs.getInt("fn_recipe_flg") == 0);                                           // Boolean   foodRecipeType
-				foodItem.setCode(rs.getString("code"));                                                                // String    code
-				foodItem.setName(rs.getString("name"));                                                                // String    name
-				foodItem.setCnfCode(rs.getString("cnf_code"));                                                         // String    cnfCode
-				foodItem.setCfgCode(rs.getString("cfg_code"));                                                         // String    cfgCode
-				foodItem.setCfgCodeCommitDate(rs.getDate("cfg_code_commit_date"));                                     // Date      cfgCodeCommitDate
-				foodItem.setEnergyKcal(rs.getDouble("energy_kcal"));                                                   // Double    energyKcal
-				foodItem.setSodiumAmountPer100g(rs.getDouble("sodium_amount_per_100g"));                               // Double    sodiumAmountPer100g
-				foodItem.setSodiumImputationReference(rs.getString("sodium_imputation_reference"));                    // String    sodiumImputationReference
-				foodItem.setSodiumImputationDate(rs.getDate("sodium_imputation_date"));                                // Date      sodiumImputationDate
-				foodItem.setSugarAmountPer100g(rs.getDouble("sugar_amount_per_100g"));                                 // Double    sugarAmountPer100g
-				foodItem.setSugarImputationReference(rs.getString("sugar_imputation_reference"));                      // String    sugarImputationReference
-				foodItem.setSugarImputationDate(rs.getDate("sugar_imputation_date"));                                  // Date      sugarImputationDate
-				foodItem.setTransfatAmountPer100g(rs.getDouble("transfat_amount_per_100g"));                           // Double    transfatAmountPer100g
-				foodItem.setTransfatImputationReference(rs.getString("transfat_imputation_reference"));                // String    transfatImputationReference
-				foodItem.setTransfatImputationDate(rs.getDate("transfat_imputation_date"));                            // Date      transfatImputationDate
-				foodItem.setSatfatAmoutPer100g(rs.getDouble("satfat_amout_per_100g"));                                 // Double    satfatAmoutPer100g
-				foodItem.setSatfatImputationReference(rs.getString("satfat_imputation_reference"));                    // String    satfatImputationReference
-				foodItem.setSatfatImputationDate(rs.getDate("satfat_imputation_date"));                                // Date      satfatImputationDate
-				foodItem.setTotalfatAmoutPer100g(rs.getDouble("totalfat_amout_per_100g"));                             // Double    totalfatAmoutPer100g
-				foodItem.setTotalfatImputationReference(rs.getString("totalfat_imputation_reference"));                // String    totalfatImputationReference
-				foodItem.setTotalfatImputationDate(rs.getDate("totalfat_imputation_date"));                            // Date      totalfatImputationDate
-				foodItem.setContainsAddedSodium(rs.getInt("contains_added_sodium") == 0);                              // Boolean   containsAddedSodium
-				foodItem.setContainsAddedSodiumCommitDate(rs.getDate("contains_added_sodium_commit_date"));            // Date      containsAddedSodiumCommitDate
-				foodItem.setContainsAddedSugar(rs.getInt("contains_added_sugar") == 0);                                // Boolean   containsAddedSugar
-				foodItem.setContainsAddedSugarCommitDate(rs.getDate("contains_added_sugar_commit_date"));              // Date      containsAddedSugarCommitDate
-				foodItem.setContainsFreeSugars(rs.getInt("contains_free_sugars") == 0);                                // Boolean   containsFreeSugars
-				foodItem.setContainsFreeSugarsCommitDate(rs.getDate("contains_free_sugars_commit_date"));              // Date      containsFreeSugarsCommitDate
-				foodItem.setContainsAddedFat(rs.getInt("contains_added_fat") == 0);                                    // Boolean   containsAddedFat
-				foodItem.setContainsAddedFatCommitDate(rs.getDate("contains_added_fat_commit_date"));                  // Date      containsAddedFatCommitDate
-				foodItem.setContainsAddedTransfat(rs.getInt("contains_added_transfat") == 0);                          // Boolean   containsAddedTransfat
-				foodItem.setContainsAddedTransfatCommitDate(rs.getDate("contains_added_transfat_commit_date"));        // Date      containsAddedTransfatCommitDate
-				foodItem.setContainsCaffeine(rs.getInt("contains_caffeine") == 0);                                     // Boolean   containsCaffeine
-				foodItem.setContainsCaffeineCommitDate(rs.getDate("contains_caffeine_commit_date"));                   // Date      containsCaffeineCommitDate
-				foodItem.setContainsSugarSubstitutes(rs.getInt("contains_sugar_substitutes") == 0);                    // Boolean   containsSugarSubstitutes
-				foodItem.setContainsSugarSubstitutesCommitDate(rs.getDate("contains_sugar_substitutes_commit_date"));  // Date      containsSugarSubstitutesCommitDate
-				foodItem.setReferenceAmountG(rs.getDouble("reference_amount_g"));                                      // Double    referenceAmountG
-				foodItem.setReferenceAmountMeasure(rs.getString("reference_amount_measure"));                          // String    referenceAmountMeasure
-				foodItem.setReferenceAmountCommitDate(rs.getDate("reference_amount_commit_date"));                     // Date      referenceAmountCommitDate
-				foodItem.setFoodGuideServingG(rs.getDouble("food_guide_serving_g"));                                   // Double    foodGuideServingG
-				foodItem.setFoodGuideServingMeasure(rs.getString("food_guide_serving_measure"));                       // String    foodGuideServingMeasure
-				foodItem.setFoodGuideCommitDate(rs.getDate("food_guide_commit_date"));                                 // Date      foodGuideCommitDate
-				foodItem.setTier4ServingG(rs.getDouble("tier_4_serving_g"));                                           // Double    tier4ServingG
-				foodItem.setTier4ServingMeasure(rs.getString("tier_4_serving_measure"));                               // String    tier4ServingMeasure
-				foodItem.setTier4ServingCommitDate(rs.getDate("tier_4_serving_commit_date"));                          // Date      tier4ServingCommitDate
-				foodItem.setRolledUp(rs.getInt("rolled_up") == 0);                                                     // Boolean   rolledUp
-				foodItem.setRolledUpCommitDate(rs.getDate("rolled_up_commit_date"));                                   // Date      rolledUpCommitDate
-				foodItem.setApplySmallRaAdjustment(rs.getInt("apply_small_ra_adjustment") == 0);                       // Boolean   applySmallRaAdjustment
-				foodItem.setComments(rs.getString("comments"));                                                        // String    comments
-
-				list.add(foodItem);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-
-		// logger.trace(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
-
-		return list;
+	public List<CanadaFoodGuideDataset> getFoodList(@BeanParam CfgFilter search) {
+		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
+		search.setSql(sql);
+		return doSearchCriteria(search);
 	}
 
 	@GET
@@ -462,7 +383,7 @@ public class FoodsResource {
 	public Map<String, String> getCfgDataSet() {
 		Map<String, String> map = new HashMap<String, String>();
 
-		map.put("foodRecipeType",                      "Boolean");
+		map.put("type",                                "Boolean");
 		map.put("code",                                "String");
 		map.put("name",                                "String");
 		map.put("cnfCode",                             "String");
@@ -513,5 +434,226 @@ public class FoodsResource {
 		map.put("comments",                            "String");
 
 		return map;
+	}
+
+	private List<CanadaFoodGuideDataset> doSearchCriteria(CfgFilter search) {
+		List<CanadaFoodGuideDataset> list = new ArrayList<CanadaFoodGuideDataset>();
+
+		if (search != null) {
+			StringBuffer sb = new StringBuffer(search.getSql());
+
+			sb.append(" WHERE 2 > 1 ").append("\n");
+			if (!search.getDataSource().equals("0")) {
+				sb.append("   AND type = ?").append("\n");
+			}
+			if (!search.getFoodRecipeName().isEmpty()) {
+				sb.append("   AND LOWER(name) like ?").append("\n");
+			}
+			if (!search.getFoodRecipeCode().isEmpty()) {
+				sb.append("   AND code = ?").append("\n");
+			}
+			if (!search.getCommitDateFrom().isEmpty() && !search.getCommitDateTo().isEmpty()) {
+				sb.append("   AND commit_date BETWEEN ? AND ?").append("\n");
+			}
+			if (!search.getCnfCode().isEmpty()) {
+				sb.append("   AND cnf_group_code = ?").append("\n");
+			}
+			if (!search.getSubgroupCode().isEmpty()) {
+				sb.append("   AND cfg_code = ?").append("\n");
+			}
+
+
+			if (!search.getCfgTier().equals(CfgTier.ALL.getCode())) {
+			}
+			if (!search.getRecipe().equals(RecipeRolled.IGNORE.getCode())) {
+			}
+			if (!search.getSodium().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getSugar().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getFat().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getTransfat().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getCaffeine().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getFreeSugars().equals(Added.IGNORE.getCode())) {
+			}
+			if (!search.getSugarSubstitutes().equals(Added.IGNORE.getCode())) {
+			}
+
+			if (search.getReferenceAmountMissing()       != null && !search.getReferenceAmountMissing().isEmpty())  {
+			}
+			if (search.getCfgServingMissing()            != null && !search.getCfgServingMissing().isEmpty())  {
+			}
+			if (search.getTier4ServingMissing()          != null && !search.getTier4ServingMissing().isEmpty())  {
+			}
+			if (search.getEnergyValueMissing()           != null && !search.getEnergyValueMissing().isEmpty())  {
+			}
+			if (search.getCnfCodeMissing()               != null && !search.getCnfCodeMissing().isEmpty())  {
+			}
+			if (search.getRecipeRolledUpDownMissing()    != null && !search.getRecipeRolledUpDownMissing().isEmpty())  {
+			}
+			if (search.getSodiumValueMissing()           != null && !search.getSodiumValueMissing().isEmpty())  {
+			}
+			if (search.getSugarValueMissing()            != null && !search.getSugarValueMissing().isEmpty())  {
+			}
+			if (search.getFatValueMissing()              != null && !search.getFatValueMissing().isEmpty())  {
+			}
+			if (search.getTransfatValueMissing()         != null && !search.getTransfatValueMissing().isEmpty())  {
+			}
+			if (search.getSatfatValueMissing()           != null && !search.getSatfatValueMissing().isEmpty())  {
+			}
+			if (search.getAddedSodiumMissing()           != null && !search.getAddedSodiumMissing().isEmpty())  {
+			}
+			if (search.getAddedSugarMissing()            != null && !search.getAddedSugarMissing().isEmpty())  {
+			}
+			if (search.getAddedTransfatMissing()         != null && !search.getAddedTransfatMissing().isEmpty())  {
+			}
+			if (search.getAddedCaffeineMissing()         != null && !search.getAddedCaffeineMissing().isEmpty())  {
+			}
+			if (search.getAddedFreeSugarsMissing()       != null && !search.getAddedFreeSugarsMissing().isEmpty())  {
+			}
+			if (search.getAddedSugarSubstitutesMissing() != null && !search.getAddedSugarSubstitutesMissing().isEmpty())  {
+			}
+
+			if (!search.getComments().isEmpty())  {
+			}
+			if (!search.getLastUpdateDateFrom().isEmpty())  {
+			}
+			if (!search.getLastUpdateDateTo().isEmpty())  {
+			}
+			if (search.getReferenceAmountLastUpdated() != null && !search.getReferenceAmountLastUpdated().isEmpty())  {
+			}
+			if (search.getCfgServingLastUpdated() != null && !search.getCfgServingLastUpdated().isEmpty())  {
+			}
+			if (search.getTier4ServingLastUpdated() != null && !search.getTier4ServingLastUpdated().isEmpty())  {
+			}
+			if (search.getEnergyValueLastUpdated() != null && !search.getEnergyValueLastUpdated().isEmpty())  {
+			}
+			if (search.getCnfCodeLastUpdated() != null && !search.getCnfCodeLastUpdated().isEmpty())  {
+			}
+			if (search.getRecipeRolledUpDownLastUpdated() != null && !search.getRecipeRolledUpDownLastUpdated().isEmpty())  {
+			}
+			if (search.getSodiumValueLastUpdated() != null && !search.getSodiumValueLastUpdated().isEmpty())  {
+			}
+			if (search.getSugarValueLastUpdated() != null && !search.getSugarValueLastUpdated().isEmpty())  {
+			}
+			if (search.getFatValueLastUpdated() != null && !search.getFatValueLastUpdated().isEmpty())  {
+			}
+			if (search.getTransfatValueLastUpdated() != null && !search.getTransfatValueLastUpdated().isEmpty())  {
+			}
+			if (search.getSatfatValueLastUpdated() != null && !search.getSatfatValueLastUpdated().isEmpty())  {
+			}
+			if (search.getAddedSodiumLastUpdated() != null && !search.getAddedSodiumLastUpdated().isEmpty())  {
+			}
+			if (search.getAddedSugarLastUpdated() != null && !search.getAddedSugarLastUpdated().isEmpty())  {
+			}
+			if (search.getAddedTransfatLastUpdated() != null && !search.getAddedTransfatLastUpdated().isEmpty())  {
+			}
+			if (search.getAddedCaffeineLastUpdated() != null && !search.getAddedCaffeineLastUpdated().isEmpty())  {
+			}
+			if (search.getAddedFreeSugarsLastUpdated() != null && !search.getAddedFreeSugarsLastUpdated().isEmpty())  {
+			}
+			if (search.getAddedSugarSubstitutesLastUpdated() != null && !search.getAddedSugarSubstitutesLastUpdated().isEmpty())  {
+			}
+
+			logger.error("\n" + sb);
+
+			search.setSql(sb.toString());
+
+			try {
+				meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
+				logger.trace("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
+				PreparedStatement stmt = conn.prepareStatement(search.getSql()); // Create PreparedStatement
+
+				int i = 0; // keeps count of the number of placeholders
+
+				if (search != null) {
+					if (!search.getDataSource().equals("0")) {
+						stmt.setInt(++i, Integer.parseInt(search.getDataSource()));
+					}
+					if (!search.getFoodRecipeName().isEmpty()) {
+						stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
+					}
+					if (!search.getFoodRecipeCode().isEmpty()) {
+						stmt.setInt(++i, Integer.parseInt(search.getFoodRecipeCode()));
+					}
+					if (!search.getCommitDateFrom().isEmpty() && !search.getCommitDateTo().isEmpty()) {
+						stmt.setString(++i, search.getCommitDateFrom());
+						stmt.setString(++i, search.getCommitDateTo());
+					}
+					if (!search.getCnfCode().isEmpty()) {
+						stmt.setInt(++i, Integer.parseInt(search.getCnfCode()));
+					}
+					if (!search.getSubgroupCode().isEmpty()) {
+						stmt.setInt(++i, Integer.parseInt(search.getSubgroupCode()));
+					}
+				}
+
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					CanadaFoodGuideDataset foodItem = new CanadaFoodGuideDataset();
+
+					foodItem.setType(Integer.parseInt(rs.getString("type")));
+					foodItem.setCode(Integer.parseInt(rs.getString("code")));
+					foodItem.setName(rs.getString("name"));
+					foodItem.setCnfGroupCode(rs.getInt("cnf_group_code"));
+					foodItem.setCfgCode(rs.getInt("cfg_code"));
+					foodItem.setCommitDate(rs.getDate("commit_date"));
+					foodItem.setEnergyKcal(rs.getDouble("energy_kcal"));
+					foodItem.setSodiumAmountPer100g(rs.getDouble("sodium_amount_per_100g"));
+					foodItem.setSodiumImputationReference(rs.getString("sodium_imputation_reference"));
+					foodItem.setSodiumImputationDate(rs.getDate("sodium_imputation_date"));
+					foodItem.setSugarAmountPer100g(rs.getDouble("sugar_amount_per_100g"));
+					foodItem.setSugarImputationReference(rs.getString("sugar_imputation_reference"));
+					foodItem.setSugarImputationDate(rs.getDate("sugar_imputation_date"));
+					foodItem.setTransfatAmountPer100g(rs.getDouble("transfat_amount_per_100g"));
+					foodItem.setTransfatImputationReference(rs.getString("transfat_imputation_reference"));
+					foodItem.setTransfatImputationDate(rs.getDate("transfat_imputation_date"));
+					foodItem.setSatfatAmoutPer100g(rs.getDouble("satfat_amout_per_100g"));
+					foodItem.setSatfatImputationReference(rs.getString("satfat_imputation_reference"));
+					foodItem.setSatfatImputationDate(rs.getDate("satfat_imputation_date"));
+					foodItem.setTotalfatAmoutPer100g(rs.getDouble("totalfat_amout_per_100g"));
+					foodItem.setTotalfatImputationReference(rs.getString("totalfat_imputation_reference"));
+					foodItem.setTotalfatImputationDate(rs.getDate("totalfat_imputation_date"));
+					foodItem.setContainsAddedSodium(rs.getInt("contains_added_sodium"));
+					foodItem.setContainsAddedSodiumUpdateDate(rs.getDate("contains_added_sodium_update_date"));
+					foodItem.setContainsAddedSugar(rs.getInt("contains_added_sugar"));
+					foodItem.setContainsAddedSugarUpdateDate(rs.getDate("contains_added_sugar_update_date"));
+					foodItem.setContainsFreeSugars(rs.getInt("contains_free_sugars"));
+					foodItem.setContainsFreeSugarsUpdateDate(rs.getDate("contains_free_sugars_update_date"));
+					foodItem.setContainsAddedFat(rs.getInt("contains_added_fat"));
+					foodItem.setContainsAddedFatUpdateDate(rs.getDate("contains_added_fat_update_date"));
+					foodItem.setContainsAddedTransfat(rs.getInt("contains_added_transfat"));
+					foodItem.setContainsAddedTransfatUpdateDate(rs.getDate("contains_added_transfat_update_date"));
+					foodItem.setContainsCaffeine(rs.getInt("contains_caffeine"));
+					foodItem.setContainsCaffeineUpdateDate(rs.getDate("contains_caffeine_update_date"));
+					foodItem.setContainsSugarSubstitutes(rs.getInt("contains_sugar_substitutes"));
+					foodItem.setContainsSugarSubstitutesUpdateDate(rs.getDate("contains_sugar_substitutes_update_date"));
+					foodItem.setReferenceAmountG(rs.getDouble("reference_amount_g"));
+					foodItem.setReferenceAmountMeasure(rs.getString("reference_amount_measure"));
+					foodItem.setReferenceAmountUpdateDate(rs.getDate("reference_amount_update_date"));
+					foodItem.setFoodGuideServingG(rs.getDouble("food_guide_serving_g"));
+					foodItem.setFoodGuideServingMeasure(rs.getString("food_guide_serving_measure"));
+					foodItem.setFoodGuideUpdateDate(rs.getDate("food_guide_update_date"));
+					foodItem.setTier4ServingG(rs.getDouble("tier_4_serving_g"));
+					foodItem.setTier4ServingMeasure(rs.getString("tier_4_serving_measure"));
+					foodItem.setTier4ServingUpdateDate(rs.getDate("tier_4_serving_update_date"));
+					foodItem.setRolledUp(rs.getInt("rolled_up"));
+					foodItem.setRolledUpUpdateDate(rs.getDate("rolled_up_update_date"));
+					foodItem.setApplySmallRaAdjustment(rs.getInt("apply_small_ra_adjustment"));
+					foodItem.setComments(rs.getString("comments"));
+
+					list.add(foodItem);
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+
+			// logger.trace(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+		}
+
+		return list;
 	}
 }
