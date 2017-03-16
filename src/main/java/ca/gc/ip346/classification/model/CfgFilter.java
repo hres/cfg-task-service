@@ -3,77 +3,61 @@ package ca.gc.ip346.classification.model;
 import javax.ws.rs.QueryParam;
 
 public class CfgFilter {
-	@QueryParam("data-source")
-	private String dataSource;
-	@QueryParam("food-recipe-name")
-	private String foodRecipeName;
-	@QueryParam("food-recipe-code")
-	private String foodRecipeCode;
-	@QueryParam("commit-date-begin")
-	private String commitDateBegin;
-	@QueryParam("commit-date-end")
-	private String commitDateEnd;
-	@QueryParam("cnf-code")
-	private String cnfCode;
-	@QueryParam("subgroup-code")
-	private String subgroupCode;
+	@QueryParam("data-source")                          private String dataSource;
+	@QueryParam("food-recipe-name")                     private String foodRecipeName;
+	@QueryParam("food-recipe-code")                     private String foodRecipeCode;
+	@QueryParam("commit-date-from")                     private String commitDateFrom;
+	@QueryParam("commit-date-to")                       private String commitDateTo;
+	@QueryParam("cnf-code")                             private String cnfCode;
+	@QueryParam("subgroup-code")                        private String subgroupCode;
+	@QueryParam("cfg-tier")                             private /* CfgTier */      Integer cfgTier;
+	@QueryParam("recipe")                               private /* RecipeRolled */ Integer recipe;
+	@QueryParam("sodium")                               private /* Added */        Integer sodium;
+	@QueryParam("sugar")                                private /* Added */        Integer sugar;
+	@QueryParam("fat")                                  private /* Added */        Integer fat;
+	@QueryParam("transfat")                             private /* Added */        Integer transfat;
+	@QueryParam("caffeine")                             private /* Added */        Integer caffeine;
+	@QueryParam("free-sugars")                          private /* Added */        Integer freeSugars;
+	@QueryParam("sugar-substitutes")                    private /* Added */        Integer sugarSubstitutes;
+	@QueryParam("reference-amount-missing")             private String referenceAmountMissing;
+	@QueryParam("cfg-serving-missing")                  private String cfgServingMissing;
+	@QueryParam("tier-4-serving-missing")               private String tier4ServingMissing;
+	@QueryParam("energy-value-missing")                 private String energyValueMissing;
+	@QueryParam("cnf-code-missing")                     private String cnfCodeMissing;
+	@QueryParam("recipe-rolled-up-down-missing")        private String recipeRolledUpDownMissing;
+	@QueryParam("sodium-value-missing")                 private String sodiumValueMissing;
+	@QueryParam("sugar-value-missing")                  private String sugarValueMissing;
+	@QueryParam("fat-value-missing")                    private String fatValueMissing;
+	@QueryParam("transfat-value-missing")               private String transfatValueMissing;
+	@QueryParam("satfat-value-missing")                 private String satfatValueMissing;
+	@QueryParam("added-sodium-missing")                 private String addedSodiumMissing;
+	@QueryParam("added-sugar-missing")                  private String addedSugarMissing;
+	@QueryParam("added-transfat-missing")               private String addedTransfatMissing;
+	@QueryParam("added-caffeine-missing")               private String addedCaffeineMissing;
+	@QueryParam("added-free-sugars-missing")            private String addedFreeSugarsMissing;
+	@QueryParam("added-sugar-substitutes-missing")      private String addedSugarSubstitutesMissing;
+	@QueryParam("comments")                             private String comments;
+	@QueryParam("last-update-date-From")                private String lastUpdateDateFrom;
+	@QueryParam("last-update-date-To")                  private String lastUpdateDateTo;
+	@QueryParam("reference-amount-last-updated")        private String referenceAmountLastUpdated;
+	@QueryParam("cfg-serving-last-updated")             private String cfgServingLastUpdated;
+	@QueryParam("tier-4-serving-last-updated")          private String tier4ServingLastUpdated;
+	@QueryParam("energy-value-last-updated")            private String energyValueLastUpdated;
+	@QueryParam("cnf-code-last-updated")                private String cnfCodeLastUpdated;
+	@QueryParam("recipe-rolled-up-down-last-updated")   private String recipeRolledUpDownLastUpdated;
+	@QueryParam("sodium-value-last-updated")            private String sodiumValueLastUpdated;
+	@QueryParam("sugar-value-last-updated")             private String sugarValueLastUpdated;
+	@QueryParam("fat-value-last-updated")               private String fatValueLastUpdated;
+	@QueryParam("transfat-value-last-updated")          private String transfatValueLastUpdated;
+	@QueryParam("satfat-value-last-updated")            private String satfatValueLastUpdated;
+	@QueryParam("added-sodium-last-updated")            private String addedSodiumLastUpdated;
+	@QueryParam("added-sugar-last-updated")             private String addedSugarLastUpdated;
+	@QueryParam("added-transfat-last-updated")          private String addedTransfatLastUpdated;
+	@QueryParam("added-caffeine-last-updated")          private String addedCaffeineLastUpdated;
+	@QueryParam("added-free-sugars-last-updated")       private String addedFreeSugarsLastUpdated;
+	@QueryParam("added-sugar-substitutes-last-updated") private String addedSugarSubstitutesLastUpdated;
 
-	@QueryParam("cfg-tier")
-	private /* CfgTier */ Integer cfgTier;
-	@QueryParam("recipe")
-	private /* RecipeRolled */ Integer recipe;
-
-	@QueryParam("sodium")
-	private /* Added */ Integer sodium;
-	@QueryParam("sugar")
-	private /* Added */ Integer sugar;
-	@QueryParam("fat")
-	private /* Added */ Integer fat;
-	@QueryParam("transfat")
-	private /* Added */ Integer transfat;
-	@QueryParam("caffeine")
-	private /* Added */ Integer caffeine;
-	@QueryParam("free-sugars")
-	private /* Added */ Integer freeSugars;
-	@QueryParam("sugar-substitutes")
-	private /* Added */ Integer sugarSubstitutes;
-
-	@QueryParam("reference-amount-missing")
-	private String referenceAmountMissing;
-	@QueryParam("cfg-serving-missing")
-	private String cfgServingMissing;
-	@QueryParam("tier-4-serving-missing")
-	private String tier4ServingMissing;
-	@QueryParam("energy-value-missing")
-	private String energyValueMissing;
-	@QueryParam("cnf-code-missing")
-	private String cnfCodeMissing;
-	@QueryParam("recipe-rolled-up-down-missing")
-	private String recipeRolledUpDownMissing;
-	@QueryParam("sodium-value-missing")
-	private String sodiumValueMissing;
-	@QueryParam("sugar-value-missing")
-	private String sugarValueMissing;
-	@QueryParam("fat-value-missing")
-	private String fatValueMissing;
-	@QueryParam("transfat-value-missing")
-	private String transfatValueMissing;
-	@QueryParam("satfat-value-missing")
-	private String satfatValueMissing;
-	@QueryParam("select-all-missing")
-	private String selectAllMissing;
-	@QueryParam("added-sodium-missing")
-	private String addedSodiumMissing;
-	@QueryParam("added-sugar-missing")
-	private String addedSugarMissing;
-	@QueryParam("added-transfat-missing")
-	private String addedTransfatMissing;
-	@QueryParam("added-caffeine-missing")
-	private String addedCaffeineMissing;
-	@QueryParam("added-free-sugars-missing")
-	private String addedFreeSugarsMissing;
-	@QueryParam("added-sugar-substitutes-missing")
-	private String addedSugarSubstitutesMissing;
+	private String sql;
 
 	/**
 	 * @return the dataSource
@@ -118,31 +102,31 @@ public class CfgFilter {
 	}
 
 	/**
-	 * @return the commitDateBegin
+	 * @return the commitDateFrom
 	 */
-	public String getCommitDateBegin() {
-		return commitDateBegin;
+	public String getCommitDateFrom() {
+		return commitDateFrom;
 	}
 
 	/**
-	 * @param commitDateBegin the commitDateBegin to set
+	 * @param commitDateFrom the commitDateFrom to set
 	 */
-	public void setCommitDateBegin(String commitDateBegin) {
-		this.commitDateBegin = commitDateBegin;
+	public void setCommitDateFrom(String commitDateFrom) {
+		this.commitDateFrom = commitDateFrom;
 	}
 
 	/**
-	 * @return the commitDateEnd
+	 * @return the commitDateTo
 	 */
-	public String getCommitDateEnd() {
-		return commitDateEnd;
+	public String getCommitDateTo() {
+		return commitDateTo;
 	}
 
 	/**
-	 * @param commitDateEnd the commitDateEnd to set
+	 * @param commitDateTo the commitDateTo to set
 	 */
-	public void setCommitDateEnd(String commitDateEnd) {
-		this.commitDateEnd = commitDateEnd;
+	public void setCommitDateTo(String commitDateTo) {
+		this.commitDateTo = commitDateTo;
 	}
 
 	/**
@@ -454,20 +438,6 @@ public class CfgFilter {
 	}
 
 	/**
-	 * @return the selectAllMissing
-	 */
-	public String getSelectAllMissing() {
-		return selectAllMissing;
-	}
-
-	/**
-	 * @param selectAllMissing the selectAllMissing to set
-	 */
-	public void setSelectAllMissing(String selectAllMissing) {
-		this.selectAllMissing = selectAllMissing;
-	}
-
-	/**
 	 * @return the addedSodiumMissing
 	 */
 	public String getAddedSodiumMissing() {
@@ -549,5 +519,299 @@ public class CfgFilter {
 	 */
 	public void setAddedSugarSubstitutesMissing(String addedSugarSubstitutesMissing) {
 		this.addedSugarSubstitutesMissing = addedSugarSubstitutesMissing;
+	}
+
+	/**
+	 * @return the comments
+	 */
+	public String getComments() {
+		return comments;
+	}
+
+	/**
+	 * @param comments the comments to set
+	 */
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	/**
+	 * @return the lastUpdateDateFrom
+	 */
+	public String getLastUpdateDateFrom() {
+		return lastUpdateDateFrom;
+	}
+
+	/**
+	 * @param lastUpdateDateFrom the lastUpdateDateFrom to set
+	 */
+	public void setLastUpdateDateFrom(String lastUpdateDateFrom) {
+		this.lastUpdateDateFrom = lastUpdateDateFrom;
+	}
+
+	/**
+	 * @return the lastUpdateDateTo
+	 */
+	public String getLastUpdateDateTo() {
+		return lastUpdateDateTo;
+	}
+
+	/**
+	 * @param lastUpdateDateTo the lastUpdateDateTo to set
+	 */
+	public void setLastUpdateDateTo(String lastUpdateDateTo) {
+		this.lastUpdateDateTo = lastUpdateDateTo;
+	}
+
+	/**
+	 * @return the referenceAmountLastUpdated
+	 */
+	public String getReferenceAmountLastUpdated() {
+		return referenceAmountLastUpdated;
+	}
+
+	/**
+	 * @param referenceAmountLastUpdated the referenceAmountLastUpdated to set
+	 */
+	public void setReferenceAmountLastUpdated(String referenceAmountLastUpdated) {
+		this.referenceAmountLastUpdated = referenceAmountLastUpdated;
+	}
+
+	/**
+	 * @return the cfgServingLastUpdated
+	 */
+	public String getCfgServingLastUpdated() {
+		return cfgServingLastUpdated;
+	}
+
+	/**
+	 * @param cfgServingLastUpdated the cfgServingLastUpdated to set
+	 */
+	public void setCfgServingLastUpdated(String cfgServingLastUpdated) {
+		this.cfgServingLastUpdated = cfgServingLastUpdated;
+	}
+
+	/**
+	 * @return the tier4ServingLastUpdated
+	 */
+	public String getTier4ServingLastUpdated() {
+		return tier4ServingLastUpdated;
+	}
+
+	/**
+	 * @param tier4ServingLastUpdated the tier4ServingLastUpdated to set
+	 */
+	public void setTier4ServingLastUpdated(String tier4ServingLastUpdated) {
+		this.tier4ServingLastUpdated = tier4ServingLastUpdated;
+	}
+
+	/**
+	 * @return the energyValueLastUpdated
+	 */
+	public String getEnergyValueLastUpdated() {
+		return energyValueLastUpdated;
+	}
+
+	/**
+	 * @param energyValueLastUpdated the energyValueLastUpdated to set
+	 */
+	public void setEnergyValueLastUpdated(String energyValueLastUpdated) {
+		this.energyValueLastUpdated = energyValueLastUpdated;
+	}
+
+	/**
+	 * @return the cnfCodeLastUpdated
+	 */
+	public String getCnfCodeLastUpdated() {
+		return cnfCodeLastUpdated;
+	}
+
+	/**
+	 * @param cnfCodeLastUpdated the cnfCodeLastUpdated to set
+	 */
+	public void setCnfCodeLastUpdated(String cnfCodeLastUpdated) {
+		this.cnfCodeLastUpdated = cnfCodeLastUpdated;
+	}
+
+	/**
+	 * @return the recipeRolledUpDownLastUpdated
+	 */
+	public String getRecipeRolledUpDownLastUpdated() {
+		return recipeRolledUpDownLastUpdated;
+	}
+
+	/**
+	 * @param recipeRolledUpDownLastUpdated the recipeRolledUpDownLastUpdated to set
+	 */
+	public void setRecipeRolledUpDownLastUpdated(String recipeRolledUpDownLastUpdated) {
+		this.recipeRolledUpDownLastUpdated = recipeRolledUpDownLastUpdated;
+	}
+
+	/**
+	 * @return the sodiumValueLastUpdated
+	 */
+	public String getSodiumValueLastUpdated() {
+		return sodiumValueLastUpdated;
+	}
+
+	/**
+	 * @param sodiumValueLastUpdated the sodiumValueLastUpdated to set
+	 */
+	public void setSodiumValueLastUpdated(String sodiumValueLastUpdated) {
+		this.sodiumValueLastUpdated = sodiumValueLastUpdated;
+	}
+
+	/**
+	 * @return the sugarValueLastUpdated
+	 */
+	public String getSugarValueLastUpdated() {
+		return sugarValueLastUpdated;
+	}
+
+	/**
+	 * @param sugarValueLastUpdated the sugarValueLastUpdated to set
+	 */
+	public void setSugarValueLastUpdated(String sugarValueLastUpdated) {
+		this.sugarValueLastUpdated = sugarValueLastUpdated;
+	}
+
+	/**
+	 * @return the fatValueLastUpdated
+	 */
+	public String getFatValueLastUpdated() {
+		return fatValueLastUpdated;
+	}
+
+	/**
+	 * @param fatValueLastUpdated the fatValueLastUpdated to set
+	 */
+	public void setFatValueLastUpdated(String fatValueLastUpdated) {
+		this.fatValueLastUpdated = fatValueLastUpdated;
+	}
+
+	/**
+	 * @return the transfatValueLastUpdated
+	 */
+	public String getTransfatValueLastUpdated() {
+		return transfatValueLastUpdated;
+	}
+
+	/**
+	 * @param transfatValueLastUpdated the transfatValueLastUpdated to set
+	 */
+	public void setTransfatValueLastUpdated(String transfatValueLastUpdated) {
+		this.transfatValueLastUpdated = transfatValueLastUpdated;
+	}
+
+	/**
+	 * @return the satfatValueLastUpdated
+	 */
+	public String getSatfatValueLastUpdated() {
+		return satfatValueLastUpdated;
+	}
+
+	/**
+	 * @param satfatValueLastUpdated the satfatValueLastUpdated to set
+	 */
+	public void setSatfatValueLastUpdated(String satfatValueLastUpdated) {
+		this.satfatValueLastUpdated = satfatValueLastUpdated;
+	}
+
+	/**
+	 * @return the addedSodiumLastUpdated
+	 */
+	public String getAddedSodiumLastUpdated() {
+		return addedSodiumLastUpdated;
+	}
+
+	/**
+	 * @param addedSodiumLastUpdated the addedSodiumLastUpdated to set
+	 */
+	public void setAddedSodiumLastUpdated(String addedSodiumLastUpdated) {
+		this.addedSodiumLastUpdated = addedSodiumLastUpdated;
+	}
+
+	/**
+	 * @return the addedSugarLastUpdated
+	 */
+	public String getAddedSugarLastUpdated() {
+		return addedSugarLastUpdated;
+	}
+
+	/**
+	 * @param addedSugarLastUpdated the addedSugarLastUpdated to set
+	 */
+	public void setAddedSugarLastUpdated(String addedSugarLastUpdated) {
+		this.addedSugarLastUpdated = addedSugarLastUpdated;
+	}
+
+	/**
+	 * @return the addedTransfatLastUpdated
+	 */
+	public String getAddedTransfatLastUpdated() {
+		return addedTransfatLastUpdated;
+	}
+
+	/**
+	 * @param addedTransfatLastUpdated the addedTransfatLastUpdated to set
+	 */
+	public void setAddedTransfatLastUpdated(String addedTransfatLastUpdated) {
+		this.addedTransfatLastUpdated = addedTransfatLastUpdated;
+	}
+
+	/**
+	 * @return the addedCaffeineLastUpdated
+	 */
+	public String getAddedCaffeineLastUpdated() {
+		return addedCaffeineLastUpdated;
+	}
+
+	/**
+	 * @param addedCaffeineLastUpdated the addedCaffeineLastUpdated to set
+	 */
+	public void setAddedCaffeineLastUpdated(String addedCaffeineLastUpdated) {
+		this.addedCaffeineLastUpdated = addedCaffeineLastUpdated;
+	}
+
+	/**
+	 * @return the addedFreeSugarsLastUpdated
+	 */
+	public String getAddedFreeSugarsLastUpdated() {
+		return addedFreeSugarsLastUpdated;
+	}
+
+	/**
+	 * @param addedFreeSugarsLastUpdated the addedFreeSugarsLastUpdated to set
+	 */
+	public void setAddedFreeSugarsLastUpdated(String addedFreeSugarsLastUpdated) {
+		this.addedFreeSugarsLastUpdated = addedFreeSugarsLastUpdated;
+	}
+
+	/**
+	 * @return the addedSugarSubstitutesLastUpdated
+	 */
+	public String getAddedSugarSubstitutesLastUpdated() {
+		return addedSugarSubstitutesLastUpdated;
+	}
+
+	/**
+	 * @param addedSugarSubstitutesLastUpdated the addedSugarSubstitutesLastUpdated to set
+	 */
+	public void setAddedSugarSubstitutesLastUpdated(String addedSugarSubstitutesLastUpdated) {
+		this.addedSugarSubstitutesLastUpdated = addedSugarSubstitutesLastUpdated;
+	}
+
+	/**
+	 * @return the sql
+	 */
+	public String getSql() {
+		return sql;
+	}
+
+	/**
+	 * @param sql the sql to set
+	 */
+	public void setSql(String sql) {
+		this.sql = sql;
 	}
 }
