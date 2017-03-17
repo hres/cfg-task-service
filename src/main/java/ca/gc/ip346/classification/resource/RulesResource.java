@@ -19,23 +19,31 @@ public class RulesResource {
 	public RulesResource() {
 	}
 
-	// Sprint  9 - Build a REST service to return rulesets
+	/**
+	 * Sprint  9 - Build a REST service to return rulesets
+	 */
 	@GET
 	public void getRules() {
 	}
 
-	// Sprint 10 - Build a REST service to return a particular ruleset
+	/**
+	 * Sprint 10 - Build a REST service to return a particular ruleset
+	 */
 	@GET
 	@Path("id")
 	public void selectRules() {
 	}
 
-	// Sprint 11 - Build REST service to create new ruleset
+	/**
+	 * Sprint 11 - Build REST service to create new ruleset
+	 */
 	@PUT
 	public void createRules() {
 	}
 
-	// Sprint 12 - Build REST service to update and existing ruleset
+	/**
+	 * Sprint 12 - Build REST service to update and existing ruleset
+	 */
 	@POST
 	@Path("id")
 	public void updateRules() {
