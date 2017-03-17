@@ -226,7 +226,7 @@ public class FoodsResource {
 
 		try {
 			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.trace("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
+			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
 			String sql = ContentHandler.read("food_item_cnf.sql", getClass());
 			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
 			stmt.setInt(1, id);
@@ -245,7 +245,7 @@ public class FoodsResource {
 			e.printStackTrace();
 		}
 
-		logger.trace(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+		logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 
 		return list;
 	}
@@ -259,7 +259,7 @@ public class FoodsResource {
 
 		try {
 			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.trace("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
+			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
 			String sql = ContentHandler.read("food_table_group_cnf.sql", getClass());
 			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
 			stmt.setInt(1, groupId);
@@ -278,7 +278,7 @@ public class FoodsResource {
 			e.printStackTrace();
 		}
 
-		// logger.trace(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+		// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 
 		return list;
 	}
@@ -292,7 +292,7 @@ public class FoodsResource {
 
 		try {
 			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.trace("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
+			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
 			String sql = ContentHandler.read("food_table_subgroup_cnf.sql", getClass());
 			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
 			stmt.setInt(1, subgroupId);
@@ -311,7 +311,7 @@ public class FoodsResource {
 			e.printStackTrace();
 		}
 
-		// logger.trace(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+		// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 
 		return list;
 	}
@@ -558,13 +558,13 @@ public class FoodsResource {
 			if (search.getAddedSugarSubstitutesLastUpdated() != null && !search.getAddedSugarSubstitutesLastUpdated().isEmpty())  {
 			}
 
-			logger.error("\n" + sb);
+			logger.error("\n[01;34m" + sb + "[00;00m");
 
 			search.setSql(sb.toString());
 
 			try {
 				meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-				logger.trace("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
+				logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
 				PreparedStatement stmt = conn.prepareStatement(search.getSql()); // Create PreparedStatement
 
 				int i = 0; // keeps count of the number of placeholders
@@ -651,7 +651,7 @@ public class FoodsResource {
 				e.printStackTrace();
 			}
 
-			// logger.trace(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+			// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 		}
 
 		return list;
