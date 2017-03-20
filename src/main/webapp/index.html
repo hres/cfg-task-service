@@ -10,11 +10,15 @@
 					if ($("#data-source").val() == "1") {
 						$("#non-cnf").hide();
 						$("#recipe").prop("disabled", true);
-						// $("#recipe-rolled-up-down-missing").prop("disabled", true);
+						$("#recipe-rolled-up-down-missing").prop("disabled", true);
 					} else {
 						$("#non-cnf").show();
 						$("#recipe").prop("disabled", false);
-						// $("#recipe-rolled-up-down-missing").prop("disabled", false);
+						if ($("#recipe").prop("selectedIndex") === 0) {
+							$("#recipe-rolled-up-down-missing").prop("disabled", false);
+						} else {
+							$("#recipe-rolled-up-down-missing").prop("disabled", true);
+						}
 					}
 				}
 
