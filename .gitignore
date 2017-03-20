@@ -3,4 +3,4 @@
 /.settings
 *.sw[a-z]
 .exrc
-db.properties
+src/main/java/ca/gc/ip346/util/db.properties
