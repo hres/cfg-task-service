@@ -515,10 +515,34 @@ public class FoodsResource {
 						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
 						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						break;
-					case 9:
-						logger.error("[01;31mCalling all codes with Tier 9[00;00m");
-						sb.append("   AND LENGTH(CAST(cfg_code AS text)) < 4").append("\n");
-						sb.append("   OR cfg_code = NULL").append("\n");
+					case 12:
+					case 13:
+					case 14:
+					case 23:
+					case 24:
+					case 34:
+						logger.error("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
+						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
+						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						break;
+					case 123:
+					case 124:
+					case 134:
+					case 234:
+						logger.error("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
+						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
+						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						break;
+					case 1234:
+						logger.error("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
+						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
+						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
+						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						break;
 					case 99:
 						logger.error("[01;31mCalling all codes with Tier 99[00;00m");
