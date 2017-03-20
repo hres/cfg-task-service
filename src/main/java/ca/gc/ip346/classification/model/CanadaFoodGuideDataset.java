@@ -2,6 +2,10 @@ package ca.gc.ip346.classification.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.ALWAYS)
 public class CanadaFoodGuideDataset {
 	private Integer   type;                               /* smallint */
 	private Integer   code;                               /* integer */

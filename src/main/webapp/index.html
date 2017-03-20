@@ -7,17 +7,45 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				function foo() {
-					if ($("#data-source").val() == "cnf") {
+					if ($("#data-source").val() == "1") {
 						$("#non-cnf").hide();
+						$("#recipe").prop("disabled", true);
+						// $("#recipe-rolled-up-down-missing").prop("disabled", true);
 					} else {
 						$("#non-cnf").show();
+						$("#recipe").prop("disabled", false);
+						// $("#recipe-rolled-up-down-missing").prop("disabled", false);
+					}
+				}
+
+				function bar() {
+					if ($("#recipe-rolled-up-down-missing").prop("checked")) {
+						$("#recipe").prop("disabled", true);
+					} else {
+						$("#recipe").prop("disabled", false);
 					}
 				}
 
 				foo();
 
+				bar();
+
 				$("#data-source").on("change", function() {
 					foo();
+				});
+
+				$("#recipe-rolled-up-down-missing").on("change", function() {
+					bar();
+				});
+
+				$("#recipe").on("change", function() {
+					if ($("#recipe").prop("selectedIndex") === 0) {
+						$("#recipe-rolled-up-down-missing").prop("checked", false);
+						$("#recipe-rolled-up-down-missing").prop("disabled", false);
+					} else {
+						$("#recipe-rolled-up-down-missing").prop("checked", false);
+						$("#recipe-rolled-up-down-missing").prop("disabled", true);
+					}
 				});
 
 				$("#additives").on("change", function() {
@@ -187,7 +215,7 @@
 				<div style="">
 					<div class="padding keepaligned">
 						<label for="subgroup-code">Subgroup Code:</label>
-						<input type="text" name="subgroup-code" id="subgroup-code"/>
+						<input type="text" name="subgroup-code" id="subgroup-code" maxlength="3"/>
 					</div>
 					<div class="padding keepaligned">
 						<label for="cfg-tier">CFG Tier:</label>
