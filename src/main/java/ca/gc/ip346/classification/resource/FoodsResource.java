@@ -556,24 +556,31 @@ public class FoodsResource {
 			}
 			if (!search.getSodium().           equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getSodium() + "[00;00m");
+				sb.append("   AND contains_added_sodium = ?").append("\n");
 			}
 			if (!search.getSugar().            equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getSugar() + "[00;00m");
+				sb.append("   AND contains_added_sugar = ?").append("\n");
 			}
 			if (!search.getFat().              equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getFat() + "[00;00m");
+				sb.append("   AND contains_added_fat = ?").append("\n");
 			}
 			if (!search.getTransfat().         equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getTransfat() + "[00;00m");
+				sb.append("   AND contains_added_transfat = ?").append("\n");
 			}
 			if (!search.getCaffeine().         equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getCaffeine() + "[00;00m");
+				sb.append("   AND contains_caffeine = ?").append("\n");
 			}
 			if (!search.getFreeSugars().       equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getFreeSugars() + "[00;00m");
+				sb.append("   AND contains_free_sugars = ?").append("\n");
 			}
 			if (!search.getSugarSubstitutes(). equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getSugarSubstitutes() + "[00;00m");
+				sb.append("   AND contains_sugar_substitutes = ?").append("\n");
 			}
 
 			if (search.getReferenceAmountMissing()       != null && !search.getReferenceAmountMissing().       isEmpty ())  {
@@ -727,8 +734,29 @@ public class FoodsResource {
 								break;
 						}
 					}
-					if (!search.getRecipe().equals(RecipeRolled.IGNORE.getCode())) {
+					if (!search.getRecipe().           equals (RecipeRolled.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getRecipe());
+					}
+					if (!search.getSodium().           equals (Added.IGNORE.getCode())) {
+						stmt.setInt(++i, search.getSodium());
+					}
+					if (!search.getSugar().            equals (Added.IGNORE.getCode())) {
+						stmt.setInt(++i, search.getSugar());
+					}
+					if (!search.getFat().              equals (Added.IGNORE.getCode())) {
+						stmt.setInt(++i, search.getFat());
+					}
+					if (!search.getTransfat().         equals (Added.IGNORE.getCode())) {
+						stmt.setInt(++i, search.getTransfat());
+					}
+					if (!search.getCaffeine().         equals (Added.IGNORE.getCode())) {
+						stmt.setInt(++i, search.getCaffeine());
+					}
+					if (!search.getFreeSugars().       equals (Added.IGNORE.getCode())) {
+						stmt.setInt(++i, search.getFreeSugars());
+					}
+					if (!search.getSugarSubstitutes(). equals (Added.IGNORE.getCode())) {
+						stmt.setInt(++i, search.getSugarSubstitutes());
 					}
 				}
 
