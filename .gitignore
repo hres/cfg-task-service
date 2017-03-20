@@ -3,3 +3,4 @@
 /.settings
 *.sw[a-z]
 .exrc
+db.properties
