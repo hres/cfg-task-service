@@ -53,14 +53,21 @@
 				});
 
 				$("#additives").on("change", function() {
-					$("#Classification_Name").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					// $("#Classification_Name").prop("selectedIndex", $("#additives").prop("selectedIndex"));
 					$("#sodium").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#sodium").trigger("change");
 					$("#sugar").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#sugar").trigger("change");
 					$("#fat").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#fat").trigger("change");
 					$("#transfat").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#transfat").trigger("change");
 					$("#caffeine").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#caffeine").trigger("change");
 					$("#free-sugars").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#free-sugars").trigger("change");
 					$("#sugar-substitutes").prop("selectedIndex", $("#additives").prop("selectedIndex"));
+					$("#sugar-substitutes").trigger("change");
 				});
 
 				$("#select-all-missing").on("click", function() {
@@ -79,11 +86,19 @@
 						$("#satfat-value-missing").prop("checked"            , true);
 						$("#select-all-missing").prop("checked"              , true);
 						$("#added-sodium-missing").prop("checked"            , true);
+						$("#added-sodium-missing").trigger("change");
 						$("#added-sugar-missing").prop("checked"             , true);
+						$("#added-sugar-missing").trigger("change");
+						$("#added-fat-missing").prop("checked"               , true);
+						$("#added-fat-missing").trigger("change");
 						$("#added-transfat-missing").prop("checked"          , true);
+						$("#added-transfat-missing").trigger("change");
 						$("#added-caffeine-missing").prop("checked"          , true);
+						$("#added-caffeine-missing").trigger("change");
 						$("#added-free-sugars-missing").prop("checked"       , true);
+						$("#added-free-sugars-missing").trigger("change");
 						$("#added-sugar-substitutes-missing").prop("checked" , true);
+						$("#added-sugar-substitutes-missing").trigger("change");
 					} else {
 						$("#select-all-missing").prop("checked"              , false);
 						$("#reference-amount-missing").prop("checked"        , false);
@@ -99,11 +114,19 @@
 						$("#satfat-value-missing").prop("checked"            , false);
 						$("#select-all-missing").prop("checked"              , false);
 						$("#added-sodium-missing").prop("checked"            , false);
+						$("#added-sodium-missing").trigger("change");
 						$("#added-sugar-missing").prop("checked"             , false);
+						$("#added-sugar-missing").trigger("change");
+						$("#added-fat-missing").prop("checked"               , false);
+						$("#added-fat-missing").trigger("change");
 						$("#added-transfat-missing").prop("checked"          , false);
+						$("#added-transfat-missing").trigger("change");
 						$("#added-caffeine-missing").prop("checked"          , false);
+						$("#added-caffeine-missing").trigger("change");
 						$("#added-free-sugars-missing").prop("checked"       , false);
+						$("#added-free-sugars-missing").trigger("change");
 						$("#added-sugar-substitutes-missing").prop("checked" , false);
+						$("#added-sugar-substitutes-missing").trigger("change");
 					}
 				});
 
@@ -124,6 +147,7 @@
 						$("#select-all-last-updated").prop("checked"              , true);
 						$("#added-sodium-last-updated").prop("checked"            , true);
 						$("#added-sugar-last-updated").prop("checked"             , true);
+						$("#added-fat-last-updated").prop("checked"               , true);
 						$("#added-transfat-last-updated").prop("checked"          , true);
 						$("#added-caffeine-last-updated").prop("checked"          , true);
 						$("#added-free-sugars-last-updated").prop("checked"       , true);
@@ -144,10 +168,111 @@
 						$("#select-all-last-updated").prop("checked"              , false);
 						$("#added-sodium-last-updated").prop("checked"            , false);
 						$("#added-sugar-last-updated").prop("checked"             , false);
+						$("#added-fat-last-updated").prop("checked"               , false);
 						$("#added-transfat-last-updated").prop("checked"          , false);
 						$("#added-caffeine-last-updated").prop("checked"          , false);
 						$("#added-free-sugars-last-updated").prop("checked"       , false);
 						$("#added-sugar-substitutes-last-updated").prop("checked" , false);
+					}
+				});
+
+				$("#sodium").on("change", function() {
+					if ($("#sodium").prop("selectedIndex") === 0) {
+						$("#added-sodium-missing").prop("disabled", false);
+					} else {
+						$("#added-sodium-missing").prop("disabled", true);
+					}
+				});
+				$("#sugar").on("change", function() {
+					if ($("#sugar").prop("selectedIndex") === 0) {
+						$("#added-sugar-missing").prop("disabled", false);
+					} else {
+						$("#added-sugar-missing").prop("disabled", true);
+					}
+				});
+				$("#fat").on("change", function() {
+					if ($("#fat").prop("selectedIndex") === 0) {
+						$("#added-fat-missing").prop("disabled", false);
+					} else {
+						$("#added-fat-missing").prop("disabled", true);
+					}
+				});
+				$("#transfat").on("change", function() {
+					if ($("#transfat").prop("selectedIndex") === 0) {
+						$("#added-transfat-missing").prop("disabled", false);
+					} else {
+						$("#added-transfat-missing").prop("disabled", true);
+					}
+				});
+				$("#caffeine").on("change", function() {
+					if ($("#caffeine").prop("selectedIndex") === 0) {
+						$("#added-caffeine-missing").prop("disabled", false);
+					} else {
+						$("#added-caffeine-missing").prop("disabled", true);
+					}
+				});
+				$("#free-sugars").on("change", function() {
+					if ($("#free-sugars").prop("selectedIndex") === 0) {
+						$("#added-free-sugars-missing").prop("disabled", false);
+					} else {
+						$("#added-free-sugars-missing").prop("disabled", true);
+					}
+				});
+				$("#sugar-substitutes").on("change", function() {
+					if ($("#sugar-substitutes").prop("selectedIndex") === 0) {
+						$("#added-sugar-substitutes-missing").prop("disabled", false);
+					} else {
+						$("#added-sugar-substitutes-missing").prop("disabled", true);
+					}
+				});
+
+				$("#added-sodium-missing").on("change", function() {
+					if ($("#added-sodium-missing").prop("checked") === true) {
+						$("#sodium").prop("disabled", true);
+					} else {
+						$("#sodium").prop("disabled", false);
+					}
+				});
+				$("#added-sugar-missing").on("change", function() {
+					if ($("#added-sugar-missing").prop("checked") === true) {
+						$("#sugar").prop("disabled", true);
+					} else {
+						$("#sugar").prop("disabled", false);
+					}
+				});
+				$("#added-fat-missing").on("change", function() {
+					if ($("#added-fat-missing").prop("checked") === true) {
+						$("#fat").prop("disabled", true);
+					} else {
+						$("#fat").prop("disabled", false);
+					}
+				});
+				$("#added-transfat-missing").on("change", function() {
+					if ($("#added-transfat-missing").prop("checked") === true) {
+						$("#transfat").prop("disabled", true);
+					} else {
+						$("#transfat").prop("disabled", false);
+					}
+				});
+				$("#added-caffeine-missing").on("change", function() {
+					if ($("#added-caffeine-missing").prop("checked") === true) {
+						$("#caffeine").prop("disabled", true);
+					} else {
+						$("#caffeine").prop("disabled", false);
+					}
+				});
+				$("#added-free-sugars-missing").on("change", function() {
+					if ($("#added-free-sugars-missing").prop("checked") === true) {
+						$("#free-sugars").prop("disabled", true);
+					} else {
+						$("#free-sugars").prop("disabled", false);
+					}
+				});
+				$("#added-sugar-substitutes-missing").on("change", function() {
+					if ($("#added-sugar-substitutes-missing").prop("checked") === true) {
+						$("#sugar-substitutes").prop("disabled", true);
+					} else {
+						$("#sugar-substitutes").prop("disabled", false);
 					}
 				});
 			});
@@ -169,7 +294,7 @@
 	</head>
 	<body>
 		<form method="get" action="service/datasets/search">
-			<div style="width:77%">
+			<div style="width:85%">
 				<div style="">
 					<div style="" class="keepaligned">
 						Datasets &gt; Create Production Dataset
@@ -247,7 +372,7 @@
 					<div style="width:7.5cm; border:solid black 1pt" class="keepaligned" id="contains-added">
 						<div style="">
 							<label for="contains-added">
-								Contains Added:
+								Contains:
 							</label>
 							<select id="additives">
 								<option value="0"></option>
@@ -261,7 +386,7 @@
 								<option value="1">Yes</option>
 								<option value="2">No</option>
 							</select>
-							<label for="sodium">Sodium</label>
+							<label for="sodium">Added Sodium</label>
 						</div>
 						<div style="">
 							<select name="sugar" id="sugar">
@@ -269,7 +394,7 @@
 								<option value="1">Yes</option>
 								<option value="2">No</option>
 							</select>
-							<label for="sugar">Sugar</label>
+							<label for="sugar">Added Sugar</label>
 						</div>
 						<div style="">
 							<select name="fat" id="fat">
@@ -277,7 +402,7 @@
 								<option value="1">Yes</option>
 								<option value="2">No</option>
 							</select>
-							<label for="fat">Fat</label>
+							<label for="fat">Added Fat</label>
 						</div>
 						<div style="">
 							<select name="transfat" id="transfat">
@@ -285,7 +410,7 @@
 								<option value="1">Yes</option>
 								<option value="2">No</option>
 							</select>
-							<label for="transfat">Transfat</label>
+							<label for="transfat">Added Transfat</label>
 						</div>
 						<div style="">
 							<select name="caffeine" id="caffeine">
@@ -312,7 +437,7 @@
 							<label for="sugar-substitutes">Sugar Substitutes</label>
 						</div>
 					</div>
-					<div style="width:24cm; border:solid black 1pt" class="keepaligned">
+					<div style="width:26cm; border:solid black 1pt" class="keepaligned">
 						<div style="">
 							<label for="missing-values">
 								Missing Values:
@@ -344,26 +469,26 @@
 								<label for="recipe-rolled-up-down-missing">Recipe Rolled Up/Down</label>
 							</div>
 						</div>
-						<div style="width:5.5cm" class="keepaligned">
+						<div style="width:6.5cm" class="keepaligned">
 							<div style="">
 								<input type="checkbox" name="sodium-value-missing" id="sodium-value-missing"/>
-								<label for="sodium-value-missing">Sodium Value</label>
+								<label for="sodium-value-missing">Sodium per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="sugar-value-missing" id="sugar-value-missing"/>
-								<label for="sugar-value-missing">Sugar Value</label>
+								<label for="sugar-value-missing">Sugar per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="fat-value-missing" id="fat-value-missing"/>
-								<label for="fat-value-missing">Fat Value</label>
+								<label for="fat-value-missing">Fat per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="transfat-value-missing" id="transfat-value-missing"/>
-								<label for="transfat-value-missing">Transfat Value</label>
+								<label for="transfat-value-missing">Transfat per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="satfat-value-missing" id="satfat-value-missing"/>
-								<label for="satfat-value-missing">Satfat Value</label>
+								<label for="satfat-value-missing">Satfat per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="select-all-missing" id="select-all-missing"/>
@@ -373,27 +498,31 @@
 						<div style="width:9cm" class="keepaligned">
 							<div style="">
 								<input type="checkbox" name="added-sodium-missing" id="added-sodium-missing"/>
-								<label for="added-sodium-missing">Added Sodium</label>
+								<label for="added-sodium-missing">Contains Added Sodium</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-sugar-missing" id="added-sugar-missing"/>
-								<label for="added-sugar-missing">Added Sugar</label>
+								<label for="added-sugar-missing">Contains Added Sugar</label>
+							</div>
+							<div style="">
+								<input type="checkbox" name="added-fat-missing" id="added-fat-missing"/>
+								<label for="added-fat-missing">Contains Added Fat</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-transfat-missing" id="added-transfat-missing"/>
-								<label for="added-transfat-missing">Added Transfat</label>
+								<label for="added-transfat-missing">Contains Added Transfat</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-caffeine-missing" id="added-caffeine-missing"/>
-								<label for="added-caffeine-missing">Added Caffeine</label>
+								<label for="added-caffeine-missing">Contains Caffeine</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-free-sugars-missing" id="added-free-sugars-missing"/>
-								<label for="added-free-sugars-missing">Added Free Sugars</label>
+								<label for="added-free-sugars-missing">Contains Free Sugars</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-sugar-substitutes-missing" id="added-sugar-substitutes-missing"/>
-								<label for="added-sugar-substitutes-missing">Added Sugar Substitutes</label>
+								<label for="added-sugar-substitutes-missing">Contains Sugar Substitutes</label>
 							</div>
 						</div>
 					</div>
@@ -407,7 +536,7 @@
 							<textarea name="comments" id="comments" cols="36" rows="11"></textarea>
 						</div>
 					</div>
-					<div style="width:24cm; border:solid black 1pt" class="keepaligned">
+					<div style="width:26cm; border:solid black 1pt" class="keepaligned">
 						<div style="width:5cm" class="padding keepaligned">
 							<label for="last-updated">
 								Last Updated:
@@ -447,26 +576,26 @@
 								<label for="recipe-rolled-up-down-last-updated">Recipe Rolled Up/Down</label>
 							</div>
 						</div>
-						<div style="width:5.5cm" class="keepaligned">
+						<div style="width:6.5cm" class="keepaligned">
 							<div style="">
 								<input type="checkbox" name="sodium-value-last-updated" id="sodium-value-last-updated"/>
-								<label for="sodium-value-last-updated">Sodium Value</label>
+								<label for="sodium-value-last-updated">Sodium per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="sugar-value-last-updated" id="sugar-value-last-updated"/>
-								<label for="sugar-value-last-updated">Sugar Value</label>
+								<label for="sugar-value-last-updated">Sugar per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="fat-value-last-updated" id="fat-value-last-updated"/>
-								<label for="fat-value-last-updated">Fat Value</label>
+								<label for="fat-value-last-updated">Fat per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="transfat-value-last-updated" id="transfat-value-last-updated"/>
-								<label for="transfat-value-last-updated">Transfat Value</label>
+								<label for="transfat-value-last-updated">Transfat per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="satfat-value-last-updated" id="satfat-value-last-updated"/>
-								<label for="satfat-value-last-updated">Satfat Value</label>
+								<label for="satfat-value-last-updated">Satfat per 100g</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="select-all-last-updated" id="select-all-last-updated"/>
@@ -476,27 +605,31 @@
 						<div style="width:9cm" class="keepaligned">
 							<div style="">
 								<input type="checkbox" name="added-sodium-last-updated" id="added-sodium-last-updated"/>
-								<label for="added-sodium-last-updated">Added Sodium</label>
+								<label for="added-sodium-last-updated">Contains Added Sodium</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-sugar-last-updated" id="added-sugar-last-updated"/>
-								<label for="added-sugar-last-updated">Added Sugar</label>
+								<label for="added-sugar-last-updated">Contains Added Sugar</label>
+							</div>
+							<div style="">
+								<input type="checkbox" name="added-fat-last-updated" id="added-fat-last-updated"/>
+								<label for="added-fat-last-updated">Contains Added Fat</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-transfat-last-updated" id="added-transfat-last-updated"/>
-								<label for="added-transfat-last-updated">Added Transfat</label>
+								<label for="added-transfat-last-updated">Contains Added Transfat</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-caffeine-last-updated" id="added-caffeine-last-updated"/>
-								<label for="added-caffeine-last-updated">Added Caffeine</label>
+								<label for="added-caffeine-last-updated">Contains Caffeine</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-free-sugars-last-updated" id="added-free-sugars-last-updated"/>
-								<label for="added-free-sugars-last-updated">Added Free Sugars</label>
+								<label for="added-free-sugars-last-updated">Contains Free Sugars</label>
 							</div>
 							<div style="">
 								<input type="checkbox" name="added-sugar-substitutes-last-updated" id="added-sugar-substitutes-last-updated"/>
-								<label for="added-sugar-substitutes-last-updated">Added Sugar Substitutes</label>
+								<label for="added-sugar-substitutes-last-updated">Contains Sugar Substitutes</label>
 							</div>
 						</div>
 					</div>
