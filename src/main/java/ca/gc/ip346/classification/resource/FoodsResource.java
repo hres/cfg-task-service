@@ -65,151 +65,6 @@ public class FoodsResource {
 		}
 	}
 
-// data-source=both
-// food-recipe-name=
-// food-recipe-code=1684
-// commit-date-begin=
-// commit-date-end=
-// cnf-code=
-// subgroup-code=
-//
-// cfg-tier=0
-// recipe=0
-// sodium=0
-// sugar=0
-// fat=0
-// transfat=0
-// caffeine=0
-// free-sugars=0
-// sugar-substitutes=0
-//
-// reference-amount-missing=on
-// cfg-serving-missing=on
-// tier-4-serving-missing=on
-// energy-value-missing=on
-// cnf-code-missing=on
-// recipe-rolled-up-down-missing=on
-// sodium-value-missing=on
-// sugar-value-missing=on
-// fat-value-missing=on
-// transfat-value-missing=on
-// satfat-value-missing=on
-// select-all-missing=on
-// added-sodium-missing=on
-// added-sugar-missing=on
-// added-transfat-missing=on
-// added-caffeine-missing=on
-// added-free-sugars-missing=on
-// added-sugar-substitutes-missing=on
-
-//         id="data-source"
-//         id="food-recipe-name"
-//         id="food-recipe-code"
-//         id="commit-date-from"
-//         id="commit-date-to"
-//         id="cnf-code"
-//         id="subgroup-code"
-//         id="cfg-tier"
-//         id="recipe"
-//         id="sodium"
-//         id="sugar"
-//         id="fat"
-//         id="transfat"
-//         id="caffeine"
-//         id="free-sugars"
-//         id="sugar-substitutes"
-//         id="reference-amount-missing"
-//         id="cfg-serving-missing"
-//         id="tier-4-serving-missing"
-//         id="energy-value-missing"
-//         id="cnf-code-missing"
-//         id="recipe-rolled-up-down-missing"
-//         id="sodium-value-missing"
-//         id="sugar-value-missing"
-//         id="fat-value-missing"
-//         id="transfat-value-missing"
-//         id="satfat-value-missing"
-//         id="added-sodium-missing"
-//         id="added-sugar-missing"
-//         id="added-transfat-missing"
-//         id="added-caffeine-missing"
-//         id="added-free-sugars-missing"
-//         id="added-sugar-substitutes-missing"
-//         id="comments"
-//         id="last-update-date-From"
-//         id="last-update-date-To"
-//         id="reference-amount-last-updated"
-//         id="cfg-serving-last-updated"
-//         id="tier-4-serving-last-updated"
-//         id="energy-value-last-updated"
-//         id="cnf-code-last-updated"
-//         id="recipe-rolled-up-down-last-updated"
-//         id="sodium-value-last-updated"
-//         id="sugar-value-last-updated"
-//         id="fat-value-last-updated"
-//         id="transfat-value-last-updated"
-//         id="satfat-value-last-updated"
-//         id="added-sodium-last-updated"
-//         id="added-sugar-last-updated"
-//         id="added-transfat-last-updated"
-//         id="added-caffeine-last-updated"
-//         id="added-free-sugars-last-updated"
-//         id="added-sugar-substitutes-last-updated"
-
-//             data-source=both
-//             food-recipe-name=
-//             food-recipe-code=
-//             commit-date-from=
-//             commit-date-to=
-//             cnf-code=
-//             subgroup-code=
-//             cfg-tier=0
-//             recipe=0
-//             sodium=1
-//             sugar=1
-//             fat=1
-//             transfat=1
-//             caffeine=1
-//             free-sugars=1
-//             sugar-substitutes=1
-//             reference-amount-missing=on
-//             cfg-serving-missing=on
-//             tier-4-serving-missing=on
-//             energy-value-missing=on
-//             cnf-code-missing=on
-//             recipe-rolled-up-down-missing=on
-//             sodium-value-missing=on
-//             sugar-value-missing=on
-//             fat-value-missing=on
-//             transfat-value-missing=on
-//             satfat-value-missing=on
-//             added-sodium-missing=on
-//             added-sugar-missing=on
-//             added-transfat-missing=on
-//             added-caffeine-missing=on
-//             added-free-sugars-missing=on
-//             added-sugar-substitutes-missing=on
-//             comments=
-//             last-update-date-From=
-//             last-update-date-To=
-//             reference-amount-last-updated=on
-//             cfg-serving-last-updated=on
-//             tier-4-serving-last-updated=on
-//             energy-value-last-updated=on
-//             cnf-code-last-updated=on
-//             recipe-rolled-up-down-last-updated=on
-//             sodium-value-last-updated=on
-//             sugar-value-last-updated=on
-//             fat-value-last-updated=on
-//             transfat-value-last-updated=on
-//             satfat-value-last-updated=on
-//             added-sodium-last-updated=on
-//             added-sugar-last-updated=on
-//             added-transfat-last-updated=on
-//             added-caffeine-last-updated=on
-//             added-free-sugars-last-updated=on
-//             added-sugar-substitutes-last-updated=on
-
 	@GET
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -359,126 +214,6 @@ public class FoodsResource {
 		return list;
 	}
 
-	@GET
-	@Path("/cfg")
-	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Map<String, String> getSampleObj() {
-		Map<String, String> map = new HashMap<String, String>();
-
-		map.put("food_recipe_type",                       "boolean"         );
-		map.put("code",                                   "text"            );
-		map.put("name",                                   "text"            );
-		map.put("cnf_code",                               "text"            );
-		map.put("cfg_code",                               "text"            );
-		map.put("cfg_code_commit_date",                   "date"            );
-		map.put("energy_kcal",                            "double precision");
-		map.put("sodium_amount_per_100g",                 "double precision");
-		map.put("sodium_imputation_reference",            "text"            );
-		map.put("sodium_imputation_date",                 "date"            );
-		map.put("sugar_amount_per_100g",                  "double precision");
-		map.put("sugar_imputation_reference",             "text"            );
-		map.put("sugar_imputation_date",                  "date"            );
-		map.put("transfat_amount_per_100g",               "double precision");
-		map.put("transfat_imputation_reference",          "text"            );
-		map.put("transfat_imputation_date",               "date"            );
-		map.put("satfat_amout_per_100g",                  "double precision");
-		map.put("satfat_imputation_reference",            "text"            );
-		map.put("satfat_imputation_date",                 "date"            );
-		map.put("totalfat_amout_per_100g",                "double precision");
-		map.put("totalfat_imputation_reference",          "text"            );
-		map.put("totalfat_imputation_date",               "date"            );
-		map.put("contains_added_sodium",                  "boolean"         );
-		map.put("contains_added_sodium_commit_date",      "date"            );
-		map.put("contains_added_sugar",                   "boolean"         );
-		map.put("contains_added_sugar_commit_date",       "date"            );
-		map.put("contains_free_sugars",                   "boolean"         );
-		map.put("contains_free_sugars_commit_date",       "date"            );
-		map.put("contains_added_fat",                     "boolean"         );
-		map.put("contains_added_fat_commit_date",         "date"            );
-		map.put("contains_added_transfat",                "boolean"         );
-		map.put("contains_added_transfat_commit_date",    "date"            );
-		map.put("contains_caffeine",                      "boolean"         );
-		map.put("contains_caffeine_commit_date",          "date"            );
-		map.put("contains_sugar_substitutes",             "boolean"         );
-		map.put("contains_sugar_substitutes_commit_date", "date"            );
-		map.put("reference_amount_g",                     "double precision");
-		map.put("reference_amount_measure",               "text"            );
-		map.put("reference_amount_commit_date",           "date"            );
-		map.put("food_guide_serving_g",                   "double precision");
-		map.put("food_guide_serving_measure",             "text"            );
-		map.put("food_guide_commit_date",                 "date"            );
-		map.put("tier_4_serving_g",                       "double precision");
-		map.put("tier_4_serving_measure",                 "text"            );
-		map.put("tier_4_serving_commit_date",             "date"            );
-		map.put("rolled_up",                              "boolean"         );
-		map.put("rolled_up_commit_date",                  "date"            );
-		map.put("apply_small_ra_adjustment",              "boolean"         );
-		map.put("comments",                               "text"            );
-
-		return map;
-	}
-
-	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Map<String, String> getCfgDataSet() {
-		Map<String, String> map = new HashMap<String, String>();
-
-		map.put("type",                                "Boolean");
-		map.put("code",                                "String");
-		map.put("name",                                "String");
-		map.put("cnfCode",                             "String");
-		map.put("cfgCode",                             "String");
-		map.put("cfgCodeCommitDate",                   "Date");
-		map.put("energyKcal",                          "Number");
-		map.put("sodiumAmountPer100g",                 "Number");
-		map.put("sodiumImputationReference",           "String");
-		map.put("sodiumImputationDate",                "Date");
-		map.put("sugarAmountPer100g",                  "Number");
-		map.put("sugarImputationReference",            "String");
-		map.put("sugarImputationDate",                 "Date");
-		map.put("transfatAmountPer100g",               "Number");
-		map.put("transfatImputationReference",         "String");
-		map.put("transfatImputationDate",              "Date");
-		map.put("satfatAmoutPer100g",                  "Number");
-		map.put("satfatImputationReference",           "String");
-		map.put("satfatImputationDate",                "Date");
-		map.put("totalfatAmoutPer100g",                "Number");
-		map.put("totalfatImputationReference",         "String");
-		map.put("totalfatImputationDate",              "Date");
-		map.put("containsAddedSodium",                 "Boolean");
-		map.put("containsAddedSodiumCommitDate",       "Date");
-		map.put("containsAddedSugar",                  "Boolean");
-		map.put("containsAddedSugarCommitDate",        "Date");
-		map.put("containsFreeSugars",                  "Boolean");
-		map.put("containsFreeSugarsCommitDate",        "Date");
-		map.put("containsAddedFat",                    "Boolean");
-		map.put("containsAddedFatCommitDate",          "Date");
-		map.put("containsAddedTransfat",               "Boolean");
-		map.put("containsAddedTransfatCommitDate",     "Date");
-		map.put("containsCaffeine",                    "Boolean");
-		map.put("containsCaffeineCommitDate",          "Date");
-		map.put("containsSugarSubstitutes",            "Boolean");
-		map.put("containsSugarSubstitutesCommitDate",  "Date");
-		map.put("referenceAmountG",                    "Number");
-		map.put("referenceAmountMeasure",              "String");
-		map.put("referenceAmountCommitDate",           "Date");
-		map.put("foodGuideServingG",                   "Number");
-		map.put("foodGuideServingMeasure",             "String");
-		map.put("foodGuideCommitDate",                 "Date");
-		map.put("tier4ServingG",                       "Number");
-		map.put("tier4ServingMeasure",                 "String");
-		map.put("tier4ServingCommitDate",              "Date");
-		map.put("rolledUp",                            "Boolean");
-		map.put("rolledUpCommitDate",                  "Date");
-		map.put("applySmallRaAdjustment",              "Boolean");
-		map.put("comments",                            "String");
-
-		return map;
-	}
-
 	private List<CanadaFoodGuideDataset> doSearchCriteria(CfgFilter search) {
 		List<CanadaFoodGuideDataset> list = new ArrayList<CanadaFoodGuideDataset>();
 
@@ -585,36 +320,47 @@ public class FoodsResource {
 
 			if (search.getReferenceAmountMissing()       != null && !search.getReferenceAmountMissing().       isEmpty ())  {
 				logger.error("[01;31m" + search.getReferenceAmountMissing() + "[00;00m");
+				sb.append("   AND reference_amount_g = NULL").append("\n");
 			}
 			if (search.getCfgServingMissing()            != null && !search.getCfgServingMissing().            isEmpty ())  {
 				logger.error("[01;31m" + search.getCfgServingMissing() + "[00;00m");
+				sb.append("   AND food_guide_serving_g = NULL").append("\n");
 			}
 			if (search.getTier4ServingMissing()          != null && !search.getTier4ServingMissing().          isEmpty ())  {
 				logger.error("[01;31m" + search.getTier4ServingMissing() + "[00;00m");
+				sb.append("   AND tier_4_serving_g = NULL").append("\n");
 			}
 			if (search.getEnergyValueMissing()           != null && !search.getEnergyValueMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getEnergyValueMissing() + "[00;00m");
+				sb.append("   AND energy_kcal = NULL").append("\n");
 			}
 			if (search.getCnfCodeMissing()               != null && !search.getCnfCodeMissing().               isEmpty ())  {
 				logger.error("[01;31m" + search.getCnfCodeMissing() + "[00;00m");
+				sb.append("   AND cnf_group_code = NULL").append("\n");
 			}
 			if (search.getRecipeRolledUpDownMissing()    != null && !search.getRecipeRolledUpDownMissing().    isEmpty ())  {
 				logger.error("[01;31m" + search.getRecipeRolledUpDownMissing() + "[00;00m");
+				sb.append("   AND rolled_up = NULL").append("\n");
 			}
 			if (search.getSodiumValueMissing()           != null && !search.getSodiumValueMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getSodiumValueMissing() + "[00;00m");
+				sb.append("   AND sodium_amount_per_100g = NULL").append("\n");
 			}
 			if (search.getSugarValueMissing()            != null && !search.getSugarValueMissing().            isEmpty ())  {
 				logger.error("[01;31m" + search.getSugarValueMissing() + "[00;00m");
+				sb.append("   AND sugar_amount_per_100g = NULL").append("\n");
 			}
 			if (search.getFatValueMissing()              != null && !search.getFatValueMissing().              isEmpty ())  {
 				logger.error("[01;31m" + search.getFatValueMissing() + "[00;00m");
+				sb.append("   AND totalfat_amout_per_100g = NULL").append("\n");
 			}
 			if (search.getTransfatValueMissing()         != null && !search.getTransfatValueMissing().         isEmpty ())  {
 				logger.error("[01;31m" + search.getTransfatValueMissing() + "[00;00m");
+				sb.append("   AND transfat_amount_per_100g = NULL").append("\n");
 			}
 			if (search.getSatfatValueMissing()           != null && !search.getSatfatValueMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getSatfatValueMissing() + "[00;00m");
+				sb.append("   AND satfat_amount_per_100g = NULL").append("\n");
 			}
 			if (search.getAddedSodiumMissing()           != null && !search.getAddedSodiumMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getAddedSodiumMissing() + "[00;00m");
@@ -638,6 +384,7 @@ public class FoodsResource {
 			if (!search.getComments().isEmpty()) {
 				logger.error("[01;30m" + search.getComments() + "[00;00m");
 			}
+
 			if (!search.getLastUpdateDateFrom().isEmpty() && !search.getLastUpdateDateTo().isEmpty()) {
 				if (search.getReferenceAmountLastUpdated()       != null && !search.getReferenceAmountLastUpdated().       isEmpty ())  {
 					logger.error("[01;30m" + search.getReferenceAmountLastUpdated() + "[00;00m");
