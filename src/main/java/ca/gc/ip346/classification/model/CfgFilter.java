@@ -32,6 +32,7 @@ public class CfgFilter {
 	@QueryParam("satfat-value-missing")                 private String satfatValueMissing;
 	@QueryParam("added-sodium-missing")                 private String addedSodiumMissing;
 	@QueryParam("added-sugar-missing")                  private String addedSugarMissing;
+	@QueryParam("added-fat-missing")                    private String addedFatMissing;
 	@QueryParam("added-transfat-missing")               private String addedTransfatMissing;
 	@QueryParam("added-caffeine-missing")               private String addedCaffeineMissing;
 	@QueryParam("added-free-sugars-missing")            private String addedFreeSugarsMissing;
@@ -463,6 +464,20 @@ public class CfgFilter {
 	 */
 	public void setAddedSugarMissing(String addedSugarMissing) {
 		this.addedSugarMissing = addedSugarMissing;
+	}
+
+	/**
+	 * @return the addedFatMissing
+	 */
+	public String getAddedFatMissing() {
+		return addedFatMissing;
+	}
+
+	/**
+	 * @param addedFatMissing the addedFatMissing to set
+	 */
+	public void setAddedFatMissing(String addedFatMissing) {
+		this.addedFatMissing = addedFatMissing;
 	}
 
 	/**
