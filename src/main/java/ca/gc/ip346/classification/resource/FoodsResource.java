@@ -544,41 +544,41 @@ public class FoodsResource {
 						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						break;
-					case 99:
-						logger.error("[01;31mCalling all codes with Tier 99[00;00m");
-						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
+					case 9:
+						logger.error("[01;31mCalling all codes with missing Tier![00;00m");
+						sb.append("   AND LENGTH(CAST(cfg_code AS text)) < 4").append("\n");
 						break;
 				}
 			}
-			if (!search.getRecipe().           equals (RecipeRolled.IGNORE.getCode())) {
+			if (search.getRecipe()           != null && !search.getRecipe().           equals (RecipeRolled.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getRecipe() + "[00;00m");
 				sb.append("   AND rolled_up = ?").append("\n");
 			}
-			if (!search.getSodium().           equals (Added.IGNORE.getCode())) {
+			if (search.getSodium()           != null && !search.getSodium().           equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getSodium() + "[00;00m");
 				sb.append("   AND contains_added_sodium = ?").append("\n");
 			}
-			if (!search.getSugar().            equals (Added.IGNORE.getCode())) {
+			if (search.getSugar()            != null && !search.getSugar().            equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getSugar() + "[00;00m");
 				sb.append("   AND contains_added_sugar = ?").append("\n");
 			}
-			if (!search.getFat().              equals (Added.IGNORE.getCode())) {
+			if (search.getFat()              != null && !search.getFat().              equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getFat() + "[00;00m");
 				sb.append("   AND contains_added_fat = ?").append("\n");
 			}
-			if (!search.getTransfat().         equals (Added.IGNORE.getCode())) {
+			if (search.getTransfat()         != null && !search.getTransfat().         equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getTransfat() + "[00;00m");
 				sb.append("   AND contains_added_transfat = ?").append("\n");
 			}
-			if (!search.getCaffeine().         equals (Added.IGNORE.getCode())) {
+			if (search.getCaffeine()         != null && !search.getCaffeine().         equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getCaffeine() + "[00;00m");
 				sb.append("   AND contains_caffeine = ?").append("\n");
 			}
-			if (!search.getFreeSugars().       equals (Added.IGNORE.getCode())) {
+			if (search.getFreeSugars()       != null && !search.getFreeSugars().       equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getFreeSugars() + "[00;00m");
 				sb.append("   AND contains_free_sugars = ?").append("\n");
 			}
-			if (!search.getSugarSubstitutes(). equals (Added.IGNORE.getCode())) {
+			if (search.getSugarSubstitutes() != null && !search.getSugarSubstitutes(). equals (Added.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getSugarSubstitutes() + "[00;00m");
 				sb.append("   AND contains_sugar_substitutes = ?").append("\n");
 			}
@@ -734,28 +734,28 @@ public class FoodsResource {
 								break;
 						}
 					}
-					if (!search.getRecipe().           equals (RecipeRolled.IGNORE.getCode())) {
+					if (search.getRecipe()           != null && !search.getRecipe().           equals (RecipeRolled.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getRecipe());
 					}
-					if (!search.getSodium().           equals (Added.IGNORE.getCode())) {
+					if (search.getSodium()           != null && !search.getSodium().           equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getSodium());
 					}
-					if (!search.getSugar().            equals (Added.IGNORE.getCode())) {
+					if (search.getSugar()            != null && !search.getSugar().            equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getSugar());
 					}
-					if (!search.getFat().              equals (Added.IGNORE.getCode())) {
+					if (search.getFat()              != null && !search.getFat().              equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getFat());
 					}
-					if (!search.getTransfat().         equals (Added.IGNORE.getCode())) {
+					if (search.getTransfat()         != null && !search.getTransfat().         equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getTransfat());
 					}
-					if (!search.getCaffeine().         equals (Added.IGNORE.getCode())) {
+					if (search.getCaffeine()         != null && !search.getCaffeine().         equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getCaffeine());
 					}
-					if (!search.getFreeSugars().       equals (Added.IGNORE.getCode())) {
+					if (search.getFreeSugars()       != null && !search.getFreeSugars().       equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getFreeSugars());
 					}
-					if (!search.getSugarSubstitutes(). equals (Added.IGNORE.getCode())) {
+					if (search.getSugarSubstitutes() != null && !search.getSugarSubstitutes(). equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getSugarSubstitutes());
 					}
 				}
