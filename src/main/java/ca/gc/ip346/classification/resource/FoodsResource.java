@@ -352,7 +352,7 @@ public class FoodsResource {
 			}
 			if (search.getFatValueMissing()              != null && !search.getFatValueMissing().              isEmpty ())  {
 				logger.error("[01;31m" + search.getFatValueMissing() + "[00;00m");
-				sb.append("   AND totalfat_amout_per_100g = NULL").append("\n");
+				sb.append("   AND totalfat_amount_per_100g = NULL").append("\n");
 			}
 			if (search.getTransfatValueMissing()         != null && !search.getTransfatValueMissing().         isEmpty ())  {
 				logger.error("[01;31m" + search.getTransfatValueMissing() + "[00;00m");
@@ -527,10 +527,10 @@ public class FoodsResource {
 					foodItem.setTransfatAmountPer100g(rs.getDouble("transfat_amount_per_100g"));
 					foodItem.setTransfatImputationReference(rs.getString("transfat_imputation_reference"));
 					foodItem.setTransfatImputationDate(rs.getDate("transfat_imputation_date"));
-					foodItem.setSatfatAmoutPer100g(rs.getDouble("satfat_amout_per_100g"));
+					foodItem.setSatfatAmountPer100g(rs.getDouble("satfat_amount_per_100g"));
 					foodItem.setSatfatImputationReference(rs.getString("satfat_imputation_reference"));
 					foodItem.setSatfatImputationDate(rs.getDate("satfat_imputation_date"));
-					foodItem.setTotalfatAmoutPer100g(rs.getDouble("totalfat_amout_per_100g"));
+					foodItem.setTotalfatAmountPer100g(rs.getDouble("totalfat_amount_per_100g"));
 					foodItem.setTotalfatImputationReference(rs.getString("totalfat_imputation_reference"));
 					foodItem.setTotalfatImputationDate(rs.getDate("totalfat_imputation_date"));
 					foodItem.setContainsAddedSodium(rs.getInt("contains_added_sodium"));

@@ -23,10 +23,10 @@ public class CanadaFoodGuideDataset {
 	private Double    transfatAmountPer100g;              /* double precision */
 	private String    transfatImputationReference;        /* text */
 	private Date      transfatImputationDate;             /* date */
-	private Double    satfatAmoutPer100g;                 /* double precision */
+	private Double    satfatAmountPer100g;                /* double precision */
 	private String    satfatImputationReference;          /* text */
 	private Date      satfatImputationDate;               /* date */
-	private Double    totalfatAmoutPer100g;               /* double precision */
+	private Double    totalfatAmountPer100g;              /* double precision */
 	private String    totalfatImputationReference;        /* text */
 	private Date      totalfatImputationDate;             /* date */
 	private Integer   containsAddedSodium;                /* smallint */
@@ -284,17 +284,17 @@ public class CanadaFoodGuideDataset {
 	}
 
 	/**
-	 * @return the satfatAmoutPer100g
+	 * @return the satfatAmountPer100g
 	 */
-	public Double getSatfatAmoutPer100g() {
-		return satfatAmoutPer100g;
+	public Double getSatfatAmountPer100g() {
+		return satfatAmountPer100g;
 	}
 
 	/**
-	 * @param satfatAmoutPer100g the satfatAmoutPer100g to set
+	 * @param satfatAmountPer100g the satfatAmountPer100g to set
 	 */
-	public void setSatfatAmoutPer100g(Double satfatAmoutPer100g) {
-		this.satfatAmoutPer100g = satfatAmoutPer100g;
+	public void setSatfatAmountPer100g(Double satfatAmountPer100g) {
+		this.satfatAmountPer100g = satfatAmountPer100g;
 	}
 
 	/**
@@ -326,17 +326,17 @@ public class CanadaFoodGuideDataset {
 	}
 
 	/**
-	 * @return the totalfatAmoutPer100g
+	 * @return the totalfatAmountPer100g
 	 */
-	public Double getTotalfatAmoutPer100g() {
-		return totalfatAmoutPer100g;
+	public Double getTotalfatAmountPer100g() {
+		return totalfatAmountPer100g;
 	}
 
 	/**
-	 * @param totalfatAmoutPer100g the totalfatAmoutPer100g to set
+	 * @param totalfatAmountPer100g the totalfatAmountPer100g to set
 	 */
-	public void setTotalfatAmoutPer100g(Double totalfatAmoutPer100g) {
-		this.totalfatAmoutPer100g = totalfatAmoutPer100g;
+	public void setTotalfatAmountPer100g(Double totalfatAmountPer100g) {
+		this.totalfatAmountPer100g = totalfatAmountPer100g;
 	}
 
 	/**
