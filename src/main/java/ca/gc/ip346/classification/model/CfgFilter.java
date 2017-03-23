@@ -1,5 +1,8 @@
 package ca.gc.ip346.classification.model;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.QueryParam;
 
 public class CfgFilter {
@@ -38,8 +41,8 @@ public class CfgFilter {
 	@QueryParam("added-free-sugars-missing")            private String addedFreeSugarsMissing;
 	@QueryParam("added-sugar-substitutes-missing")      private String addedSugarSubstitutesMissing;
 	@QueryParam("comments")                             private String comments;
-	@QueryParam("last-update-date-From")                private String lastUpdateDateFrom;
-	@QueryParam("last-update-date-To")                  private String lastUpdateDateTo;
+	@QueryParam("last-update-date-from")                private String lastUpdateDateFrom;
+	@QueryParam("last-update-date-to")                  private String lastUpdateDateTo;
 	@QueryParam("reference-amount-last-updated")        private String referenceAmountLastUpdated;
 	@QueryParam("cfg-serving-last-updated")             private String cfgServingLastUpdated;
 	@QueryParam("tier-4-serving-last-updated")          private String tier4ServingLastUpdated;
@@ -57,6 +60,9 @@ public class CfgFilter {
 	@QueryParam("added-caffeine-last-updated")          private String addedCaffeineLastUpdated;
 	@QueryParam("added-free-sugars-last-updated")       private String addedFreeSugarsLastUpdated;
 	@QueryParam("added-sugar-substitutes-last-updated") private String addedSugarSubstitutesLastUpdated;
+	@QueryParam("missing")                              private List<String> missingValues;
+	@QueryParam("last-updated")                         private List<String> lastUpdatedFilter;
+	@QueryParam("contains-added")                       private List<String> containsAdded;
 
 	private String sql;
 
@@ -814,6 +820,48 @@ public class CfgFilter {
 	 */
 	public void setAddedSugarSubstitutesLastUpdated(String addedSugarSubstitutesLastUpdated) {
 		this.addedSugarSubstitutesLastUpdated = addedSugarSubstitutesLastUpdated;
+	}
+
+	/**
+	 * @return the missingValues
+	 */
+	public List<String> getMissingValues() {
+		return missingValues;
+	}
+
+	/**
+	 * @param missingValues the missingValues to set
+	 */
+	public void setMissingValues(List<String> missingValues) {
+		this.missingValues = missingValues;
+	}
+
+	/**
+	 * @return the lastUpdatedFilter
+	 */
+	public List<String> getLastUpdatedFilter() {
+		return lastUpdatedFilter;
+	}
+
+	/**
+	 * @param lastUpdatedFilter the lastUpdatedFilter to set
+	 */
+	public void setLastUpdatedFilter(List<String> lastUpdatedFilter) {
+		this.lastUpdatedFilter = lastUpdatedFilter;
+	}
+
+	/**
+	 * @return the containsAdded
+	 */
+	public List<String> getContainsAdded() {
+		return containsAdded;
+	}
+
+	/**
+	 * @param containsAdded the containsAdded to set
+	 */
+	public void setContainsAdded(List<String> containsAdded) {
+		this.containsAdded = containsAdded;
 	}
 
 	/**
