@@ -1,7 +1,6 @@
 package ca.gc.ip346.classification.model;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.QueryParam;
 

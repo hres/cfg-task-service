@@ -7,7 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.naming.NamingException;
 import javax.ws.rs.BeanParam;
@@ -26,12 +30,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
+import com.google.common.base.CaseFormat;
 import com.google.gson.GsonBuilder;
 
 import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
 import ca.gc.ip346.classification.model.CfgTier;
+import ca.gc.ip346.classification.model.ContainsAdded;
 import ca.gc.ip346.classification.model.FoodItem;
+import ca.gc.ip346.classification.model.Missing;
 import ca.gc.ip346.classification.model.RecipeRolled;
 // import ca.gc.ip346.classification.model.NewAndImprovedFoodItem;
 import ca.gc.ip346.classification.model.CfgFilter;
@@ -66,7 +73,7 @@ public class FoodsResource {
 	@GET
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	// @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodGuideDataset> getFoodList(@BeanParam CfgFilter search) {
 		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
@@ -316,16 +323,180 @@ public class FoodsResource {
 				sb.append("   AND contains_sugar_substitutes = ?").append("\n");
 			}
 
+			boolean notIgnore = false;
+			String[] arr = new String[search.getContainsAdded().size()];
+			arr = search.getContainsAdded().toArray(arr);
+			for (String i : arr) {
+				logger.error("[01;32m" + i + "[00;00m");
+				if (!i.equals("0")) {
+					notIgnore = true;
+				}
+			}
+
+			Map<String, String> map = null;
+
+			if (search.getContainsAdded() != null && notIgnore) {
+				map = new HashMap<String, String>();
+				logger.error("[01;32m" + search.getContainsAdded() + "[00;00m");
+				for (String keyValue : search.getContainsAdded()) {
+					StringTokenizer tokenizer = new StringTokenizer(keyValue, "=");
+					map.put(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, tokenizer.nextToken()),tokenizer.nextToken());
+					logger.error("[01;32m" + keyValue + "[00;00m");
+				}
+				logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+
+				Set<String> keys = map.keySet();
+				for (String key : keys) {
+					switch (ContainsAdded.valueOf(key)) {
+						case sodium:
+							sb.append("   AND contains_added_sodium = ?")      .append ("\n");
+							break;
+						case sugar:
+							sb.append("   AND contains_added_sugar = ?")       .append ("\n");
+							break;
+						case fat:
+							sb.append("   AND contains_added_fat = ?")         .append ("\n");
+							break;
+						case transfat:
+							sb.append("   AND contains_added_transfat = ?")    .append ("\n");
+							break;
+						case caffeine:
+							sb.append("   AND contains_caffeine = ?")          .append ("\n");
+							break;
+						case freeSugars:
+							sb.append("   AND contains_free_sugars = ?")       .append ("\n");
+							break;
+						case sugarSubstitutes:
+							sb.append("   AND contains_sugar_substitutes = ?") .append ("\n");
+							break;
+					}
+				}
+			}
+
 			if (search.getMissingValues() != null) {
 				logger.error("[01;32m" + search.getMissingValues() + "[00;00m");
+				for (String name : search.getMissingValues()) {
+					switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
+						case referenceAmount:
+							sb.append("   AND reference_amount_g = NULL").append("\n");
+							sb.append("    OR reference_amount_g = 0").append("\n");
+						case cfgServing:
+							sb.append("   AND food_guide_serving_g = NULL").append("\n");
+							sb.append("    OR food_guide_serving_g = 0").append("\n");
+						case tier4Serving:
+							sb.append("   AND tier_4_serving_g = NULL").append("\n");
+							sb.append("    OR tier_4_serving_g = 0").append("\n");
+						case energyValue:
+							sb.append("   AND energy_kcal = NULL").append("\n");
+							sb.append("    OR energy_kcal = 0").append("\n");
+						case cnfCode:
+							sb.append("   AND cnf_group_code = NULL").append("\n");
+							sb.append("    OR cnf_group_code = 0").append("\n");
+						case recipeRolledUpDown:
+							sb.append("   AND rolled_up = NULL").append("\n");
+							sb.append("    OR rolled_up = 0").append("\n");
+						case sodiumValue:
+							sb.append("   AND sodium_amount_per_100g = NULL").append("\n");
+							sb.append("    OR sodium_amount_per_100g = 0").append("\n");
+						case sugarValue:
+							sb.append("   AND sugar_amount_per_100g = NULL").append("\n");
+							sb.append("    OR sugar_amount_per_100g = 0").append("\n");
+						case fatValue:
+							sb.append("   AND totalfat_amount_per_100g = NULL").append("\n");
+							sb.append("    OR totalfat_amount_per_100g = 0").append("\n");
+						case transfatValue:
+							sb.append("   AND transfat_amount_per_100g = NULL").append("\n");
+							sb.append("    OR transfat_amount_per_100g = 0").append("\n");
+						case satfatValue:
+							sb.append("   AND satfat_amount_per_100g = NULL").append("\n");
+							sb.append("    OR satfat_amount_per_100g = 0").append("\n");
+						case addedSodium:
+							sb.append("   AND contains_added_sodium = NULL").append("\n");
+							sb.append("    OR contains_added_sodium = 0").append("\n");
+						case addedSugar:
+							sb.append("   AND contains_added_sugar = NULL").append("\n");
+							sb.append("    OR contains_added_sugar = 0").append("\n");
+						case addedFat:
+							sb.append("   AND contains_added_fat = NULL").append("\n");
+							sb.append("    OR contains_added_fat = 0").append("\n");
+						case addedTransfat:
+							sb.append("   AND contains_added_transfat = NULL").append("\n");
+							sb.append("    OR contains_added_transfat = 0").append("\n");
+						case caffeine:
+							sb.append("   AND contains_caffeine = NULL").append("\n");
+							sb.append("    OR contains_caffeine = 0").append("\n");
+						case freeSugars:
+							sb.append("   AND contains_free_sugars = NULL").append("\n");
+							sb.append("    OR contains_free_sugars = 0").append("\n");
+						case sugarSubstitutes:
+							sb.append("   AND contains_sugar_substitutes = NULL").append("\n");
+							sb.append("    OR contains_sugar_substitutes = 0").append("\n");
+					}
+				}
 			}
 
-			if (search.getLastUpdatedFilter() != null) {
-				logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
-			}
-
-			if (search.getContainsAdded() != null) {
-				logger.error("[01;32m" + search.getContainsAdded() + "[00;00m");
+			if (!search.getLastUpdateDateFrom().isEmpty() && !search.getLastUpdateDateTo().isEmpty()) {
+				if (search.getLastUpdatedFilter() != null) {
+					logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
+					for (String name : search.getLastUpdatedFilter()) {
+						switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
+							case referenceAmount:
+								sb.append("   AND reference_amount_g = NULL").append("\n");
+								sb.append("    OR reference_amount_g = 0").append("\n");
+							case cfgServing:
+								sb.append("   AND food_guide_serving_g = NULL").append("\n");
+								sb.append("    OR food_guide_serving_g = 0").append("\n");
+							case tier4Serving:
+								sb.append("   AND tier_4_serving_g = NULL").append("\n");
+								sb.append("    OR tier_4_serving_g = 0").append("\n");
+							case energyValue:
+								sb.append("   AND energy_kcal = NULL").append("\n");
+								sb.append("    OR energy_kcal = 0").append("\n");
+							case cnfCode:
+								sb.append("   AND cnf_group_code = NULL").append("\n");
+								sb.append("    OR cnf_group_code = 0").append("\n");
+							case recipeRolledUpDown:
+								sb.append("   AND rolled_up = NULL").append("\n");
+								sb.append("    OR rolled_up = 0").append("\n");
+							case sodiumValue:
+								sb.append("   AND sodium_amount_per_100g = NULL").append("\n");
+								sb.append("    OR sodium_amount_per_100g = 0").append("\n");
+							case sugarValue:
+								sb.append("   AND sugar_amount_per_100g = NULL").append("\n");
+								sb.append("    OR sugar_amount_per_100g = 0").append("\n");
+							case fatValue:
+								sb.append("   AND totalfat_amount_per_100g = NULL").append("\n");
+								sb.append("    OR totalfat_amount_per_100g = 0").append("\n");
+							case transfatValue:
+								sb.append("   AND transfat_amount_per_100g = NULL").append("\n");
+								sb.append("    OR transfat_amount_per_100g = 0").append("\n");
+							case satfatValue:
+								sb.append("   AND satfat_amount_per_100g = NULL").append("\n");
+								sb.append("    OR satfat_amount_per_100g = 0").append("\n");
+							case addedSodium:
+								sb.append("   AND contains_added_sodium_updated_date = NULL").append("\n");
+								sb.append("    OR contains_added_sodium_updated_date = 0").append("\n");
+							case addedSugar:
+								sb.append("   AND contains_added_sugar_updated_date = NULL").append("\n");
+								sb.append("    OR contains_added_sugar_updated_date = 0").append("\n");
+							case addedFat:
+								sb.append("   AND contains_added_fat_updated_date = NULL").append("\n");
+								sb.append("    OR contains_added_fat_updated_date = 0").append("\n");
+							case addedTransfat:
+								sb.append("   AND contains_added_transfat_updated_date = NULL").append("\n");
+								sb.append("    OR contains_added_transfat_updated_date = 0").append("\n");
+							case caffeine:
+								sb.append("   AND contains_caffeine_updated_date = NULL").append("\n");
+								sb.append("    OR contains_caffeine_updated_date = 0").append("\n");
+							case freeSugars:
+								sb.append("   AND contains_free_sugars_updated_date = NULL").append("\n");
+								sb.append("    OR contains_free_sugars_updated_date = 0").append("\n");
+							case sugarSubstitutes:
+								sb.append("   AND contains_sugar_substitutes_updated_date = NULL").append("\n");
+								sb.append("    OR contains_sugar_substitutes_updated_date = 0").append("\n");
+						}
+					}
+				}
 			}
 
 			if (search.getReferenceAmountMissing()       != null && !search.getReferenceAmountMissing().       isEmpty ())  {
@@ -542,6 +713,23 @@ public class FoodsResource {
 					}
 					if (search.getSugarSubstitutes() != null && !search.getSugarSubstitutes(). equals (Added.IGNORE.getCode())) {
 						stmt.setInt(++i, search.getSugarSubstitutes());
+					}
+
+					if (search.getContainsAdded() != null && notIgnore) {
+						Set<String> keys = map.keySet();
+						for (String key : keys) {
+							switch (ContainsAdded.valueOf(key)) {
+								case sodium:
+								case sugar:
+								case fat:
+								case transfat:
+								case caffeine:
+								case freeSugars:
+								case sugarSubstitutes:
+									stmt.setInt(++i, map.get(key).equals("true") ? 1 : 2);
+									break;
+							}
+						}
 					}
 				}
 
