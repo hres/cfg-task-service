@@ -7,9 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.naming.NamingException;
 import javax.ws.rs.BeanParam;
@@ -318,67 +316,107 @@ public class FoodsResource {
 				sb.append("   AND contains_sugar_substitutes = ?").append("\n");
 			}
 
+			if (search.getMissingValues() != null) {
+				logger.error("[01;32m" + search.getMissingValues() + "[00;00m");
+			}
+
+			if (search.getLastUpdatedFilter() != null) {
+				logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
+			}
+
+			if (search.getContainsAdded() != null) {
+				logger.error("[01;32m" + search.getContainsAdded() + "[00;00m");
+			}
+
 			if (search.getReferenceAmountMissing()       != null && !search.getReferenceAmountMissing().       isEmpty ())  {
 				logger.error("[01;31m" + search.getReferenceAmountMissing() + "[00;00m");
 				sb.append("   AND reference_amount_g = NULL").append("\n");
+				sb.append("    OR reference_amount_g = 0").append("\n");
 			}
 			if (search.getCfgServingMissing()            != null && !search.getCfgServingMissing().            isEmpty ())  {
 				logger.error("[01;31m" + search.getCfgServingMissing() + "[00;00m");
 				sb.append("   AND food_guide_serving_g = NULL").append("\n");
+				sb.append("    OR food_guide_serving_g = 0").append("\n");
 			}
 			if (search.getTier4ServingMissing()          != null && !search.getTier4ServingMissing().          isEmpty ())  {
 				logger.error("[01;31m" + search.getTier4ServingMissing() + "[00;00m");
 				sb.append("   AND tier_4_serving_g = NULL").append("\n");
+				sb.append("    OR tier_4_serving_g = 0").append("\n");
 			}
 			if (search.getEnergyValueMissing()           != null && !search.getEnergyValueMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getEnergyValueMissing() + "[00;00m");
 				sb.append("   AND energy_kcal = NULL").append("\n");
+				sb.append("    OR energy_kcal = 0").append("\n");
 			}
 			if (search.getCnfCodeMissing()               != null && !search.getCnfCodeMissing().               isEmpty ())  {
 				logger.error("[01;31m" + search.getCnfCodeMissing() + "[00;00m");
 				sb.append("   AND cnf_group_code = NULL").append("\n");
+				sb.append("    OR cnf_group_code = 0").append("\n");
 			}
 			if (search.getRecipeRolledUpDownMissing()    != null && !search.getRecipeRolledUpDownMissing().    isEmpty ())  {
 				logger.error("[01;31m" + search.getRecipeRolledUpDownMissing() + "[00;00m");
 				sb.append("   AND rolled_up = NULL").append("\n");
+				sb.append("    OR rolled_up = 0").append("\n");
 			}
 			if (search.getSodiumValueMissing()           != null && !search.getSodiumValueMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getSodiumValueMissing() + "[00;00m");
 				sb.append("   AND sodium_amount_per_100g = NULL").append("\n");
+				sb.append("    OR sodium_amount_per_100g = 0").append("\n");
 			}
 			if (search.getSugarValueMissing()            != null && !search.getSugarValueMissing().            isEmpty ())  {
 				logger.error("[01;31m" + search.getSugarValueMissing() + "[00;00m");
 				sb.append("   AND sugar_amount_per_100g = NULL").append("\n");
+				sb.append("    OR sugar_amount_per_100g = 0").append("\n");
 			}
 			if (search.getFatValueMissing()              != null && !search.getFatValueMissing().              isEmpty ())  {
 				logger.error("[01;31m" + search.getFatValueMissing() + "[00;00m");
 				sb.append("   AND totalfat_amount_per_100g = NULL").append("\n");
+				sb.append("    OR totalfat_amount_per_100g = 0").append("\n");
 			}
 			if (search.getTransfatValueMissing()         != null && !search.getTransfatValueMissing().         isEmpty ())  {
 				logger.error("[01;31m" + search.getTransfatValueMissing() + "[00;00m");
 				sb.append("   AND transfat_amount_per_100g = NULL").append("\n");
+				sb.append("    OR transfat_amount_per_100g = 0").append("\n");
 			}
 			if (search.getSatfatValueMissing()           != null && !search.getSatfatValueMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getSatfatValueMissing() + "[00;00m");
 				sb.append("   AND satfat_amount_per_100g = NULL").append("\n");
+				sb.append("    OR satfat_amount_per_100g = 0").append("\n");
 			}
 			if (search.getAddedSodiumMissing()           != null && !search.getAddedSodiumMissing().           isEmpty ())  {
 				logger.error("[01;31m" + search.getAddedSodiumMissing() + "[00;00m");
+				sb.append("   AND contains_added_sodium = NULL").append("\n");
+				sb.append("    OR contains_added_sodium = 0").append("\n");
 			}
 			if (search.getAddedSugarMissing()            != null && !search.getAddedSugarMissing().            isEmpty ())  {
 				logger.error("[01;31m" + search.getAddedSugarMissing() + "[00;00m");
+				sb.append("   AND contains_added_sugar = NULL").append("\n");
+				sb.append("    OR contains_added_sugar = 0").append("\n");
+			}
+			if (search.getAddedFatMissing()         != null && !search.getAddedFatMissing().                   isEmpty ())  {
+				logger.error("[01;31m" + search.getAddedFatMissing() + "[00;00m");
+				sb.append("   AND contains_added_fat = NULL").append("\n");
+				sb.append("    OR contains_added_fat = 0").append("\n");
 			}
 			if (search.getAddedTransfatMissing()         != null && !search.getAddedTransfatMissing().         isEmpty ())  {
 				logger.error("[01;31m" + search.getAddedTransfatMissing() + "[00;00m");
+				sb.append("   AND contains_added_transfat = NULL").append("\n");
+				sb.append("    OR contains_added_transfat = 0").append("\n");
 			}
 			if (search.getAddedCaffeineMissing()         != null && !search.getAddedCaffeineMissing().         isEmpty ())  {
 				logger.error("[01;31m" + search.getAddedCaffeineMissing() + "[00;00m");
+				sb.append("   AND contains_caffeine = NULL").append("\n");
+				sb.append("    OR contains_caffeine = 0").append("\n");
 			}
 			if (search.getAddedFreeSugarsMissing()       != null && !search.getAddedFreeSugarsMissing().       isEmpty ())  {
 				logger.error("[01;31m" + search.getAddedFreeSugarsMissing() + "[00;00m");
+				sb.append("   AND contains_free_sugars = NULL").append("\n");
+				sb.append("    OR contains_free_sugars = 0").append("\n");
 			}
 			if (search.getAddedSugarSubstitutesMissing() != null && !search.getAddedSugarSubstitutesMissing(). isEmpty ())  {
 				logger.error("[01;31m" + search.getAddedSugarSubstitutesMissing() + "[00;00m");
+				sb.append("   AND contains_sugar_substitutes = NULL").append("\n");
+				sb.append("    OR contains_sugar_substitutes = 0").append("\n");
 			}
 
 			if (!search.getComments().isEmpty()) {
