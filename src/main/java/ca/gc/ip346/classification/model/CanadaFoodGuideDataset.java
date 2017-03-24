@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.ALWAYS)
 public class CanadaFoodGuideDataset {
-	private Integer   type;                               /* smallint */
+	private String    type;                               /* smallint */
 	private Integer   code;                               /* integer */
 	private String    name;                               /* text */
 	private Integer   cnfGroupCode;                       /* integer */
@@ -62,14 +62,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the type
 	 */
-	public Integer getType() {
+	public String getType() {
 		return type;
 	}
 
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(Integer type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

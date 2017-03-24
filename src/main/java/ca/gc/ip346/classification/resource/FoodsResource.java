@@ -225,24 +225,38 @@ public class FoodsResource {
 		if (search != null) {
 			StringBuffer sb = new StringBuffer(search.getSql());
 
+			logger.error("[01;30m" + search.getDataSource() + "[00;00m");
+
 			sb.append(" WHERE length('this where-clause is an artifact') = 32 ").append("\n");
-			if (!search.getDataSource().equals("0")) {
+			if (search.getDataSource() != null && search.getDataSource().matches("food|recipe")) {
 				sb.append("   AND type = ?").append("\n");
 			}
-			if (!search.getFoodRecipeName().                                         isEmpty ()) {
+
+			logger.error("[01;30m" + search.getFoodRecipeName() + "[00;00m");
+
+			if (search.getFoodRecipeName() != null && !search.getFoodRecipeName().isEmpty()) {
 				sb.append("   AND LOWER(name) LIKE ?").append("\n");
 			}
-			if (!search.getFoodRecipeCode().                                         isEmpty ()) {
+
+			logger.error("[01;30m" + search.getFoodRecipeCode() + "[00;00m");
+
+			if (search.getFoodRecipeCode() != null && !search.getFoodRecipeCode().isEmpty()) {
 				sb.append("   AND code = ? OR CAST(code AS text) LIKE ?").append("\n");
 			}
-			if (!search.getCnfCode().                                                isEmpty ()) {
+
+			logger.error("[01;30m" + search.getCnfCode() + "[00;00m");
+
+			if (search.getCnfCode() != null && !search.getCnfCode().isEmpty()) {
 				sb.append("   AND cnf_group_code = ?").append("\n");
 			}
-			if (!search.getSubgroupCode().                                           isEmpty ()) {
+
+			logger.error("[01;30m" + search.getSubgroupCode() + "[00;00m");
+
+			if (search.getSubgroupCode() != null && !search.getSubgroupCode().isEmpty()) {
 				sb.append("   AND CAST(cfg_code AS text) LIKE ?").append("\n");
 			}
 
-			if (!search.getCfgTier().equals(CfgTier.ALL.getCode())) {
+			if (search.getCfgTier() != null && !search.getCfgTier().equals(CfgTier.ALL.getCode())) {
 				switch (search.getCfgTier()) {
 					case 1:
 					case 2:
@@ -335,7 +349,7 @@ public class FoodsResource {
 			if (search.getContainsAdded() != null && notIgnore) {
 				map = new HashMap<String, String>();
 				logger.error("[01;32m" + search.getContainsAdded() + "[00;00m");
-				for (String keyValue : search.getContainsAdded()) {
+				for (String keyValue : arr) {
 					StringTokenizer tokenizer = new StringTokenizer(keyValue, "=");
 					map.put(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, tokenizer.nextToken()),tokenizer.nextToken());
 					logger.error("[01;32m" + keyValue + "[00;00m");
@@ -432,7 +446,7 @@ public class FoodsResource {
 				}
 			}
 
-			if (search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
+			if (search.getLastUpdateDateFrom() != null && search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo() != null && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
 				if (search.getLastUpdatedFilter() != null) {
 					logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
 					for (String name : search.getLastUpdatedFilter()) {
@@ -493,11 +507,11 @@ public class FoodsResource {
 				}
 			}
 
-			if (!search.getComments().isEmpty()) {
+			if (search.getComments() != null && !search.getComments().isEmpty()) {
 				sb.append("   AND LOWER(comments) LIKE ?").append("\n");
 			}
 
-			if (search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
+			if (search.getCommitDateFrom() != null && search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo() != null && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
 				sb.append("   AND commit_date BETWEEN ? AND ?") .append("\n");
 			}
 
@@ -592,59 +606,59 @@ public class FoodsResource {
 				sb.append("    OR contains_sugar_substitutes = 0").append("\n");
 			}
 
-			if (!search.getLastUpdateDateFrom().isEmpty() && !search.getLastUpdateDateTo().isEmpty()) {
-				if (search.getReferenceAmountLastUpdated()       != null && !search.getReferenceAmountLastUpdated().       isEmpty ())  {
-					logger.error("[01;30m" + search.getReferenceAmountLastUpdated() + "[00;00m");
-				}
-				if (search.getCfgServingLastUpdated()            != null && !search.getCfgServingLastUpdated().            isEmpty ())  {
-					logger.error("[01;30m" + search.getCfgServingLastUpdated() + "[00;00m");
-				}
-				if (search.getTier4ServingLastUpdated()          != null && !search.getTier4ServingLastUpdated().          isEmpty ())  {
-					logger.error("[01;30m" + search.getTier4ServingLastUpdated() + "[00;00m");
-				}
-				if (search.getEnergyValueLastUpdated()           != null && !search.getEnergyValueLastUpdated().           isEmpty ())  {
-					logger.error("[01;30m" + search.getEnergyValueLastUpdated() + "[00;00m");
-				}
-				if (search.getCnfCodeLastUpdated()               != null && !search.getCnfCodeLastUpdated().               isEmpty ())  {
-					logger.error("[01;30m" + search.getCnfCodeLastUpdated() + "[00;00m");
-				}
-				if (search.getRecipeRolledUpDownLastUpdated()    != null && !search.getRecipeRolledUpDownLastUpdated().    isEmpty ())  {
-					logger.error("[01;30m" + search.getRecipeRolledUpDownLastUpdated() + "[00;00m");
-				}
-				if (search.getSodiumValueLastUpdated()           != null && !search.getSodiumValueLastUpdated().           isEmpty ())  {
-					logger.error("[01;30m" + search.getSodiumValueLastUpdated() + "[00;00m");
-				}
-				if (search.getSugarValueLastUpdated()            != null && !search.getSugarValueLastUpdated().            isEmpty ())  {
-					logger.error("[01;30m" + search.getSugarValueLastUpdated() + "[00;00m");
-				}
-				if (search.getFatValueLastUpdated()              != null && !search.getFatValueLastUpdated().              isEmpty ())  {
-					logger.error("[01;30m" + search.getFatValueLastUpdated() + "[00;00m");
-				}
-				if (search.getTransfatValueLastUpdated()         != null && !search.getTransfatValueLastUpdated().         isEmpty ())  {
-					logger.error("[01;30m" + search.getTransfatValueLastUpdated() + "[00;00m");
-				}
-				if (search.getSatfatValueLastUpdated()           != null && !search.getSatfatValueLastUpdated().           isEmpty ())  {
-					logger.error("[01;30m" + search.getSatfatValueLastUpdated() + "[00;00m");
-				}
-				if (search.getAddedSodiumLastUpdated()           != null && !search.getAddedSodiumLastUpdated().           isEmpty ())  {
-					logger.error("[01;30m" + search.getAddedSodiumLastUpdated() + "[00;00m");
-				}
-				if (search.getAddedSugarLastUpdated()            != null && !search.getAddedSugarLastUpdated().            isEmpty ())  {
-					logger.error("[01;30m" + search.getAddedSugarLastUpdated() + "[00;00m");
-				}
-				if (search.getAddedTransfatLastUpdated()         != null && !search.getAddedTransfatLastUpdated().         isEmpty ())  {
-					logger.error("[01;30m" + search.getAddedTransfatLastUpdated() + "[00;00m");
-				}
-				if (search.getAddedCaffeineLastUpdated()         != null && !search.getAddedCaffeineLastUpdated().         isEmpty ())  {
-					logger.error("[01;30m" + search.getAddedCaffeineLastUpdated() + "[00;00m");
-				}
-				if (search.getAddedFreeSugarsLastUpdated()       != null && !search.getAddedFreeSugarsLastUpdated().       isEmpty ())  {
-					logger.error("[01;30m" + search.getAddedFreeSugarsLastUpdated() + "[00;00m");
-				}
-				if (search.getAddedSugarSubstitutesLastUpdated() != null && !search.getAddedSugarSubstitutesLastUpdated(). isEmpty ())  {
-					logger.error("[01;30m" + search.getAddedSugarSubstitutesLastUpdated() + "[00;00m");
-				}
-			}
+			// if (!search.getLastUpdateDateFrom().isEmpty() && !search.getLastUpdateDateTo().isEmpty()) {
+				// if (search.getReferenceAmountLastUpdated()       != null && !search.getReferenceAmountLastUpdated().       isEmpty ())  {
+					// logger.error("[01;30m" + search.getReferenceAmountLastUpdated() + "[00;00m");
+				// }
+				// if (search.getCfgServingLastUpdated()            != null && !search.getCfgServingLastUpdated().            isEmpty ())  {
+					// logger.error("[01;30m" + search.getCfgServingLastUpdated() + "[00;00m");
+				// }
+				// if (search.getTier4ServingLastUpdated()          != null && !search.getTier4ServingLastUpdated().          isEmpty ())  {
+					// logger.error("[01;30m" + search.getTier4ServingLastUpdated() + "[00;00m");
+				// }
+				// if (search.getEnergyValueLastUpdated()           != null && !search.getEnergyValueLastUpdated().           isEmpty ())  {
+					// logger.error("[01;30m" + search.getEnergyValueLastUpdated() + "[00;00m");
+				// }
+				// if (search.getCnfCodeLastUpdated()               != null && !search.getCnfCodeLastUpdated().               isEmpty ())  {
+					// logger.error("[01;30m" + search.getCnfCodeLastUpdated() + "[00;00m");
+				// }
+				// if (search.getRecipeRolledUpDownLastUpdated()    != null && !search.getRecipeRolledUpDownLastUpdated().    isEmpty ())  {
+					// logger.error("[01;30m" + search.getRecipeRolledUpDownLastUpdated() + "[00;00m");
+				// }
+				// if (search.getSodiumValueLastUpdated()           != null && !search.getSodiumValueLastUpdated().           isEmpty ())  {
+					// logger.error("[01;30m" + search.getSodiumValueLastUpdated() + "[00;00m");
+				// }
+				// if (search.getSugarValueLastUpdated()            != null && !search.getSugarValueLastUpdated().            isEmpty ())  {
+					// logger.error("[01;30m" + search.getSugarValueLastUpdated() + "[00;00m");
+				// }
+				// if (search.getFatValueLastUpdated()              != null && !search.getFatValueLastUpdated().              isEmpty ())  {
+					// logger.error("[01;30m" + search.getFatValueLastUpdated() + "[00;00m");
+				// }
+				// if (search.getTransfatValueLastUpdated()         != null && !search.getTransfatValueLastUpdated().         isEmpty ())  {
+					// logger.error("[01;30m" + search.getTransfatValueLastUpdated() + "[00;00m");
+				// }
+				// if (search.getSatfatValueLastUpdated()           != null && !search.getSatfatValueLastUpdated().           isEmpty ())  {
+					// logger.error("[01;30m" + search.getSatfatValueLastUpdated() + "[00;00m");
+				// }
+				// if (search.getAddedSodiumLastUpdated()           != null && !search.getAddedSodiumLastUpdated().           isEmpty ())  {
+					// logger.error("[01;30m" + search.getAddedSodiumLastUpdated() + "[00;00m");
+				// }
+				// if (search.getAddedSugarLastUpdated()            != null && !search.getAddedSugarLastUpdated().            isEmpty ())  {
+					// logger.error("[01;30m" + search.getAddedSugarLastUpdated() + "[00;00m");
+				// }
+				// if (search.getAddedTransfatLastUpdated()         != null && !search.getAddedTransfatLastUpdated().         isEmpty ())  {
+					// logger.error("[01;30m" + search.getAddedTransfatLastUpdated() + "[00;00m");
+				// }
+				// if (search.getAddedCaffeineLastUpdated()         != null && !search.getAddedCaffeineLastUpdated().         isEmpty ())  {
+					// logger.error("[01;30m" + search.getAddedCaffeineLastUpdated() + "[00;00m");
+				// }
+				// if (search.getAddedFreeSugarsLastUpdated()       != null && !search.getAddedFreeSugarsLastUpdated().       isEmpty ())  {
+					// logger.error("[01;30m" + search.getAddedFreeSugarsLastUpdated() + "[00;00m");
+				// }
+				// if (search.getAddedSugarSubstitutesLastUpdated() != null && !search.getAddedSugarSubstitutesLastUpdated(). isEmpty ())  {
+					// logger.error("[01;30m" + search.getAddedSugarSubstitutesLastUpdated() + "[00;00m");
+				// }
+			// }
 
 			logger.error("[01;34mSQL query to follow:\n" + sb + "[00;00m");
 
@@ -658,23 +672,23 @@ public class FoodsResource {
 				int i = 0; // keeps count of the number of placeholders
 
 				if (search != null) {
-					if (!search.getDataSource().equals("0")) {
-						stmt.setInt(++i, Integer.parseInt(search.getDataSource()));
+					if (search.getDataSource() != null && search.getDataSource().matches("food|recipe")) {
+						stmt.setInt(++i, search.getDataSource().equals("food") ? 1 : 2);
 					}
-					if (!search.getFoodRecipeName().isEmpty()) {
+					if (search.getFoodRecipeName() != null && !search.getFoodRecipeName().isEmpty()) {
 						stmt.setString(++i, new String("%" + search.getFoodRecipeName() + "%").toLowerCase());
 					}
-					if (!search.getFoodRecipeCode().isEmpty()) {
+					if (search.getFoodRecipeCode() != null && !search.getFoodRecipeCode().isEmpty()) {
 						stmt.setInt(++i, Integer.parseInt(search.getFoodRecipeCode()));
 						stmt.setString(++i, new String("" + search.getFoodRecipeCode() + "%"));
 					}
-					if (!search.getCnfCode().isEmpty()) {
+					if (search.getCnfCode() != null && !search.getCnfCode().isEmpty()) {
 						stmt.setInt(++i, Integer.parseInt(search.getCnfCode()));
 					}
-					if (!search.getSubgroupCode().isEmpty()) {
+					if (search.getSubgroupCode() != null && !search.getSubgroupCode().isEmpty()) {
 						stmt.setString(++i, new String("" + search.getSubgroupCode() + "%"));
 					}
-					if (!search.getCfgTier().equals(CfgTier.ALL.getCode())) {
+					if (search.getCfgTier() != null && !search.getCfgTier().equals(CfgTier.ALL.getCode())) {
 						switch (search.getCfgTier()) {
 							case 1:
 							case 2:
@@ -726,7 +740,7 @@ public class FoodsResource {
 						}
 					}
 
-					if (search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
+					if (search.getLastUpdateDateFrom() != null && search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo() != null && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
 						if (search.getLastUpdatedFilter() != null) {
 							logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
 							for (String name : search.getLastUpdatedFilter()) {
@@ -761,11 +775,11 @@ public class FoodsResource {
 						}
 					}
 
-					if (!search.getComments().isEmpty()) {
+					if (search.getComments() != null && !search.getComments().isEmpty()) {
 						stmt.setString(++i, search.getComments());
 					}
 
-					if (search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
+					if (search.getCommitDateFrom() != null && search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo() != null && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
 						stmt.setString(++i, search.getLastUpdateDateFrom());
 						stmt.setString(++i, search.getLastUpdateDateTo());
 					}
@@ -775,7 +789,7 @@ public class FoodsResource {
 				while (rs.next()) {
 					CanadaFoodGuideDataset foodItem = new CanadaFoodGuideDataset();
 
-					foodItem.setType(Integer.parseInt(rs.getString("type")));
+					foodItem.setType(rs.getInt("type") == 1 ? "food" : "recipe");
 					foodItem.setCode(Integer.parseInt(rs.getString("code")));
 					foodItem.setName(rs.getString("name"));
 					foodItem.setCnfGroupCode(rs.getInt("cnf_group_code"));
@@ -831,7 +845,7 @@ public class FoodsResource {
 				e.printStackTrace();
 			}
 
-			// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+			logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 		}
 
 		return list;
