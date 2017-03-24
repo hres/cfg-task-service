@@ -235,9 +235,6 @@ public class FoodsResource {
 			if (!search.getFoodRecipeCode().                                         isEmpty ()) {
 				sb.append("   AND code = ? OR CAST(code AS text) LIKE ?").append("\n");
 			}
-			if (!search.getCommitDateFrom().isEmpty () && !search.getCommitDateTo(). isEmpty ()) {
-				sb.append("   AND commit_date BETWEEN ? AND ?").append("\n");
-			}
 			if (!search.getCnfCode().                                                isEmpty ()) {
 				sb.append("   AND cnf_group_code = ?").append("\n");
 			}
@@ -496,6 +493,14 @@ public class FoodsResource {
 				}
 			}
 
+			if (!search.getComments().isEmpty()) {
+				sb.append("   AND LOWER(comments) LIKE ?").append("\n");
+			}
+
+			if (search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
+				sb.append("   AND commit_date BETWEEN ? AND ?") .append("\n");
+			}
+
 			if (search.getReferenceAmountMissing()       != null && !search.getReferenceAmountMissing().       isEmpty ())  {
 				logger.error("[01;31m" + search.getReferenceAmountMissing() + "[00;00m");
 				sb.append("   AND reference_amount_g = NULL").append("\n");
@@ -587,10 +592,6 @@ public class FoodsResource {
 				sb.append("    OR contains_sugar_substitutes = 0").append("\n");
 			}
 
-			if (!search.getComments().isEmpty()) {
-				logger.error("[01;30m" + search.getComments() + "[00;00m");
-			}
-
 			if (!search.getLastUpdateDateFrom().isEmpty() && !search.getLastUpdateDateTo().isEmpty()) {
 				if (search.getReferenceAmountLastUpdated()       != null && !search.getReferenceAmountLastUpdated().       isEmpty ())  {
 					logger.error("[01;30m" + search.getReferenceAmountLastUpdated() + "[00;00m");
@@ -667,10 +668,6 @@ public class FoodsResource {
 						stmt.setInt(++i, Integer.parseInt(search.getFoodRecipeCode()));
 						stmt.setString(++i, new String("" + search.getFoodRecipeCode() + "%"));
 					}
-					if (!search.getCommitDateFrom().isEmpty() && !search.getCommitDateTo().isEmpty()) {
-						stmt.setString(++i, search.getCommitDateFrom());
-						stmt.setString(++i, search.getCommitDateTo());
-					}
 					if (!search.getCnfCode().isEmpty()) {
 						stmt.setInt(++i, Integer.parseInt(search.getCnfCode()));
 					}
@@ -727,6 +724,50 @@ public class FoodsResource {
 									break;
 							}
 						}
+					}
+
+					if (search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
+						if (search.getLastUpdatedFilter() != null) {
+							logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
+							for (String name : search.getLastUpdatedFilter()) {
+								switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
+									case referenceAmount:
+									case cfgServing:
+									case tier4Serving:
+										stmt.setString(++i, search.getLastUpdateDateFrom());
+										stmt.setString(++i, search.getLastUpdateDateTo());
+										break;
+									case energyValue:
+									case cnfCode:
+										break;
+									case recipeRolledUpDown:
+									case sodiumValue:
+									case sugarValue:
+									case fatValue:
+									case transfatValue:
+									case satfatValue:
+									case addedSodium:
+									case addedSugar:
+									case addedFat:
+									case addedTransfat:
+									case caffeine:
+									case freeSugars:
+									case sugarSubstitutes:
+										stmt.setString(++i, search.getLastUpdateDateFrom());
+										stmt.setString(++i, search.getLastUpdateDateTo());
+										break;
+								}
+							}
+						}
+					}
+
+					if (!search.getComments().isEmpty()) {
+						stmt.setString(++i, search.getComments());
+					}
+
+					if (search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
+						stmt.setString(++i, search.getLastUpdateDateFrom());
+						stmt.setString(++i, search.getLastUpdateDateTo());
 					}
 				}
 
