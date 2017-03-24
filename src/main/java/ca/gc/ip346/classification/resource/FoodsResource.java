@@ -435,65 +435,62 @@ public class FoodsResource {
 				}
 			}
 
-			if (!search.getLastUpdateDateFrom().isEmpty() && !search.getLastUpdateDateTo().isEmpty()) {
+			if (search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
 				if (search.getLastUpdatedFilter() != null) {
 					logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
 					for (String name : search.getLastUpdatedFilter()) {
 						switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 							case referenceAmount:
-								sb.append("   AND reference_amount_g = NULL").append("\n");
-								sb.append("    OR reference_amount_g = 0").append("\n");
+								sb.append("   AND reference_amount_update_date BETWEEN ? AND ?")           .append("\n");
+								break;
 							case cfgServing:
-								sb.append("   AND food_guide_serving_g = NULL").append("\n");
-								sb.append("    OR food_guide_serving_g = 0").append("\n");
+								sb.append("   AND food_guide_update_date BETWEEN ? AND ?")                 .append("\n");
+								break;
 							case tier4Serving:
-								sb.append("   AND tier_4_serving_g = NULL").append("\n");
-								sb.append("    OR tier_4_serving_g = 0").append("\n");
+								sb.append("   AND tier_4_serving_update_date BETWEEN ? AND ?")             .append("\n");
+								break;
 							case energyValue:
-								sb.append("   AND energy_kcal = NULL").append("\n");
-								sb.append("    OR energy_kcal = 0").append("\n");
 							case cnfCode:
-								sb.append("   AND cnf_group_code = NULL").append("\n");
-								sb.append("    OR cnf_group_code = 0").append("\n");
+								break;
 							case recipeRolledUpDown:
-								sb.append("   AND rolled_up = NULL").append("\n");
-								sb.append("    OR rolled_up = 0").append("\n");
+								sb.append("   AND rolled_up_update_date BETWEEN ? AND ?")                  .append("\n");
+								break;
 							case sodiumValue:
-								sb.append("   AND sodium_amount_per_100g = NULL").append("\n");
-								sb.append("    OR sodium_amount_per_100g = 0").append("\n");
+								sb.append("   AND sodium_imputation_date BETWEEN ? AND ?")                 .append("\n");
+								break;
 							case sugarValue:
-								sb.append("   AND sugar_amount_per_100g = NULL").append("\n");
-								sb.append("    OR sugar_amount_per_100g = 0").append("\n");
+								sb.append("   AND sugar_imputation_date BETWEEN ? AND ?")                  .append("\n");
+								break;
 							case fatValue:
-								sb.append("   AND totalfat_amount_per_100g = NULL").append("\n");
-								sb.append("    OR totalfat_amount_per_100g = 0").append("\n");
+								sb.append("   AND totalfat_imputation_date BETWEEN ? AND ?")               .append("\n");
+								break;
 							case transfatValue:
-								sb.append("   AND transfat_amount_per_100g = NULL").append("\n");
-								sb.append("    OR transfat_amount_per_100g = 0").append("\n");
+								sb.append("   AND transfat_imputation_date BETWEEN ? AND ?")               .append("\n");
+								break;
 							case satfatValue:
-								sb.append("   AND satfat_amount_per_100g = NULL").append("\n");
-								sb.append("    OR satfat_amount_per_100g = 0").append("\n");
+								sb.append("   AND satfat_imputation_date BETWEEN ? AND ?")                 .append("\n");
+								break;
 							case addedSodium:
-								sb.append("   AND contains_added_sodium_updated_date = NULL").append("\n");
-								sb.append("    OR contains_added_sodium_updated_date = 0").append("\n");
+								sb.append("   AND contains_added_sodium_update_date BETWEEN ? AND ?")      .append("\n");
+								break;
 							case addedSugar:
-								sb.append("   AND contains_added_sugar_updated_date = NULL").append("\n");
-								sb.append("    OR contains_added_sugar_updated_date = 0").append("\n");
+								sb.append("   AND contains_added_sugar_update_date BETWEEN ? AND ?")       .append("\n");
+								break;
 							case addedFat:
-								sb.append("   AND contains_added_fat_updated_date = NULL").append("\n");
-								sb.append("    OR contains_added_fat_updated_date = 0").append("\n");
+								sb.append("   AND contains_added_fat_update_date BETWEEN ? AND ?")         .append("\n");
+								break;
 							case addedTransfat:
-								sb.append("   AND contains_added_transfat_updated_date = NULL").append("\n");
-								sb.append("    OR contains_added_transfat_updated_date = 0").append("\n");
+								sb.append("   AND contains_added_transfat_update_date BETWEEN ? AND ?")    .append("\n");
+								break;
 							case caffeine:
-								sb.append("   AND contains_caffeine_updated_date = NULL").append("\n");
-								sb.append("    OR contains_caffeine_updated_date = 0").append("\n");
+								sb.append("   AND contains_caffeine_update_date BETWEEN ? AND ?")          .append("\n");
+								break;
 							case freeSugars:
-								sb.append("   AND contains_free_sugars_updated_date = NULL").append("\n");
-								sb.append("    OR contains_free_sugars_updated_date = 0").append("\n");
+								sb.append("   AND contains_free_sugars_update_date BETWEEN ? AND ?")       .append("\n");
+								break;
 							case sugarSubstitutes:
-								sb.append("   AND contains_sugar_substitutes_updated_date = NULL").append("\n");
-								sb.append("    OR contains_sugar_substitutes_updated_date = 0").append("\n");
+								sb.append("   AND contains_sugar_substitutes_update_date BETWEEN ? AND ?") .append("\n");
+								break;
 						}
 					}
 				}
