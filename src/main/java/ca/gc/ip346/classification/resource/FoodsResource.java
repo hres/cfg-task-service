@@ -362,25 +362,25 @@ public class FoodsResource {
 				for (String key : keys) {
 					switch (ContainsAdded.valueOf(key)) {
 						case sodium:
-							sb.append("   AND contains_added_sodium = ?")      .append ("\n");
+							sb.append("   AND contains_added_sodium      = ? ").append("\n");
 							break;
 						case sugar:
-							sb.append("   AND contains_added_sugar = ?")       .append ("\n");
+							sb.append("   AND contains_added_sugar       = ? ").append("\n");
 							break;
 						case fat:
-							sb.append("   AND contains_added_fat = ?")         .append ("\n");
+							sb.append("   AND contains_added_fat         = ? ").append("\n");
 							break;
 						case transfat:
-							sb.append("   AND contains_added_transfat = ?")    .append ("\n");
+							sb.append("   AND contains_added_transfat    = ? ").append("\n");
 							break;
 						case caffeine:
-							sb.append("   AND contains_caffeine = ?")          .append ("\n");
+							sb.append("   AND contains_caffeine          = ? ").append("\n");
 							break;
 						case freeSugars:
-							sb.append("   AND contains_free_sugars = ?")       .append ("\n");
+							sb.append("   AND contains_free_sugars       = ? ").append("\n");
 							break;
 						case sugarSubstitute:
-							sb.append("   AND contains_sugar_substitutes = ?") .append ("\n");
+							sb.append("   AND contains_sugar_substitutes = ? ").append("\n");
 							break;
 					}
 				}
@@ -393,76 +393,58 @@ public class FoodsResource {
 					// switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 					switch (Missing.valueOf(name)) {
 						case refAmount:
-							sb.append("   AND reference_amount_g = NULL")         .append("\n");
-							sb.append("    OR reference_amount_g = 0")            .append("\n");
+							sb.append("   AND (reference_amount_g         = NULL OR reference_amount_g         = 0)") .append("\n");
 							break;
 						case cfgServing:
-							sb.append("   AND food_guide_serving_g = NULL")       .append("\n");
-							sb.append("    OR food_guide_serving_g = 0")          .append("\n");
+							sb.append("   AND (food_guide_serving_g       = NULL OR food_guide_serving_g       = 0)") .append("\n");
 							break;
 						case tier4Serving:
-							sb.append("   AND tier_4_serving_g = NULL")           .append("\n");
-							sb.append("    OR tier_4_serving_g = 0")              .append("\n");
+							sb.append("   AND (tier_4_serving_g           = NULL OR tier_4_serving_g           = 0)") .append("\n");
 							break;
 						case energy:
-							sb.append("   AND energy_kcal = NULL")                .append("\n");
-							sb.append("    OR energy_kcal = 0")                   .append("\n");
+							sb.append("   AND (energy_kcal                = NULL OR energy_kcal                = 0)") .append("\n");
 							break;
 						case cnfCode:
-							sb.append("   AND cnf_group_code = NULL")             .append("\n");
-							sb.append("    OR cnf_group_code = 0")                .append("\n");
+							sb.append("   AND (cnf_group_code             = NULL OR cnf_group_code             = 0)") .append("\n");
 							break;
 						case rollUp:
-							sb.append("   AND rolled_up = NULL")                  .append("\n");
-							sb.append("    OR rolled_up = 0")                     .append("\n");
+							sb.append("   AND (rolled_up                  = NULL OR rolled_up                  = 0)") .append("\n");
 							break;
 						case sodiumPer100g:
-							sb.append("   AND sodium_amount_per_100g = NULL")     .append("\n");
-							sb.append("    OR sodium_amount_per_100g = 0")        .append("\n");
+							sb.append("   AND (sodium_amount_per_100g     = NULL OR sodium_amount_per_100g     = 0)") .append("\n");
 							break;
 						case sugarPer100g:
-							sb.append("   AND sugar_amount_per_100g = NULL")      .append("\n");
-							sb.append("    OR sugar_amount_per_100g = 0")         .append("\n");
+							sb.append("   AND (sugar_amount_per_100g      = NULL OR sugar_amount_per_100g      = 0)") .append("\n");
 							break;
 						case fatPer100g:
-							sb.append("   AND totalfat_amount_per_100g = NULL")   .append("\n");
-							sb.append("    OR totalfat_amount_per_100g = 0")      .append("\n");
+							sb.append("   AND (totalfat_amount_per_100g   = NULL OR totalfat_amount_per_100g   = 0)") .append("\n");
 							break;
 						case transfatPer100g:
-							sb.append("   AND transfat_amount_per_100g = NULL")   .append("\n");
-							sb.append("    OR transfat_amount_per_100g = 0")      .append("\n");
+							sb.append("   AND (transfat_amount_per_100g   = NULL OR transfat_amount_per_100g   = 0)") .append("\n");
 							break;
 						case satFatPer100g:
-							sb.append("   AND satfat_amount_per_100g = NULL")     .append("\n");
-							sb.append("    OR satfat_amount_per_100g = 0")        .append("\n");
+							sb.append("   AND (satfat_amount_per_100g     = NULL OR satfat_amount_per_100g     = 0)") .append("\n");
 							break;
 						case addedSodium:
-							sb.append("   AND contains_added_sodium = NULL")      .append("\n");
-							sb.append("    OR contains_added_sodium = 0")         .append("\n");
+							sb.append("   AND (contains_added_sodium      = NULL OR contains_added_sodium      = 0)") .append("\n");
 							break;
 						case addedSugar:
-							sb.append("   AND contains_added_sugar = NULL")       .append("\n");
-							sb.append("    OR contains_added_sugar = 0")          .append("\n");
+							sb.append("   AND (contains_added_sugar       = NULL OR contains_added_sugar       = 0)") .append("\n");
 							break;
 						case addedFat:
-							sb.append("   AND contains_added_fat = NULL")         .append("\n");
-							sb.append("    OR contains_added_fat = 0")            .append("\n");
+							sb.append("   AND (contains_added_fat         = NULL OR contains_added_fat         = 0)") .append("\n");
 							break;
 						case addedTransfat:
-							sb.append("   AND contains_added_transfat = NULL")    .append("\n");
-							sb.append("    OR contains_added_transfat = 0")       .append("\n");
+							sb.append("   AND (contains_added_transfat    = NULL OR contains_added_transfat    = 0)") .append("\n");
 							break;
 						case caffeine:
-							sb.append("   AND contains_caffeine = NULL")          .append("\n");
-							sb.append("    OR contains_caffeine = 0")             .append("\n");
+							sb.append("   AND (contains_caffeine          = NULL OR contains_caffeine          = 0)") .append("\n");
 							break;
 						case freeSugars:
-							sb.append("   AND contains_free_sugars = NULL")       .append("\n");
-							sb.append("    OR contains_free_sugars = 0")          .append("\n");
+							sb.append("   AND (contains_free_sugars       = NULL OR contains_free_sugars       = 0)") .append("\n");
 							break;
 						case sugarSubstitute:
-							sb.append("   AND contains_sugar_substitutes = NULL") .append("\n");
-							sb.append("    OR contains_sugar_substitutes = 0")    .append("\n");
+							sb.append("   AND (contains_sugar_substitutes = NULL OR contains_sugar_substitutes = 0)") .append("\n");
 							break;
 					}
 				}
@@ -475,52 +457,52 @@ public class FoodsResource {
 						// switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 						switch (Missing.valueOf(name)) {
 							case refAmount:
-								sb.append("   AND reference_amount_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")           .append("\n");
+								sb.append("   AND reference_amount_update_date           BETWEEN CAST(? AS date) AND CAST(? AS date)")           .append("\n");
 								break;
 							case cfgServing:
-								sb.append("   AND food_guide_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")                 .append("\n");
+								sb.append("   AND food_guide_update_date                 BETWEEN CAST(? AS date) AND CAST(? AS date)")                 .append("\n");
 								break;
 							case tier4Serving:
-								sb.append("   AND tier_4_serving_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")             .append("\n");
+								sb.append("   AND tier_4_serving_update_date             BETWEEN CAST(? AS date) AND CAST(? AS date)")             .append("\n");
 								break;
 							case energy:
 							case cnfCode:
 								break;
 							case rollUp:
-								sb.append("   AND rolled_up_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")                  .append("\n");
+								sb.append("   AND rolled_up_update_date                  BETWEEN CAST(? AS date) AND CAST(? AS date)")                  .append("\n");
 								break;
 							case sodiumPer100g:
-								sb.append("   AND sodium_imputation_date BETWEEN CAST(? AS date) AND CAST(? AS date)")                 .append("\n");
+								sb.append("   AND sodium_imputation_date                 BETWEEN CAST(? AS date) AND CAST(? AS date)")                 .append("\n");
 								break;
 							case sugarPer100g:
-								sb.append("   AND sugar_imputation_date BETWEEN CAST(? AS date) AND CAST(? AS date)")                  .append("\n");
+								sb.append("   AND sugar_imputation_date                  BETWEEN CAST(? AS date) AND CAST(? AS date)")                  .append("\n");
 								break;
 							case fatPer100g:
-								sb.append("   AND totalfat_imputation_date BETWEEN CAST(? AS date) AND CAST(? AS date)")               .append("\n");
+								sb.append("   AND totalfat_imputation_date               BETWEEN CAST(? AS date) AND CAST(? AS date)")               .append("\n");
 								break;
 							case transfatPer100g:
-								sb.append("   AND transfat_imputation_date BETWEEN CAST(? AS date) AND CAST(? AS date)")               .append("\n");
+								sb.append("   AND transfat_imputation_date               BETWEEN CAST(? AS date) AND CAST(? AS date)")               .append("\n");
 								break;
 							case satFatPer100g:
-								sb.append("   AND satfat_imputation_date BETWEEN CAST(? AS date) AND CAST(? AS date)")                 .append("\n");
+								sb.append("   AND satfat_imputation_date                 BETWEEN CAST(? AS date) AND CAST(? AS date)")                 .append("\n");
 								break;
 							case addedSodium:
-								sb.append("   AND contains_added_sodium_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")      .append("\n");
+								sb.append("   AND contains_added_sodium_update_date      BETWEEN CAST(? AS date) AND CAST(? AS date)")      .append("\n");
 								break;
 							case addedSugar:
-								sb.append("   AND contains_added_sugar_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")       .append("\n");
+								sb.append("   AND contains_added_sugar_update_date       BETWEEN CAST(? AS date) AND CAST(? AS date)")       .append("\n");
 								break;
 							case addedFat:
-								sb.append("   AND contains_added_fat_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")         .append("\n");
+								sb.append("   AND contains_added_fat_update_date         BETWEEN CAST(? AS date) AND CAST(? AS date)")         .append("\n");
 								break;
 							case addedTransfat:
-								sb.append("   AND contains_added_transfat_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")    .append("\n");
+								sb.append("   AND contains_added_transfat_update_date    BETWEEN CAST(? AS date) AND CAST(? AS date)")    .append("\n");
 								break;
 							case caffeine:
-								sb.append("   AND contains_caffeine_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")          .append("\n");
+								sb.append("   AND contains_caffeine_update_date          BETWEEN CAST(? AS date) AND CAST(? AS date)")          .append("\n");
 								break;
 							case freeSugars:
-								sb.append("   AND contains_free_sugars_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)")       .append("\n");
+								sb.append("   AND contains_free_sugars_update_date       BETWEEN CAST(? AS date) AND CAST(? AS date)")       .append("\n");
 								break;
 							case sugarSubstitute:
 								sb.append("   AND contains_sugar_substitutes_update_date BETWEEN CAST(? AS date) AND CAST(? AS date)") .append("\n");
@@ -535,7 +517,7 @@ public class FoodsResource {
 			}
 
 			if (search.getCommitDateFrom() != null && search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo() != null && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
-				sb.append("   AND commit_date BETWEEN CAST(? AS date) AND CAST(? AS date)") .append("\n");
+				sb.append("   AND commit_date                            BETWEEN CAST(? AS date) AND CAST(? AS date)") .append("\n");
 			}
 
 //			 if (search.getReferenceAmountMissing()       != null && !search.getReferenceAmountMissing().       isEmpty ())  {
@@ -801,7 +783,7 @@ public class FoodsResource {
 					}
 
 					if (search.getComments() != null && !search.getComments().isEmpty()) {
-						stmt.setString(++i, search.getComments());
+						stmt.setString(++i, new String("%" + search.getComments() + "%").toLowerCase());
 					}
 
 					if (search.getCommitDateFrom() != null && search.getCommitDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getCommitDateTo() != null && search.getCommitDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
