@@ -1,24 +1,24 @@
 package ca.gc.ip346.classification.model;
 
 public enum Missing {
-	referenceAmount,
+	refAmount,
 	cfgServing,
 	tier4Serving,
-	energyValue,
+	energy,
 	cnfCode,
-	recipeRolledUpDown,
-	sodiumValue,
-	sugarValue,
-	fatValue,
-	transfatValue,
-	satfatValue,
+	rollUp,
+	sodiumPer100g,
+	sugarPer100g,
+	fatPer100g,
+	transfatPer100g,
+	satFatPer100g,
 	addedSodium,
 	addedSugar,
 	addedFat,
 	addedTransfat,
 	caffeine,
 	freeSugars,
-	sugarSubstitutes;
+	sugarSubstitute;
 
 	private Missing() {
 	}

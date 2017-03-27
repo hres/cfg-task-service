@@ -12,8 +12,10 @@ public class CfgFilter {
 	@QueryParam("commitDateEnd")                        private String commitDateTo;
 	@QueryParam("cnfCode")                              private String cnfCode;
 	@QueryParam("subGroupCode")                         private String subgroupCode;
+
 	@QueryParam("cfgTier")                              private /* CfgTier      */ Integer cfgTier;
 	@QueryParam("rollUp")                               private /* RecipeRolled */ Integer recipe;
+
 	@QueryParam("sodium")                               private /* Added        */ Integer sodium;
 	@QueryParam("sugar")                                private /* Added        */ Integer sugar;
 	@QueryParam("fat")                                  private /* Added        */ Integer fat;
@@ -21,6 +23,7 @@ public class CfgFilter {
 	@QueryParam("caffeine")                             private /* Added        */ Integer caffeine;
 	@QueryParam("freeSugars")                           private /* Added        */ Integer freeSugars;
 	@QueryParam("sugarSubstitute")                      private /* Added        */ Integer sugarSubstitutes;
+
 	@QueryParam("refAmount")                            private String referenceAmountMissing;
 	@QueryParam("cfgServing")                           private String cfgServingMissing;
 	@QueryParam("tier4Serving")                         private String tier4ServingMissing;
@@ -60,7 +63,7 @@ public class CfgFilter {
 	@QueryParam("added-free-sugars-last-updated")       private String addedFreeSugarsLastUpdated;
 	@QueryParam("added-sugar-substitutes-last-updated") private String addedSugarSubstitutesLastUpdated;
 	@QueryParam("missing")                              private List<String> missingValues;
-	@QueryParam("lastUpdatedFilter")                    private List<String> lastUpdatedFilter;
+	@QueryParam("lastUpdateFilter")                     private List<String> lastUpdatedFilter;
 	@QueryParam("containsAdded")                        private List<String> containsAdded;
 
 	private String sql;
