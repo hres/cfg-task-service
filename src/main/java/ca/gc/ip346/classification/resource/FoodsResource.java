@@ -27,11 +27,21 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bson.Document;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.common.base.CaseFormat;
 import com.google.gson.GsonBuilder;
+import com.mongodb.Block;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.async.SingleResultCallback;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.util.JSON;
 
 import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
@@ -45,7 +55,7 @@ import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
 
 @Path("/datasets")
-@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class FoodsResource {
 	private static final Logger logger = LogManager.getLogger(FoodsResource.class);
 
@@ -72,7 +82,7 @@ public class FoodsResource {
 
 	@GET
 	@Path("/search")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodGuideDataset> getFoodList(@BeanParam CfgFilter search) {
@@ -81,15 +91,39 @@ public class FoodsResource {
 		return doSearchCriteria(search);
 	}
 
-	@PUT
+	// @PUT
+	@GET
+	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void saveDataset() {
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase database = mongoClient.getDatabase("cfgDb");
+		MongoCollection<Document> collection = database.getCollection("master");
+		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
+		CfgFilter search = new CfgFilter();
+		search.setSql(sql);
+		List<CanadaFoodGuideDataset> list = doSearchCriteria(search);
+		String json = ContentHandler.read("search.json", getClass());
+		DBObject dbObject = (DBObject)JSON.parse(json);
+		collection.insertOne(new Document("name", "john").append("list", dbObject));
+		logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
+		mongoClient.close();
 	}
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void getDatasets() {
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public MongoCollection<Document> getDatasets() {
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase database = mongoClient.getDatabase("cfgDb");
+		MongoCollection<Document> collection = database.getCollection("master");
+		MongoCursor<Document> cursorDocMap = collection.find().iterator();
+		while (cursorDocMap.hasNext()) {
+			logger.error("[01;34mCurrent number of Datasets: " + cursorDocMap.next().toJson() + "[00;00m");
+			// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(cursorDocMap.next()));
+		}
+		mongoClient.close();
+		return collection;
 	}
 
 	@DELETE
@@ -337,12 +371,14 @@ public class FoodsResource {
 //			 }
 
 			boolean notIgnore = false;
-			String[] arr = new String[search.getContainsAdded().size()];
-			arr = search.getContainsAdded().toArray(arr);
-			for (String i : arr) {
-				logger.error("[01;32m" + i + "[00;00m");
-				if (!i.equals("0")) {
-					notIgnore = true;
+			if (search.getContainsAdded() != null) {
+				String[] arr = new String[search.getContainsAdded().size()];
+				arr = search.getContainsAdded().toArray(arr);
+				for (String i : arr) {
+					logger.error("[01;32m" + i + "[00;00m");
+					if (!i.equals("0")) {
+						notIgnore = true;
+					}
 				}
 			}
 
@@ -351,6 +387,8 @@ public class FoodsResource {
 			if (search.getContainsAdded() != null && notIgnore) {
 				map = new HashMap<String, String>();
 				logger.error("[01;32m" + search.getContainsAdded() + "[00;00m");
+				String[] arr = new String[search.getContainsAdded().size()];
+				arr = search.getContainsAdded().toArray(arr);
 				for (String keyValue : arr) {
 					StringTokenizer tokenizer = new StringTokenizer(keyValue, "=");
 					map.put(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, tokenizer.nextToken()),tokenizer.nextToken());
