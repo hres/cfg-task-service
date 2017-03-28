@@ -28,16 +28,14 @@ import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.common.base.CaseFormat;
 import com.google.gson.GsonBuilder;
-import com.mongodb.Block;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.async.SingleResultCallback;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -47,6 +45,7 @@ import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
 import ca.gc.ip346.classification.model.CfgTier;
 import ca.gc.ip346.classification.model.ContainsAdded;
+import ca.gc.ip346.classification.model.Dataset;
 import ca.gc.ip346.classification.model.FoodItem;
 import ca.gc.ip346.classification.model.Missing;
 import ca.gc.ip346.classification.model.RecipeRolled;
@@ -91,39 +90,56 @@ public class FoodsResource {
 		return doSearchCriteria(search);
 	}
 
-	// @PUT
-	@GET
-	@Path("/save")
+	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void saveDataset() {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Map<String, String> saveDataset(@BeanParam Dataset dataset) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
+
 		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
 		CfgFilter search = new CfgFilter();
 		search.setSql(sql);
 		List<CanadaFoodGuideDataset> list = doSearchCriteria(search);
+
 		String json = ContentHandler.read("search.json", getClass());
 		DBObject dbObject = (DBObject)JSON.parse(json);
-		collection.insertOne(new Document("name", "john").append("list", dbObject));
+		Document doc = new Document()
+			// .append("data", dbObject)
+			.append("data", dataset.getData())
+			.append("name", dataset.getName())
+			.append("owner", dataset.getOwner())
+			.append("status", dataset.getStatus())
+			.append("comments", dataset.getComments())
+			.append("modifiedDate", dataset.getModifiedDate());
+		collection.insertOne(doc);
+		ObjectId id = (ObjectId)doc.get("_id");
 		logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
+		logger.error("[01;34mLast inserted Datasets _id: " + id + "[00;00m");
 		mongoClient.close();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", id.toString());
+		return map;
 	}
 
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public MongoCollection<Document> getDatasets() {
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public List<String> getDatasets() {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
+
+		List<String> list = new ArrayList<String>();
 		MongoCursor<Document> cursorDocMap = collection.find().iterator();
 		while (cursorDocMap.hasNext()) {
-			logger.error("[01;34mCurrent number of Datasets: " + cursorDocMap.next().toJson() + "[00;00m");
-			// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(cursorDocMap.next()));
+			Document doc = cursorDocMap.next();
+			list.add(doc.get("_id").toString());
+			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 		}
 		mongoClient.close();
-		return collection;
+		return list;
 	}
 
 	@DELETE
@@ -133,7 +149,7 @@ public class FoodsResource {
 	public void deleteDataset() {
 	}
 
-	@POST
+	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
