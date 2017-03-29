@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 
-import ca.gc.ip346.classification.model.Added;
+// import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
 import ca.gc.ip346.classification.model.CfgTier;
 import ca.gc.ip346.classification.model.ContainsAdded;
@@ -54,7 +55,7 @@ import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
 
 @Path("/datasets")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+// @Produces(MediaType.APPLICATION_JSON)
 public class FoodsResource {
 	private static final Logger logger = LogManager.getLogger(FoodsResource.class);
 
@@ -81,7 +82,7 @@ public class FoodsResource {
 
 	@GET
 	@Path("/search")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodGuideDataset> getFoodList(@BeanParam CfgFilter search) {
@@ -93,18 +94,19 @@ public class FoodsResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Map<String, String> saveDataset(@BeanParam Dataset dataset) {
+	public Map<String, String> saveDataset(Dataset dataset) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
 
-		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
-		CfgFilter search = new CfgFilter();
-		search.setSql(sql);
-		List<CanadaFoodGuideDataset> list = doSearchCriteria(search);
+		// String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
+		// CfgFilter search = new CfgFilter();
+		// search.setSql(sql);
+		// List<CanadaFoodGuideDataset> list = doSearchCriteria(search);
 
-		String json = ContentHandler.read("search.json", getClass());
-		DBObject dbObject = (DBObject)JSON.parse(json);
+		// String json = ContentHandler.read("search.json", getClass());
+		// DBObject dbObject = (DBObject)JSON.parse(json);
+		// DBObject dbObject = (DBObject)JSON.parse(dataset.getData());
 		Document doc = new Document()
 			// .append("data", dbObject)
 			.append("data", dataset.getData())
@@ -112,7 +114,7 @@ public class FoodsResource {
 			.append("owner", dataset.getOwner())
 			.append("status", dataset.getStatus())
 			.append("comments", dataset.getComments())
-			.append("modifiedDate", dataset.getModifiedDate());
+			.append("modifiedDate", new Date());
 		collection.insertOne(doc);
 		ObjectId id = (ObjectId)doc.get("_id");
 		logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
@@ -124,7 +126,7 @@ public class FoodsResource {
 	}
 
 	@GET
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<String> getDatasets() {
 		MongoClient mongoClient = new MongoClient();
