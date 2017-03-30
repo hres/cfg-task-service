@@ -33,14 +33,16 @@ import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
-import com.google.common.base.CaseFormat;
+// import com.google.common.base.CaseFormat;
 import com.google.gson.GsonBuilder;
-import com.mongodb.DBObject;
+// import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+// import static com.mongodb.client.model.Filters.*;
+// import static com.mongodb.client.model.Projections.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
+// import com.mongodb.util.JSON;
 
 // import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
@@ -119,7 +121,9 @@ public class FoodsResource {
 		ObjectId id = (ObjectId)doc.get("_id");
 		logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
 		logger.error("[01;34mLast inserted Datasets _id: " + id + "[00;00m");
+
 		mongoClient.close();
+
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("id", id.toString());
 		return map;
@@ -128,19 +132,30 @@ public class FoodsResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<String> getDatasets() {
+	public List<Map<String, String>> getDatasets() {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
 
-		List<String> list = new ArrayList<String>();
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		MongoCursor<Document> cursorDocMap = collection.find().iterator();
 		while (cursorDocMap.hasNext()) {
+			Map<String, String> map = new HashMap<String, String>();
 			Document doc = cursorDocMap.next();
-			list.add(doc.get("_id").toString());
+			map.put("id", doc.get("_id").toString());
+
+			if (doc.get("name")         != null) map.put("name",          doc .get("name").toString());
+			if (doc.get("owner")        != null) map.put("owner",         doc .get("owner").toString());
+			if (doc.get("status")       != null) map.put("status",        doc .get("status").toString());
+			if (doc.get("comments")     != null) map.put("comments",      doc .get("comments").toString());
+			if (doc.get("modifiedDate") != null) map.put("modifiedDate",  doc .get("modifiedDate").toString());
+
+			list.add(map);
 			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 		}
+
 		mongoClient.close();
+
 		return list;
 	}
 
@@ -176,6 +191,34 @@ public class FoodsResource {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public List<Map<String, Object>> getDataset(@PathParam("id") String id) {
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase database = mongoClient.getDatabase("cfgDb");
+		MongoCollection<Document> collection = database.getCollection("master");
+
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		while (cursorDocMap.hasNext()) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			Document doc = cursorDocMap.next();
+			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+
+			if (doc != null) {
+				map.put("data",         doc.get("data"));
+				map.put("name",         doc.get("name"));
+				map.put("owner",        doc.get("owner"));
+				map.put("status",       doc.get("status"));
+				map.put("comments",     doc.get("comments"));
+				map.put("modifiedDate", doc.get("modifiedDate").toString());
+				list.add(map);
+			}
+		}
+
+		mongoClient.close();
+
+		return list;
+	}
+
 	public List<FoodItem> getFoodItem(@PathParam("id") Integer id) {
 		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
 
@@ -409,7 +452,8 @@ public class FoodsResource {
 				arr = search.getContainsAdded().toArray(arr);
 				for (String keyValue : arr) {
 					StringTokenizer tokenizer = new StringTokenizer(keyValue, "=");
-					map.put(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, tokenizer.nextToken()),tokenizer.nextToken());
+					// map.put(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, tokenizer.nextToken()),tokenizer.nextToken());
+					map.put(tokenizer.nextToken(), tokenizer.nextToken());
 					logger.error("[01;32m" + keyValue + "[00;00m");
 				}
 				logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
