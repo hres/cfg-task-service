@@ -25,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -96,7 +97,7 @@ public class FoodsResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Map<String, String> saveDataset(Dataset dataset) {
+	public Map<String, Object> saveDataset(Dataset dataset) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
@@ -109,25 +110,48 @@ public class FoodsResource {
 		// String json = ContentHandler.read("search.json", getClass());
 		// DBObject dbObject = (DBObject)JSON.parse(json);
 		// DBObject dbObject = (DBObject)JSON.parse(dataset.getData());
-		Document doc = new Document()
-			// .append("data", dbObject)
-			.append("data",     dataset.getData())
-			.append("name",     dataset.getName())
-			.append("owner",    dataset.getOwner())
-			.append("status",   dataset.getStatus())
-			.append("comments", dataset.getComments());
-		collection.insertOne(doc);
-		ObjectId id = (ObjectId)doc.get("_id");
-		collection.updateOne(eq("_id", id),
-				combine(set("name", dataset.getName()), set("comments", dataset.getComments()), currentDate("modifiedDate")));
 
-		logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
-		logger.error("[01;34mLast inserted Datasets _id: " + id + "[00;00m");
+		Map<String, Object> map = new HashMap<String, Object>();
 
-		mongoClient.close();
+		if (dataset.getData() != null && dataset.getName() != null && dataset.getComments() != null) {
+			Document doc = new Document()
+				// .append("data", dbObject)
+				.append("data",     dataset.getData())
+				.append("name",     dataset.getName())
+				.append("owner",    dataset.getOwner())
+				.append("status",   dataset.getStatus())
+				.append("comments", dataset.getComments());
+			collection.insertOne(doc);
+			ObjectId id = (ObjectId)doc.get("_id");
+			collection.updateOne(
+					eq("_id", id),
+					combine(
+						set("name", dataset.getName()),
+						set("comments", dataset.getComments()),
+						currentDate("modifiedDate"))
+					);
 
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("id", id.toString());
+			logger.error("[01;34mLast inserted Dataset id: " + id + "[00;00m");
+
+			logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
+
+			mongoClient.close();
+
+			map.put("id", id.toString());
+		} else {
+			List<String> list = new ArrayList<String>();
+
+			if (dataset.getData()     == null) list.add("data");
+			if (dataset.getName()     == null) list.add("name");
+			if (dataset.getComments() == null) list.add("comments");
+
+			map.put("code", 400);
+			map.put("description", "Unable to insert Dataset!");
+			map.put("fields", StringUtils.join(list, ", "));
+
+			logger.error("[01;34mUnable to insert Dataset!" + "[00;00m");
+		}
+
 		return map;
 	}
 
