@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +36,9 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 // import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-// import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.*;
 // import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Updates.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -111,14 +111,16 @@ public class FoodsResource {
 		// DBObject dbObject = (DBObject)JSON.parse(dataset.getData());
 		Document doc = new Document()
 			// .append("data", dbObject)
-			.append("data", dataset.getData())
-			.append("name", dataset.getName())
-			.append("owner", dataset.getOwner())
-			.append("status", dataset.getStatus())
-			.append("comments", dataset.getComments())
-			.append("modifiedDate", new Date());
+			.append("data",     dataset.getData())
+			.append("name",     dataset.getName())
+			.append("owner",    dataset.getOwner())
+			.append("status",   dataset.getStatus())
+			.append("comments", dataset.getComments());
 		collection.insertOne(doc);
 		ObjectId id = (ObjectId)doc.get("_id");
+		collection.updateOne(eq("_id", id),
+				combine(set("name", dataset.getName()), set("comments", dataset.getComments()), currentDate("modifiedDate")));
+
 		logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
 		logger.error("[01;34mLast inserted Datasets _id: " + id + "[00;00m");
 
@@ -144,11 +146,11 @@ public class FoodsResource {
 			Document doc = cursorDocMap.next();
 			map.put("id", doc.get("_id").toString());
 
-			if (doc.get("name")         != null) map.put("name",          doc .get("name").toString());
-			if (doc.get("owner")        != null) map.put("owner",         doc .get("owner").toString());
-			if (doc.get("status")       != null) map.put("status",        doc .get("status").toString());
-			if (doc.get("comments")     != null) map.put("comments",      doc .get("comments").toString());
-			if (doc.get("modifiedDate") != null) map.put("modifiedDate",  doc .get("modifiedDate").toString());
+			if (doc.get("name")         != null) map.put("name",         doc.get("name")         .toString());
+			if (doc.get("owner")        != null) map.put("owner",        doc.get("owner")        .toString());
+			if (doc.get("status")       != null) map.put("status",       doc.get("status")       .toString());
+			if (doc.get("comments")     != null) map.put("comments",     doc.get("comments")     .toString());
+			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.get("modifiedDate") .toString());
 
 			list.add(map);
 			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
