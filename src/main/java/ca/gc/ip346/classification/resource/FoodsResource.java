@@ -24,6 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -97,10 +98,12 @@ public class FoodsResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Map<String, Object> saveDataset(Dataset dataset) {
+	public /* Map<String, Object> */ Response saveDataset(Dataset dataset) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
+
+		Response response = null;
 
 		// String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
 		// CfgFilter search = new CfgFilter();
@@ -138,6 +141,8 @@ public class FoodsResource {
 			mongoClient.close();
 
 			map.put("id", id.toString());
+
+			response = Response.status(Response.Status.OK).entity(map).build();
 		} else {
 			List<String> list = new ArrayList<String>();
 
@@ -145,14 +150,16 @@ public class FoodsResource {
 			if (dataset.getName()     == null) list.add("name");
 			if (dataset.getComments() == null) list.add("comments");
 
-			map.put("code", 400);
-			map.put("description", "Unable to insert Dataset!");
+			map.put("code", Response.Status.BAD_REQUEST.getStatusCode());
+			map.put("description", Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!");
 			map.put("fields", StringUtils.join(list, ", "));
 
-			logger.error("[01;34mUnable to insert Dataset!" + "[00;00m");
+			logger.error("[01;34m" + Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!" + "[00;00m");
+
+			response = Response.status(Response.Status.BAD_REQUEST).entity(map).build();
 		}
 
-		return map;
+		return response;
 	}
 
 	@GET
@@ -782,7 +789,7 @@ public class FoodsResource {
 				e.printStackTrace();
 			}
 
-//			 logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+			 // logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 		}
 
 		return list;
