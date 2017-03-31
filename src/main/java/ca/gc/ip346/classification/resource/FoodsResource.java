@@ -142,7 +142,9 @@ public class FoodsResource {
 
 			map.put("id", id.toString());
 
-			response = Response.status(Response.Status.OK).entity(map).build();
+			logger.error("[01;34m" + Response.Status.CREATED.getStatusCode() + " " + Response.Status.CREATED.toString() + "[00;00m");
+
+			response = Response.status(Response.Status.CREATED).entity(map).build();
 		} else {
 			List<String> list = new ArrayList<String>();
 
@@ -155,6 +157,7 @@ public class FoodsResource {
 			map.put("fields", StringUtils.join(list, ", "));
 
 			logger.error("[01;34m" + Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!" + "[00;00m");
+			logger.error("[01;34m" + Response.Status.BAD_REQUEST.getStatusCode() + " " + Response.Status.BAD_REQUEST.toString() + "[00;00m");
 
 			response = Response.status(Response.Status.BAD_REQUEST).entity(map).build();
 		}
