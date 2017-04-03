@@ -437,7 +437,15 @@ public class FoodsResource {
 
 			if (search.getRecipe() != null && !search.getRecipe().equals(RecipeRolled.IGNORE.getCode())) {
 				logger.error("[01;32m" + search.getRecipe() + "[00;00m");
-				sb.append("   AND rolled_up = ?").append("\n");
+				switch (search.getRecipe()) {
+					case 1:
+					case 2:
+						sb.append("   AND rolled_up = ?").append("\n");
+						break;
+					case 3:
+						sb.append("   AND (rolled_up = 1 OR rolled_up = 2)").append("\n");
+						break;
+				}
 			}
 
 			boolean notIgnore = false;
@@ -665,8 +673,13 @@ public class FoodsResource {
 								break;
 						}
 					}
-					if (search.getRecipe()           != null && !search.getRecipe().           equals (RecipeRolled.IGNORE.getCode())) {
-						stmt.setInt(++i, search.getRecipe());
+					if (search.getRecipe() != null && !search.getRecipe().equals(RecipeRolled.IGNORE.getCode())) {
+						switch (search.getRecipe()) {
+							case 1:
+							case 2:
+								stmt.setInt(++i, search.getRecipe());
+								break;
+						}
 					}
 
 					if (search.getContainsAdded() != null && notIgnore) {
