@@ -27,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -91,9 +92,6 @@ public class FoodsResource {
 	public List<CanadaFoodGuideDataset> getFoodList(@BeanParam CfgFilter search) {
 		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
 		search.setSql(sql);
-		for (Response.Status obj : Response.Status.values()) {
-			logger.error("[01;31m" + obj.getStatusCode() + " " + obj.name() + "[00;00m");
-		}
 		return doSearchCriteria(search);
 	}
 
@@ -284,6 +282,72 @@ public class FoodsResource {
 		logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 
 		return list;
+	}
+
+	@GET
+	@Path("/status")
+	@Produces(MediaType.APPLICATION_JSON)
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public void getStatusCodes() {
+		Map<Integer, String> map = new HashMap<Integer, String>();
+		for (Response.Status obj : Response.Status.values()) {
+			map.put(obj.getStatusCode(), obj.name());
+		}
+		int len = 0;
+		for (Integer key : map.keySet()) {
+			String value = map.get(key);
+			if (value.length() > len) {
+				len = value.length();
+			}
+		}
+		String format = new StringBuffer()
+			.append("%d %-")
+			.append(len)
+			.append("s")
+			.toString();
+		String tamrof = new StringBuffer()
+			.append("%-")
+			.append(len + 4)
+			.append("s")
+			.toString();
+		Integer[][] arr = new Integer[6][18];
+		Integer series = 0;
+		int i = 0;
+		for (Integer key : map.keySet()) {
+			if (key / 100 != series) {
+				series = key / 100;
+				i = 0;
+			}
+			arr[series][i++] = key;
+		}
+		for (int j = 0; j < 18; ++j) {
+			arr[0][j] = null;
+			arr[1][j] = null;
+		}
+		for (int l = 0; l < 18; ++l) {
+			for (int m = 2; m < 6; ++m) {
+				Integer key = arr[m][l];
+				if (key != null) {
+					System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 36 : 35, key, Response.Status.fromStatusCode(key).name());
+				} else {
+					System.out.printf(tamrof, "");
+				}
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println();
+		for (int l = 0; l < 18; ++l) {
+			for (int m = 2; m < 6; ++m) {
+				Integer key = arr[m][l];
+				if (key != null) {
+					System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
+				} else {
+					System.out.printf(tamrof, "");
+				}
+			}
+			System.out.println();
+		}
 	}
 
 	@GET
@@ -510,58 +574,58 @@ public class FoodsResource {
 					// switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 					switch (Missing.valueOf(name)) {
 						case refAmount:
-							sb.append("   AND (reference_amount_g         = NULL OR reference_amount_g         = 0)").append("\n");
+							sb.append("   AND (reference_amount_g         = NULL)").append("\n");
 							break;
 						case cfgServing:
-							sb.append("   AND (food_guide_serving_g       = NULL OR food_guide_serving_g       = 0)").append("\n");
+							sb.append("   AND (food_guide_serving_g       = NULL)").append("\n");
 							break;
 						case tier4Serving:
-							sb.append("   AND (tier_4_serving_g           = NULL OR tier_4_serving_g           = 0)").append("\n");
+							sb.append("   AND (tier_4_serving_g           = NULL)").append("\n");
 							break;
 						case energy:
-							sb.append("   AND (energy_kcal                = NULL OR energy_kcal                = 0)").append("\n");
+							sb.append("   AND (energy_kcal                = NULL)").append("\n");
 							break;
 						case cnfCode:
-							sb.append("   AND (cnf_group_code             = NULL OR cnf_group_code             = 0)").append("\n");
+							sb.append("   AND (cnf_group_code             = NULL)").append("\n");
 							break;
 						case rollUp:
-							sb.append("   AND (rolled_up                  = NULL OR rolled_up                  = 0)").append("\n");
+							sb.append("   AND (rolled_up                  = NULL)").append("\n");
 							break;
 						case sodiumPer100g:
-							sb.append("   AND (sodium_amount_per_100g     = NULL OR sodium_amount_per_100g     = 0)").append("\n");
+							sb.append("   AND (sodium_amount_per_100g     = NULL)").append("\n");
 							break;
 						case sugarPer100g:
-							sb.append("   AND (sugar_amount_per_100g      = NULL OR sugar_amount_per_100g      = 0)").append("\n");
+							sb.append("   AND (sugar_amount_per_100g      = NULL)").append("\n");
 							break;
 						case fatPer100g:
-							sb.append("   AND (totalfat_amount_per_100g   = NULL OR totalfat_amount_per_100g   = 0)").append("\n");
+							sb.append("   AND (totalfat_amount_per_100g   = NULL)").append("\n");
 							break;
 						case transfatPer100g:
-							sb.append("   AND (transfat_amount_per_100g   = NULL OR transfat_amount_per_100g   = 0)").append("\n");
+							sb.append("   AND (transfat_amount_per_100g   = NULL)").append("\n");
 							break;
 						case satFatPer100g:
-							sb.append("   AND (satfat_amount_per_100g     = NULL OR satfat_amount_per_100g     = 0)").append("\n");
+							sb.append("   AND (satfat_amount_per_100g     = NULL)").append("\n");
 							break;
 						case addedSodium:
-							sb.append("   AND (contains_added_sodium      = NULL OR contains_added_sodium      = 0)").append("\n");
+							sb.append("   AND (contains_added_sodium      = NULL)").append("\n");
 							break;
 						case addedSugar:
-							sb.append("   AND (contains_added_sugar       = NULL OR contains_added_sugar       = 0)").append("\n");
+							sb.append("   AND (contains_added_sugar       = NULL)").append("\n");
 							break;
 						case addedFat:
-							sb.append("   AND (contains_added_fat         = NULL OR contains_added_fat         = 0)").append("\n");
+							sb.append("   AND (contains_added_fat         = NULL)").append("\n");
 							break;
 						case addedTransfat:
-							sb.append("   AND (contains_added_transfat    = NULL OR contains_added_transfat    = 0)").append("\n");
+							sb.append("   AND (contains_added_transfat    = NULL)").append("\n");
 							break;
 						case caffeine:
-							sb.append("   AND (contains_caffeine          = NULL OR contains_caffeine          = 0)").append("\n");
+							sb.append("   AND (contains_caffeine          = NULL)").append("\n");
 							break;
 						case freeSugars:
-							sb.append("   AND (contains_free_sugars       = NULL OR contains_free_sugars       = 0)").append("\n");
+							sb.append("   AND (contains_free_sugars       = NULL)").append("\n");
 							break;
 						case sugarSubstitute:
-							sb.append("   AND (contains_sugar_substitutes = NULL OR contains_sugar_substitutes = 0)").append("\n");
+							sb.append("   AND (contains_sugar_substitutes = NULL)").append("\n");
 							break;
 					}
 				}
