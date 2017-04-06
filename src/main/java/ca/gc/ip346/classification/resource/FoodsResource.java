@@ -574,58 +574,58 @@ public class FoodsResource {
 					// switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 					switch (Missing.valueOf(name)) {
 						case refAmount:
-							sb.append("   AND (reference_amount_g         = NULL)").append("\n");
+							sb.append("   AND reference_amount_g         IS NULL").append("\n");
 							break;
 						case cfgServing:
-							sb.append("   AND (food_guide_serving_g       = NULL)").append("\n");
+							sb.append("   AND food_guide_serving_g       IS NULL").append("\n");
 							break;
 						case tier4Serving:
-							sb.append("   AND (tier_4_serving_g           = NULL)").append("\n");
+							sb.append("   AND tier_4_serving_g           IS NULL").append("\n");
 							break;
 						case energy:
-							sb.append("   AND (energy_kcal                = NULL)").append("\n");
+							sb.append("   AND energy_kcal                IS NULL").append("\n");
 							break;
 						case cnfCode:
-							sb.append("   AND (cnf_group_code             = NULL)").append("\n");
+							sb.append("   AND cnf_group_code             IS NULL").append("\n");
 							break;
 						case rollUp:
-							sb.append("   AND (rolled_up                  = NULL)").append("\n");
+							sb.append("   AND rolled_up                  IS NULL").append("\n");
 							break;
 						case sodiumPer100g:
-							sb.append("   AND (sodium_amount_per_100g     = NULL)").append("\n");
+							sb.append("   AND sodium_amount_per_100g     IS NULL").append("\n");
 							break;
 						case sugarPer100g:
-							sb.append("   AND (sugar_amount_per_100g      = NULL)").append("\n");
+							sb.append("   AND sugar_amount_per_100g      IS NULL").append("\n");
 							break;
 						case fatPer100g:
-							sb.append("   AND (totalfat_amount_per_100g   = NULL)").append("\n");
+							sb.append("   AND totalfat_amount_per_100g   IS NULL").append("\n");
 							break;
 						case transfatPer100g:
-							sb.append("   AND (transfat_amount_per_100g   = NULL)").append("\n");
+							sb.append("   AND transfat_amount_per_100g   IS NULL").append("\n");
 							break;
 						case satFatPer100g:
-							sb.append("   AND (satfat_amount_per_100g     = NULL)").append("\n");
+							sb.append("   AND satfat_amount_per_100g     IS NULL").append("\n");
 							break;
 						case addedSodium:
-							sb.append("   AND (contains_added_sodium      = NULL)").append("\n");
+							sb.append("   AND contains_added_sodium      IS NULL").append("\n");
 							break;
 						case addedSugar:
-							sb.append("   AND (contains_added_sugar       = NULL)").append("\n");
+							sb.append("   AND contains_added_sugar       IS NULL").append("\n");
 							break;
 						case addedFat:
-							sb.append("   AND (contains_added_fat         = NULL)").append("\n");
+							sb.append("   AND contains_added_fat         IS NULL").append("\n");
 							break;
 						case addedTransfat:
-							sb.append("   AND (contains_added_transfat    = NULL)").append("\n");
+							sb.append("   AND contains_added_transfat    IS NULL").append("\n");
 							break;
 						case caffeine:
-							sb.append("   AND (contains_caffeine          = NULL)").append("\n");
+							sb.append("   AND contains_caffeine          IS NULL").append("\n");
 							break;
 						case freeSugars:
-							sb.append("   AND (contains_free_sugars       = NULL)").append("\n");
+							sb.append("   AND contains_free_sugars       IS NULL").append("\n");
 							break;
 						case sugarSubstitute:
-							sb.append("   AND (contains_sugar_substitutes = NULL)").append("\n");
+							sb.append("   AND contains_sugar_substitutes IS NULL").append("\n");
 							break;
 					}
 				}
