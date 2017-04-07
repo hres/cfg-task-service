@@ -7,6 +7,7 @@ import java.util.Map;
 public class Dataset {
 	private List<Map<String, String>> data;
 	private String name;
+	private String env;
 	private String owner;
 	private String status;
 	private String comments;
@@ -38,6 +39,20 @@ public class Dataset {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the env
+	 */
+	public String getEnv() {
+		return env;
+	}
+
+	/**
+	 * @param env the env to set
+	 */
+	public void setEnv(String env) {
+		this.env = env;
 	}
 
 	/**

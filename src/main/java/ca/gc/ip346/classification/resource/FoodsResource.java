@@ -23,6 +23,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -121,6 +122,7 @@ public class FoodsResource {
 				// .append("data", dbObject)
 				.append("data",     dataset.getData())
 				.append("name",     dataset.getName())
+				.append("env",      dataset.getEnv())
 				.append("owner",    dataset.getOwner())
 				.append("status",   dataset.getStatus())
 				.append("comments", dataset.getComments());
@@ -150,6 +152,7 @@ public class FoodsResource {
 
 			if (dataset.getData()     == null) list.add("data");
 			if (dataset.getName()     == null) list.add("name");
+			if (dataset.getEnv()      == null) list.add("env");
 			if (dataset.getComments() == null) list.add("comments");
 
 			map.put("code", Response.Status.BAD_REQUEST.getStatusCode());
@@ -168,23 +171,24 @@ public class FoodsResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<Map<String, String>> getDatasets() {
+	public List<Map<String, String>> getDatasets(@QueryParam("env") String env) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
 
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		MongoCursor<Document> cursorDocMap = collection.find().iterator();
+		MongoCursor<Document> cursorDocMap = collection.find(eq("env", env)).iterator();
 		while (cursorDocMap.hasNext()) {
 			Map<String, String> map = new HashMap<String, String>();
 			Document doc = cursorDocMap.next();
 			map.put("id", doc.get("_id").toString());
 
-			if (doc.get("name")         != null) map.put("name",         doc.get("name")         .toString());
-			if (doc.get("owner")        != null) map.put("owner",        doc.get("owner")        .toString());
-			if (doc.get("status")       != null) map.put("status",       doc.get("status")       .toString());
-			if (doc.get("comments")     != null) map.put("comments",     doc.get("comments")     .toString());
-			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.get("modifiedDate") .toString());
+			if (doc.get("name"        ) != null) map.put("name",         doc.get("name"        ).toString());
+			if (doc.get("env"         ) != null) map.put("env",          doc.get("env"         ).toString());
+			if (doc.get("owner"       ) != null) map.put("owner",        doc.get("owner"       ).toString());
+			if (doc.get("status"      ) != null) map.put("status",       doc.get("status"      ).toString());
+			if (doc.get("comments"    ) != null) map.put("comments",     doc.get("comments"    ).toString());
+			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.get("modifiedDate").toString());
 
 			list.add(map);
 			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
@@ -242,6 +246,7 @@ public class FoodsResource {
 			if (doc != null) {
 				map.put("data",         doc.get("data"));
 				map.put("name",         doc.get("name"));
+				map.put("env",          doc.get("env"));
 				map.put("owner",        doc.get("owner"));
 				map.put("status",       doc.get("status"));
 				map.put("comments",     doc.get("comments"));
@@ -424,7 +429,7 @@ public class FoodsResource {
 
 			logger.error("[01;30m" + search.getDataSource() + "[00;00m");
 
-			sb.append(" WHERE length('this where-clause is an artifact') = 32 ").append("\n");
+			sb.append(" WHERE length('this where-clause is an artifact') = 32").append("\n");
 			if (search.getDataSource() != null && search.getDataSource().matches("food|recipe")) {
 				sb.append("   AND type = ?").append("\n");
 			}
