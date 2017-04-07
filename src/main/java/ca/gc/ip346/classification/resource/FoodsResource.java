@@ -250,7 +250,7 @@ public class FoodsResource {
 				map.put("owner",        doc.get("owner"));
 				map.put("status",       doc.get("status"));
 				map.put("comments",     doc.get("comments"));
-				map.put("modifiedDate", doc.get("modifiedDate").toString());
+				map.put("modifiedDate", doc.get("modifiedDate"));
 				list.add(map);
 			}
 		}
