@@ -203,7 +203,20 @@ public class FoodsResource {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void deleteDataset() {
+	public void deleteDataset(@PathParam("id") String id) {
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase database = mongoClient.getDatabase("cfgDb");
+		MongoCollection<Document> collection = database.getCollection("master");
+
+		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		while (cursorDocMap.hasNext()) {
+			Document doc = cursorDocMap.next();
+			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+
+			collection.deleteOne(doc);
+		}
+
+		mongoClient.close();
 	}
 
 	@PUT
