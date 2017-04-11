@@ -2,6 +2,7 @@ package ca.gc.ip346.classification.application;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,22 +15,22 @@ public class ApplicationConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
 
-        Set<Class<?>> resources = new java.util.HashSet<>();
+        Set<Class<?>> resources = new HashSet<>();
 
         System.out.println("[01;34mREST configuration starting: getClasses()[00;00m");
 
-        //features
-        //this will register Jackson JSON providers
+        // features
+        // this will register Jackson JSON providers
         resources.add(org.glassfish.jersey.jackson.JacksonFeature.class);
         resources.add(com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider.class);
-        //or we can do it manually:
+        // or we can do it manually:
         // resources.add( ca.gc.ip346.classification.provider.MyJacksonJsonProvider.class);
 		resources.add( ca.gc.ip346.classification.resource.FoodsResource.class);
 		resources.add( ca.gc.ip346.classification.resource.SubgroupsResource.class);
         resources.add( ca.gc.ip346.classification.resource.GroupsResource.class);
         resources.add( ca.gc.ip346.classification.resource.FlagsResource.class);
         resources.add( ca.gc.ip346.classification.resource.TierAdjustmentsResource.class);
-        //==> we could also choose packages, see below getProperties()
+        // ==> we could also choose packages, see below getProperties()
         System.out.println("[01;34mFood Classification REST configuration ended successfully.[00;00m");
 
         return resources;

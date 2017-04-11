@@ -2,17 +2,6 @@ package ca.gc.ip346.classification.model;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-// @JsonInclude(Include.USE_DEFAULTS)
 public class CanadaFoodGuideDataset {
 	private String    type;                               /* smallint         */
 	private Integer   code;                               /* integer          */
@@ -20,67 +9,48 @@ public class CanadaFoodGuideDataset {
 	private Integer   cnfGroupCode;                       /* integer          */
 	private Integer   cfgCode;                            /* integer          */
 	private Date      cfgCodeUpdateDate;                  /* date             */
-	@XmlElement(nillable=true)
 	private Double    energyKcal;                         /* double precision */
-	@XmlElement(nillable=true)
 	private Double    sodiumAmountPer100g;                /* double precision */
 	private String    sodiumImputationReference;          /* text             */
 	private Date      sodiumImputationDate;               /* date             */
-	@XmlElement(nillable=true)
 	private Double    sugarAmountPer100g;                 /* double precision */
 	private String    sugarImputationReference;           /* text             */
 	private Date      sugarImputationDate;                /* date             */
-	@XmlElement(nillable=true)
 	private Double    transfatAmountPer100g;              /* double precision */
 	private String    transfatImputationReference;        /* text             */
 	private Date      transfatImputationDate;             /* date             */
-	@XmlElement(nillable=true)
 	private Double    satfatAmountPer100g;                /* double precision */
 	private String    satfatImputationReference;          /* text             */
 	private Date      satfatImputationDate;               /* date             */
-	@XmlElement(nillable=true)
 	private Double    totalfatAmountPer100g;              /* double precision */
 	private String    totalfatImputationReference;        /* text             */
 	private Date      totalfatImputationDate;             /* date             */
-	@XmlElement(nillable=true)
 	private Integer   containsAddedSodium;                /* smallint         */
 	private Date      containsAddedSodiumUpdateDate;      /* date             */
-	@XmlElement(nillable=true)
 	private Integer   containsAddedSugar;                 /* smallint         */
 	private Date      containsAddedSugarUpdateDate;       /* date             */
-	@XmlElement(nillable=true)
 	private Integer   containsFreeSugars;                 /* smallint         */
 	private Date      containsFreeSugarsUpdateDate;       /* date             */
-	@XmlElement(nillable=true)
 	private Integer   containsAddedFat;                   /* smallint         */
 	private Date      containsAddedFatUpdateDate;         /* date             */
-	@XmlElement(nillable=true)
 	private Integer   containsAddedTransfat;              /* smallint         */
 	private Date      containsAddedTransfatUpdateDate;    /* date             */
-	@XmlElement(nillable=true)
 	private Integer   containsCaffeine;                   /* smallint         */
 	private Date      containsCaffeineUpdateDate;         /* date             */
-	@XmlElement(nillable=true)
 	private Integer   containsSugarSubstitutes;           /* smallint         */
 	private Date      containsSugarSubstitutesUpdateDate; /* date             */
-	@XmlElement(nillable=true)
 	private Double    referenceAmountG;                   /* double precision */
 	private String    referenceAmountMeasure;             /* text             */
 	private Date      referenceAmountUpdateDate;          /* date             */
-	@XmlElement(nillable=true)
 	private Double    foodGuideServingG;                  /* double precision */
 	private String    foodGuideServingMeasure;            /* text             */
 	private Date      foodGuideUpdateDate;                /* date             */
-	@XmlElement(nillable=true)
 	private Double    tier4ServingG;                      /* double precision */
 	private String    tier4ServingMeasure;                /* text             */
 	private Date      tier4ServingUpdateDate;             /* date             */
-	@XmlElement(nillable=true)
 	private Integer   rolledUp;                           /* smallint         */
 	private Date      rolledUpUpdateDate;                 /* date             */
-	@XmlElement(nillable=true)
 	private Integer   applySmallRaAdjustment;             /* smallint         */
-	@XmlElement(nillable=true)
 	private Integer   replacementCode;                    /* integer          */
 	private Date      commitDate;                         /* date             */
 	private String    comments;                           /* text             */

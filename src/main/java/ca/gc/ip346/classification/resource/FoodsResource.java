@@ -61,7 +61,8 @@ import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
 
 @Path("/datasets")
-// @Produces(MediaType.APPLICATION_JSON)
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class FoodsResource {
 	private static final Logger logger = LogManager.getLogger(FoodsResource.class);
 
@@ -88,7 +89,7 @@ public class FoodsResource {
 
 	@GET
 	@Path("/search")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodGuideDataset> getFoodList(@BeanParam CfgFilter search) {
 		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
@@ -97,8 +98,8 @@ public class FoodsResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public /* Map<String, Object> */ Response saveDataset(Dataset dataset) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
@@ -169,7 +170,7 @@ public class FoodsResource {
 	}
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<Map<String, String>> getDatasets(@QueryParam("env") String env) {
 		MongoClient mongoClient = new MongoClient();
@@ -201,7 +202,7 @@ public class FoodsResource {
 
 	@DELETE
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public void deleteDataset(@PathParam("id") String id) {
 		MongoClient mongoClient = new MongoClient();
@@ -221,28 +222,28 @@ public class FoodsResource {
 
 	@PUT
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public void updateDataset() {
 	}
 
 	@POST
 	@Path("/{id}/classify")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public void classifyDataset() {
 	}
 
 	@POST
 	@Path("/{id}/commit")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public void commitDataset() {
 	}
 
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<Map<String, Object>> getDataset(@PathParam("id") String id) {
 		MongoClient mongoClient = new MongoClient();
@@ -304,7 +305,7 @@ public class FoodsResource {
 
 	@GET
 	@Path("/status")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public void getStatusCodes() {
 		Map<Integer, String> map = new HashMap<Integer, String>();
@@ -370,7 +371,7 @@ public class FoodsResource {
 
 	@GET
 	@Path("/group/{groupId}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<FoodItem> getFoodListForGroup(@PathParam("groupId") Integer groupId) {
 		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
@@ -403,7 +404,7 @@ public class FoodsResource {
 
 	@GET
 	@Path("/subgroup/{subgroupId}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<FoodItem> getFoodListForsubGroup(@PathParam("subgroupId") Integer subgroupId) {
 		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
@@ -833,55 +834,78 @@ public class FoodsResource {
 				while (rs.next()) {
 					CanadaFoodGuideDataset foodItem = new CanadaFoodGuideDataset();
 
-					foodItem.setType(rs.getInt("type") == 1 ? "food" : "recipe");
-					foodItem.setCode(Integer.parseInt(rs.getString("code")));
-					foodItem.setName(rs.getString("name"));
-					foodItem.setCnfGroupCode(rs.getInt("cnf_group_code"));
-					foodItem.setCfgCode(rs.getInt("cfg_code"));
-					foodItem.setCommitDate(rs.getDate("commit_date"));
-					foodItem.setEnergyKcal(rs.getDouble("energy_kcal"));
-					foodItem.setSodiumAmountPer100g(rs.getDouble("sodium_amount_per_100g"));
-					foodItem.setSodiumImputationReference(rs.getString("sodium_imputation_reference"));
-					foodItem.setSodiumImputationDate(rs.getDate("sodium_imputation_date"));
-					foodItem.setSugarAmountPer100g(rs.getDouble("sugar_amount_per_100g"));
-					foodItem.setSugarImputationReference(rs.getString("sugar_imputation_reference"));
-					foodItem.setSugarImputationDate(rs.getDate("sugar_imputation_date"));
-					foodItem.setTransfatAmountPer100g(rs.getDouble("transfat_amount_per_100g"));
-					foodItem.setTransfatImputationReference(rs.getString("transfat_imputation_reference"));
-					foodItem.setTransfatImputationDate(rs.getDate("transfat_imputation_date"));
-					foodItem.setSatfatAmountPer100g(rs.getDouble("satfat_amount_per_100g"));
-					foodItem.setSatfatImputationReference(rs.getString("satfat_imputation_reference"));
-					foodItem.setSatfatImputationDate(rs.getDate("satfat_imputation_date"));
-					foodItem.setTotalfatAmountPer100g(rs.getDouble("totalfat_amount_per_100g"));
-					foodItem.setTotalfatImputationReference(rs.getString("totalfat_imputation_reference"));
-					foodItem.setTotalfatImputationDate(rs.getDate("totalfat_imputation_date"));
-					foodItem.setContainsAddedSodium(rs.getInt("contains_added_sodium"));
-					foodItem.setContainsAddedSodiumUpdateDate(rs.getDate("contains_added_sodium_update_date"));
-					foodItem.setContainsAddedSugar(rs.getInt("contains_added_sugar"));
-					foodItem.setContainsAddedSugarUpdateDate(rs.getDate("contains_added_sugar_update_date"));
-					foodItem.setContainsFreeSugars(rs.getInt("contains_free_sugars"));
-					foodItem.setContainsFreeSugarsUpdateDate(rs.getDate("contains_free_sugars_update_date"));
-					foodItem.setContainsAddedFat(rs.getInt("contains_added_fat"));
-					foodItem.setContainsAddedFatUpdateDate(rs.getDate("contains_added_fat_update_date"));
-					foodItem.setContainsAddedTransfat(rs.getInt("contains_added_transfat"));
-					foodItem.setContainsAddedTransfatUpdateDate(rs.getDate("contains_added_transfat_update_date"));
-					foodItem.setContainsCaffeine(rs.getInt("contains_caffeine"));
-					foodItem.setContainsCaffeineUpdateDate(rs.getDate("contains_caffeine_update_date"));
-					foodItem.setContainsSugarSubstitutes(rs.getInt("contains_sugar_substitutes"));
-					foodItem.setContainsSugarSubstitutesUpdateDate(rs.getDate("contains_sugar_substitutes_update_date"));
-					foodItem.setReferenceAmountG(rs.getDouble("reference_amount_g"));
-					foodItem.setReferenceAmountMeasure(rs.getString("reference_amount_measure"));
-					foodItem.setReferenceAmountUpdateDate(rs.getDate("reference_amount_update_date"));
-					foodItem.setFoodGuideServingG(rs.getDouble("food_guide_serving_g"));
-					foodItem.setFoodGuideServingMeasure(rs.getString("food_guide_serving_measure"));
-					foodItem.setFoodGuideUpdateDate(rs.getDate("food_guide_update_date"));
-					foodItem.setTier4ServingG(rs.getDouble("tier_4_serving_g"));
-					foodItem.setTier4ServingMeasure(rs.getString("tier_4_serving_measure"));
-					foodItem.setTier4ServingUpdateDate(rs.getDate("tier_4_serving_update_date"));
-					foodItem.setRolledUp(rs.getInt("rolled_up"));
-					foodItem.setRolledUpUpdateDate(rs.getDate("rolled_up_update_date"));
-					foodItem.setApplySmallRaAdjustment(rs.getInt("apply_small_ra_adjustment"));
-					foodItem.setComments(rs.getString("comments"));
+					foodItem.setType(rs. getInt                               ("type") == 1 ? "food" : "recipe"          );
+					foodItem.setCode(Integer.parseInt(rs.getString            ("code")                                  ));
+					foodItem.setName(rs.getString                             ("name")                                   );
+					if (rs.getString("cnf_group_code") != null)
+						foodItem.setCnfGroupCode(rs.getInt                    ("cnf_group_code")                         );
+					if (rs.getString("cfg_code") != null)
+						foodItem.setCfgCode(rs.getInt                         ("cfg_code")                               );
+					foodItem.setCommitDate(rs.getDate                         ("cfg_code_update_date")                   );
+					if (rs.getString("energy_kcal") != null)
+						foodItem.setEnergyKcal(rs.getDouble                   ("energy_kcal")                            );
+					if (rs.getString("sodium_amount_per_100g") != null)
+						foodItem.setSodiumAmountPer100g(rs.getDouble          ("sodium_amount_per_100g")                 );
+					foodItem.setSodiumImputationReference(rs.getString        ("sodium_imputation_reference")            );
+					foodItem.setSodiumImputationDate(rs.getDate               ("sodium_imputation_date")                 );
+					if (rs.getString("sugar_amount_per_100g") != null)
+						foodItem.setSugarAmountPer100g(rs.getDouble           ("sugar_amount_per_100g")                  );
+					foodItem.setSugarImputationReference(rs.getString         ("sugar_imputation_reference")             );
+					foodItem.setSugarImputationDate(rs.getDate                ("sugar_imputation_date")                  );
+					if (rs.getString("transfat_amount_per_100g") != null)
+						foodItem.setTransfatAmountPer100g(rs.getDouble        ("transfat_amount_per_100g")               );
+					foodItem.setTransfatImputationReference(rs.getString      ("transfat_imputation_reference")          );
+					foodItem.setTransfatImputationDate(rs.getDate             ("transfat_imputation_date")               );
+					if (rs.getString("satfat_amount_per_100g") != null)
+						foodItem.setSatfatAmountPer100g(rs.getDouble          ("satfat_amount_per_100g")                 );
+					foodItem.setSatfatImputationReference(rs.getString        ("satfat_imputation_reference")            );
+					foodItem.setSatfatImputationDate(rs.getDate               ("satfat_imputation_date")                 );
+					if (rs.getString("totalfat_amount_per_100g") != null)
+						foodItem.setTotalfatAmountPer100g(rs.getDouble        ("totalfat_amount_per_100g")               );
+					foodItem.setTotalfatImputationReference(rs.getString      ("totalfat_imputation_reference")          );
+					foodItem.setTotalfatImputationDate(rs.getDate             ("totalfat_imputation_date")               );
+					if (rs.getString("contains_added_sodium") != null)
+						foodItem.setContainsAddedSodium(rs.getInt             ("contains_added_sodium")                  );
+					foodItem.setContainsAddedSodiumUpdateDate(rs.getDate      ("contains_added_sodium_update_date")      );
+					if (rs.getString("contains_added_sugar") != null)
+						foodItem.setContainsAddedSugar(rs.getInt              ("contains_added_sugar")                   );
+					foodItem.setContainsAddedSugarUpdateDate(rs.getDate       ("contains_added_sugar_update_date")       );
+					if (rs.getString("contains_free_sugars") != null)
+						foodItem.setContainsFreeSugars(rs.getInt              ("contains_free_sugars")                   );
+					foodItem.setContainsFreeSugarsUpdateDate(rs.getDate       ("contains_free_sugars_update_date")       );
+					if (rs.getString("contains_added_fat") != null)
+						foodItem.setContainsAddedFat(rs.getInt                ("contains_added_fat")                     );
+					foodItem.setContainsAddedFatUpdateDate(rs.getDate         ("contains_added_fat_update_date")         );
+					if (rs.getString("contains_added_transfat") != null)
+						foodItem.setContainsAddedTransfat(rs.getInt           ("contains_added_transfat")                );
+					foodItem.setContainsAddedTransfatUpdateDate(rs.getDate    ("contains_added_transfat_update_date")    );
+					if (rs.getString("contains_caffeine") != null)
+						foodItem.setContainsCaffeine(rs.getInt                ("contains_caffeine")                      );
+					foodItem.setContainsCaffeineUpdateDate(rs.getDate         ("contains_caffeine_update_date")          );
+					if (rs.getString("contains_sugar_substitutes") != null)
+						foodItem.setContainsSugarSubstitutes(rs.getInt        ("contains_sugar_substitutes")             );
+					foodItem.setContainsSugarSubstitutesUpdateDate(rs.getDate ("contains_sugar_substitutes_update_date") );
+					if (rs.getString("reference_amount_g") != null)
+						foodItem.setReferenceAmountG(rs.getDouble             ("reference_amount_g")                     );
+					foodItem.setReferenceAmountMeasure(rs.getString           ("reference_amount_measure")               );
+					foodItem.setReferenceAmountUpdateDate(rs.getDate          ("reference_amount_update_date")           );
+					if (rs.getString("food_guide_serving_g") != null)
+						foodItem.setFoodGuideServingG(rs.getDouble            ("food_guide_serving_g")                   );
+					foodItem.setFoodGuideServingMeasure(rs.getString          ("food_guide_serving_measure")             );
+					foodItem.setFoodGuideUpdateDate(rs.getDate                ("food_guide_update_date")                 );
+					if (rs.getString("tier_4_serving_g") != null)
+						foodItem.setTier4ServingG(rs.getDouble                ("tier_4_serving_g")                       );
+					foodItem.setTier4ServingMeasure(rs.getString              ("tier_4_serving_measure")                 );
+					foodItem.setTier4ServingUpdateDate(rs.getDate             ("tier_4_serving_update_date")             );
+					if (rs.getString("rolled_up") != null)
+						foodItem.setRolledUp(rs.getInt                        ("rolled_up")                              );
+					foodItem.setRolledUpUpdateDate(rs.getDate                 ("rolled_up_update_date")                  );
+					if (rs.getString("apply_small_ra_adjustment") != null)
+						foodItem.setApplySmallRaAdjustment(rs.getInt          ("apply_small_ra_adjustment")              );
+					if (rs.getString("replacement_code") != null)
+						foodItem.setReplacementCode(rs.getInt                 ("replacement_code")                       );
+					foodItem.setCommitDate(rs.getDate                         ("commit_date")                            );
+					foodItem.setComments(rs.getString                         ("comments")                               );
 
 					list.add(foodItem);
 				}
