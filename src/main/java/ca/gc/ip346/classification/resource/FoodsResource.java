@@ -26,9 +26,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Level;
+// import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -36,6 +37,7 @@ import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
+import com.google.common.net.HttpHeaders;
 // import com.google.common.base.CaseFormat;
 import com.google.gson.GsonBuilder;
 // import com.mongodb.DBObject;
@@ -91,7 +93,7 @@ public class FoodsResource {
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<CanadaFoodGuideDataset> getFoodList(@BeanParam CfgFilter search) {
+	public /* List<CanadaFoodGuideDataset> */ Response getFoodList(@BeanParam CfgFilter search) {
 		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
 		search.setSql(sql);
 		return doSearchCriteria(search);
@@ -105,7 +107,7 @@ public class FoodsResource {
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
 
-		Response response = null;
+		ResponseBuilder response = null;
 
 		// String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
 		// CfgFilter search = new CfgFilter();
@@ -141,13 +143,11 @@ public class FoodsResource {
 
 			logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
 
-			mongoClient.close();
-
 			map.put("id", id.toString());
 
 			logger.error("[01;34m" + Response.Status.CREATED.getStatusCode() + " " + Response.Status.CREATED.toString() + "[00;00m");
 
-			response = Response.status(Response.Status.CREATED).entity(map).build();
+			response = Response.status(Response.Status.CREATED);
 		} else {
 			List<String> list = new ArrayList<String>();
 
@@ -163,16 +163,24 @@ public class FoodsResource {
 			logger.error("[01;34m" + Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!" + "[00;00m");
 			logger.error("[01;34m" + Response.Status.BAD_REQUEST.getStatusCode() + " " + Response.Status.BAD_REQUEST.toString() + "[00;00m");
 
-			response = Response.status(Response.Status.BAD_REQUEST).entity(map).build();
+			response = Response.status(Response.Status.BAD_REQUEST);
 		}
 
-		return response;
+		mongoClient.close();
+
+		return response
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
+			.entity(map).build();
 	}
 
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<Map<String, String>> getDatasets(@QueryParam("env") String env) {
+	public /* List<Map<String, String>> */ Response getDatasets(@QueryParam("env") String env) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
@@ -197,55 +205,20 @@ public class FoodsResource {
 
 		mongoClient.close();
 
-		return list;
-	}
-
-	@DELETE
-	@Path("/{id}")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void deleteDataset(@PathParam("id") String id) {
-		MongoClient mongoClient = new MongoClient();
-		MongoDatabase database = mongoClient.getDatabase("cfgDb");
-		MongoCollection<Document> collection = database.getCollection("master");
-
-		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
-		while (cursorDocMap.hasNext()) {
-			Document doc = cursorDocMap.next();
-			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
-
-			collection.deleteOne(doc);
-		}
-
-		mongoClient.close();
-	}
-
-	@PUT
-	@Path("/{id}")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void updateDataset() {
-	}
-
-	@POST
-	@Path("/{id}/classify")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void classifyDataset() {
-	}
-
-	@POST
-	@Path("/{id}/commit")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void commitDataset() {
+		return Response.status(Response.Status.OK)
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
+			.entity(list).build();
 	}
 
 	@GET
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<Map<String, Object>> getDataset(@PathParam("id") String id) {
+	public /* List<Map<String, Object>> */ Response getDataset(@PathParam("id") String id) {
 		MongoClient mongoClient = new MongoClient();
 		MongoDatabase database = mongoClient.getDatabase("cfgDb");
 		MongoCollection<Document> collection = database.getCollection("master");
@@ -271,36 +244,84 @@ public class FoodsResource {
 
 		mongoClient.close();
 
-		return list;
+		return Response.status(Response.Status.OK)
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
+			.entity(list).build();
 	}
 
-	public List<FoodItem> getFoodItem(@PathParam("id") Integer id) {
-		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
+	@DELETE
+	@Path("/{id}")
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public void deleteDataset(@PathParam("id") String id) {
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase database = mongoClient.getDatabase("cfgDb");
+		MongoCollection<Document> collection = database.getCollection("master");
 
-		try {
-			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
-			String sql = ContentHandler.read("food_item_cnf.sql", getClass());
-			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				FoodItem food = new FoodItem();
-				food.setId(rs.getInt("food_c"));
-				food.setName(rs.getString("eng_name"));
-				food.setLabel(rs.getString("food_desc"));
-				food.setGroup(rs.getString("group_c"));
-				food.setSubGroup(rs.getString("canada_food_subgroup_id"));
-				food.setCountryCode(rs.getString("country_c"));
-				list.add(food);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
+		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		while (cursorDocMap.hasNext()) {
+			Document doc = cursorDocMap.next();
+			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+
+			collection.deleteOne(doc);
 		}
 
-		logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+		mongoClient.close();
+	}
 
-		return list;
+	@PUT
+	@Path("/{id}")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response updateDataset(@PathParam("id") String id, Dataset dataset) {
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase database = mongoClient.getDatabase("cfgDb");
+		MongoCollection<Document> collection = database.getCollection("master");
+
+		// Map<String, Object> map = new HashMap<String, Object>();
+		List<Object> list = null;
+		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		while (cursorDocMap.hasNext()) {
+			Document doc = cursorDocMap.next();
+			logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc.get("data")));
+			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+			// map.put("id", doc.get("_id"));
+			list = castList(doc.get("data"), Object.class);
+			// old = dataset.getData();
+			for (Object obj : list) {
+				System.out.printf("%s---", new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(obj));
+				// map.put(obj.get("code"), obj);
+			}
+		}
+
+		mongoClient.close();
+
+		return Response.status(Response.Status.OK)
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
+			.entity(list).build();
+	}
+
+	@POST
+	@Path("/{id}/classify")
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public void classifyDataset() {
+	}
+
+	@POST
+	@Path("/{id}/commit")
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public void commitDataset() {
 	}
 
 	@GET
@@ -369,6 +390,35 @@ public class FoodsResource {
 		}
 	}
 
+	public List<FoodItem> getFoodItem(@PathParam("id") Integer id) {
+		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
+
+		try {
+			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
+			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
+			String sql = ContentHandler.read("food_item_cnf.sql", getClass());
+			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				FoodItem food = new FoodItem();
+				food.setId(rs.getInt("food_c"));
+				food.setName(rs.getString("eng_name"));
+				food.setLabel(rs.getString("food_desc"));
+				food.setGroup(rs.getString("group_c"));
+				food.setSubGroup(rs.getString("canada_food_subgroup_id"));
+				food.setCountryCode(rs.getString("country_c"));
+				list.add(food);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+
+		logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+
+		return list;
+	}
+
 	@GET
 	@Path("/group/{groupId}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -435,7 +485,7 @@ public class FoodsResource {
 		return list;
 	}
 
-	private List<CanadaFoodGuideDataset> doSearchCriteria(CfgFilter search) {
+	private /* List<CanadaFoodGuideDataset> */ Response doSearchCriteria(CfgFilter search) {
 		List<CanadaFoodGuideDataset> list = new ArrayList<CanadaFoodGuideDataset>();
 
 		if (search != null) {
@@ -552,7 +602,6 @@ public class FoodsResource {
 				arr = search.getContainsAdded().toArray(arr);
 				for (String keyValue : arr) {
 					StringTokenizer tokenizer = new StringTokenizer(keyValue, "=");
-					// map.put(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, tokenizer.nextToken()),tokenizer.nextToken());
 					map.put(tokenizer.nextToken(), tokenizer.nextToken());
 					logger.error("[01;32m" + keyValue + "[00;00m");
 				}
@@ -590,7 +639,6 @@ public class FoodsResource {
 				logger.error("[01;32m" + search.getMissingValues() + "[00;00m");
 				logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(search.getMissingValues()) + "[00;00m");
 				for (String name : search.getMissingValues()) {
-					// switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 					switch (Missing.valueOf(name)) {
 						case refAmount:
 							sb.append("   AND reference_amount_g         IS NULL").append("\n");
@@ -654,7 +702,6 @@ public class FoodsResource {
 				if (search.getLastUpdatedFilter() != null) {
 					logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
 					for (String name : search.getLastUpdatedFilter()) {
-						// switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 						switch (Missing.valueOf(name)) {
 							case refAmount:
 								sb.append("   AND reference_amount_update_date           BETWEEN CAST(? AS date) AND CAST(? AS date)").append("\n");
@@ -786,7 +833,6 @@ public class FoodsResource {
 						if (search.getLastUpdatedFilter() != null) {
 							logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
 							for (String name : search.getLastUpdatedFilter()) {
-								// switch (Missing.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name))) {
 								switch (Missing.valueOf(name)) {
 									case refAmount:
 									case cfgServing:
@@ -913,9 +959,26 @@ public class FoodsResource {
 				e.printStackTrace();
 			}
 
-			 // logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
+			// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 		}
 
-		return list;
+		return Response.status(Response.Status.OK)
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
+			.entity(list).build();
+	}
+
+	public static <T> List<T> castList(Object obj, Class<T> clazz) {
+		List<T> result = new ArrayList<T>();
+		if (obj instanceof List<?>) {
+			for (Object o : (List<?>)obj) {
+				result.add(clazz.cast(o));
+			}
+			return result;
+		}
+		return null;
 	}
 }

@@ -188,5 +188,11 @@
 			<artifactId>guava</artifactId>
 			<version>21.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>4.3.7.RELEASE</version>
+		</dependency>
 	</dependencies>
 </project>
