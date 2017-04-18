@@ -1,6 +1,5 @@
 package ca.gc.ip346.classification.resource;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.naming.NamingException;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -39,17 +37,14 @@ import org.bson.types.ObjectId;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.common.net.HttpHeaders;
-// import com.google.common.base.CaseFormat;
 import com.google.gson.GsonBuilder;
-// import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+
 import static com.mongodb.client.model.Filters.*;
 // import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Updates.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-// import com.mongodb.util.JSON;
 
 // import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
@@ -62,6 +57,7 @@ import ca.gc.ip346.classification.model.RecipeRolled;
 // import ca.gc.ip346.classification.model.NewAndImprovedFoodItem;
 import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
+import ca.gc.ip346.util.MongoClientFactory;
 
 @Path("/datasets")
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -69,22 +65,17 @@ import ca.gc.ip346.util.DBConnection;
 public class FoodsResource {
 	private static final Logger logger = LogManager.getLogger(FoodsResource.class);
 
-	Connection conn       = null;
-	DatabaseMetaData meta = null;
+	private Connection conn                      = null;
+	private DatabaseMetaData meta                = null;
+	private MongoClient mongoClient              = null;
+	private MongoCollection<Document> collection = null;
 
 	public FoodsResource() {
+		mongoClient = MongoClientFactory.getMongoClient();
+		collection  = mongoClient.getDatabase(MongoClientFactory.getDatabase()).getCollection(MongoClientFactory.getCollection());
+
 		try {
-			// Context initCtx = new InitialContext();
-			// Context envCtx  = (Context)initCtx.lookup("java:comp/env");
-			// DataSource ds   = (DataSource)envCtx.lookup("jdbc/FoodDB");
-			// conn = ds.getConnection();
 			conn = DBConnection.getConnections();
-		} catch(NamingException e) {
-			e.printStackTrace();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -104,26 +95,12 @@ public class FoodsResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public /* Map<String, Object> */ Response saveDataset(Dataset dataset) {
-		MongoClient mongoClient = new MongoClient();
-		MongoDatabase database = mongoClient.getDatabase("cfgDb");
-		MongoCollection<Document> collection = database.getCollection("master");
-
 		ResponseBuilder response = null;
-
-		// String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
-		// CfgFilter search = new CfgFilter();
-		// search.setSql(sql);
-		// List<CanadaFoodGuideDataset> list = doSearchCriteria(search);
-
-		// String json = ContentHandler.read("search.json", getClass());
-		// DBObject dbObject = (DBObject)JSON.parse(json);
-		// DBObject dbObject = (DBObject)JSON.parse(dataset.getData());
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (dataset.getData() != null && dataset.getName() != null && dataset.getComments() != null) {
 			Document doc = new Document()
-				// .append("data", dbObject)
 				.append("data",     dataset.getData())
 				.append("name",     dataset.getName())
 				.append("env",      dataset.getEnv())
@@ -182,10 +159,6 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, String>> */ Response getDatasets(@QueryParam("env") String env) {
-		MongoClient mongoClient = new MongoClient();
-		MongoDatabase database = mongoClient.getDatabase("cfgDb");
-		MongoCollection<Document> collection = database.getCollection("master");
-
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		MongoCursor<Document> cursorDocMap = collection.find(eq("env", env)).iterator();
 		while (cursorDocMap.hasNext()) {
@@ -220,10 +193,6 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, Object>> */ Response getDataset(@PathParam("id") String id) {
-		MongoClient mongoClient = new MongoClient();
-		MongoDatabase database = mongoClient.getDatabase("cfgDb");
-		MongoCollection<Document> collection = database.getCollection("master");
-
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
 		while (cursorDocMap.hasNext()) {
@@ -259,10 +228,6 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public void deleteDataset(@PathParam("id") String id) {
-		MongoClient mongoClient = new MongoClient();
-		MongoDatabase database = mongoClient.getDatabase("cfgDb");
-		MongoCollection<Document> collection = database.getCollection("master");
-
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
 		while (cursorDocMap.hasNext()) {
 			Document doc = cursorDocMap.next();
@@ -280,10 +245,6 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response updateDataset(@PathParam("id") String id, Dataset dataset) {
-		MongoClient mongoClient = new MongoClient();
-		MongoDatabase database = mongoClient.getDatabase("cfgDb");
-		MongoCollection<Document> collection = database.getCollection("master");
-
 		Map<String, Map<String, String>> original_values_map = new HashMap<String, Map<String, String>>();
 		Map<String, Map<String, String>> toupdate_values_map = new HashMap<String, Map<String, String>>();
 		List<Object> list = null;
