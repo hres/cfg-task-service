@@ -38,6 +38,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.common.net.HttpHeaders;
 import com.google.gson.GsonBuilder;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 
 import static com.mongodb.client.model.Filters.*;
@@ -274,105 +275,140 @@ public class FoodsResource {
 
 				logger.error("[01;31mname: " + toupdate_values_map.get(map.get("code")).get("name") + "[00;00m");
 
+				BasicDBObject newDocument = new BasicDBObject();
+
+				BasicDBObject searchQuery = new BasicDBObject().append("code", map.get("code"));
+
+				// collection.update(searchQuery, newDocument);
+
 				if (!toupdate_values_map .get (map .get ("code")) .get ("name")                               .equals (original_values_map .get (map .get ("code")) .get ("name"))) {
-				}
-				if (!toupdate_values_map .get (map .get ("code")) .get ("name")                               .equals (original_values_map .get (map .get ("code")) .get ("name"))) {
+					newDocument.append("$set", new BasicDBObject().append("name", map.get("name")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode")                       .equals (original_values_map .get (map .get ("code")) .get ("cnfGroupCode"))) {
+					newDocument.append("$set", new BasicDBObject().append("cnfGroupCode", map.get("cnfGroupCode")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("cfgCode")                            .equals (original_values_map .get (map .get ("code")) .get ("cfgCode"))) {
+					newDocument.append("$set", new BasicDBObject().append("cfgCode", map.get("cfgCode")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                  .equals (original_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("energyKcal")                         .equals (original_values_map .get (map .get ("code")) .get ("energyKcal"))) {
+					newDocument.append("$set", new BasicDBObject().append("energyKcal", map.get("energyKcal")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g"))) {
+					newDocument.append("$set", new BasicDBObject().append("sodiumAmountPer100g", map.get("sodiumAmountPer100g")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationReference"))) {
+					newDocument.append("$set", new BasicDBObject().append("sodiumImputationReference", map.get("sodiumImputationReference")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate")               .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("sugarAmountPer100g")                 .equals (original_values_map .get (map .get ("code")) .get ("sugarAmountPer100g"))) {
+					newDocument.append("$set", new BasicDBObject().append("sugarAmountPer100g", map.get("sugarAmountPer100g")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("sugarImputationReference")           .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationReference"))) {
+					newDocument.append("$set", new BasicDBObject().append("sugarImputationReference", map.get("sugarImputationReference")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("sugarImputationDate")                .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("transfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("transfatAmountPer100g"))) {
+					newDocument.append("$set", new BasicDBObject().append("transfatAmountPer100g", map.get("transfatAmountPer100g")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("transfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationReference"))) {
+					newDocument.append("$set", new BasicDBObject().append("transfatImputationReference", map.get("transfatImputationReference")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("transfatImputationDate")             .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("satfatAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("satfatAmountPer100g"))) {
+					newDocument.append("$set", new BasicDBObject().append("satfatAmountPer100g", map.get("satfatAmountPer100g")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("satfatImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationReference"))) {
+					newDocument.append("$set", new BasicDBObject().append("satfatImputationReference", map.get("satfatImputationReference")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate")               .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g"))) {
+					newDocument.append("$set", new BasicDBObject().append("totalfatAmountPer100g", map.get("totalfatAmountPer100g")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationReference"))) {
+					newDocument.append("$set", new BasicDBObject().append("totalfatImputationReference", map.get("totalfatImputationReference")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate")             .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodium")                .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodium"))) {
+					newDocument.append("$set", new BasicDBObject().append("containsAddedSodium", map.get("containsAddedSodium")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")      .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugar")                 .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugar"))) {
+					newDocument.append("$set", new BasicDBObject().append("containsAddedSugar", map.get("containsAddedSugar")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugars")                 .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugars"))) {
+					newDocument.append("$set", new BasicDBObject().append("containsAddedFreeSugars", map.get("containsAddedFreeSugars")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedFat")                   .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFat"))) {
+					newDocument.append("$set", new BasicDBObject().append("containsAddedFat", map.get("containsAddedFat")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfat")              .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfat"))) {
+					newDocument.append("$set", new BasicDBObject().append("containsAddedTransfat", map.get("containsAddedTransfat")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")    .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsCaffeine")                   .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeine"))) {
+					newDocument.append("$set", new BasicDBObject().append("containsCaffeine", map.get("containsCaffeine")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes")           .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes"))) {
+					newDocument.append("$set", new BasicDBObject().append("containsSugarSubstitutes", map.get("containsSugarSubstitutes")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                   .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountG"))) {
+					newDocument.append("$set", new BasicDBObject().append("referenceAmountG", map.get("referenceAmountG")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")             .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountMeasure"))) {
+					newDocument.append("$set", new BasicDBObject().append("referenceAmountMeasure", map.get("referenceAmountMeasure")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate")          .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingG")                  .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingG"))) {
+					newDocument.append("$set", new BasicDBObject().append("foodGuideServingG", map.get("foodGuideServingG")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure")            .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure"))) {
+					newDocument.append("$set", new BasicDBObject().append("foodGuideServingMeasure", map.get("foodGuideServingMeasure")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate")                .equals (original_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("tier4ServingG")                      .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingG"))) {
+					newDocument.append("$set", new BasicDBObject().append("tier4ServingG", map.get("tier4ServingG")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("tier4ServingMeasure")                .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingMeasure"))) {
+					newDocument.append("$set", new BasicDBObject().append("tier4ServingMeasure", map.get("tier4ServingMeasure")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate")             .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("rolledUp")                           .equals (original_values_map .get (map .get ("code")) .get ("rolledUp"))) {
+					newDocument.append("$set", new BasicDBObject().append("rolledUp", map.get("rolledUp")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                 .equals (original_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")             .equals (original_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment"))) {
+					newDocument.append("$set", new BasicDBObject().append("applySmallRaAdjustment", map.get("applySmallRaAdjustment")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("replacementCode")                    .equals (original_values_map .get (map .get ("code")) .get ("replacementCode"))) {
+					newDocument.append("$set", new BasicDBObject().append("replacementCode", map.get("replacementCode")));
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("commitDate")                         .equals (original_values_map .get (map .get ("code")) .get ("commitDate"))) {
 				}
 				if (!toupdate_values_map .get (map .get ("code")) .get ("comments")                           .equals (original_values_map .get (map .get ("code")) .get ("comments"))) {
+					newDocument.append("$set", new BasicDBObject().append("comments", map.get("comments")));
 				}
 			}
 		}
