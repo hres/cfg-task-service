@@ -37,7 +37,7 @@ For a standalone deployment, do the following:
 
 ## How to Install MongoDB 3.4.2 LTS
 
-Go to <`https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/`>
+Go to <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
 
 1. Import the public key used by the package management system.
 2. Create a list file for MongoDB.
