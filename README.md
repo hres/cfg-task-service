@@ -1,23 +1,24 @@
 # Canada Food Guide Task Service
 
 This project provides the CFG Task REST Services.
-The service will use Drools Decision Table to implement the classification rules at the classification rules step.
+<!-- The service will use Drools Decision Table to implement the classification rules at the classification rules step. -->
 
 ## Components and Features
 
 This project uses the following components and features:
 
-* Drools Decision Table (Excel)
+<!-- * Drools Decision Table (Excel) -->
 * Java 8
 * Maven 3.3.9
 * Tomcat 8.0
 * Eclipse Neon
-* Drools Eclipse Plugin
-* Drools Runtime 6.5
+<!-- * Drools Eclipse Plugin -->
+<!-- * Drools Runtime 6.5 -->
 * MongoDB 3.4.2 LTS
 * JAX-RS REST Service with Jersey and Jackson consuming and producing XML and JSON.
 
-These need be setup for development.  For runtime, see below.
+These need be setup for development.
+<!-- For runtime, see below. -->
 
 <!-- ## How to Set up Eclipse Plugins -->
 
@@ -28,8 +29,13 @@ These need be setup for development.  For runtime, see below.
 
 For a standalone deployment, do the following:
 
-1. `mvn clean install`
-2. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0
+1. `cd ~/repositories`
+2. `git clone https://github.com/hres/cfg-task-service.git`
+3. `cd cfg-task-service`
+4. `mvn clean install`
+5. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0
+
+<!--
 
 ## How to Test Service
 
@@ -213,6 +219,8 @@ The service speaks XML and JSON:
 	```
 
 ---
+
+-->
 
 <!-- * Set Food Flags -->
 
