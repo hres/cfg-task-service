@@ -3,57 +3,73 @@ package ca.gc.ip346.classification.model;
 import java.util.Date;
 
 public class CanadaFoodGuideDataset {
-	private String    type;                               /* smallint         */
-	private Integer   code;                               /* integer          */
-	private String    name;                               /* text             */
-	private Integer   cnfGroupCode;                       /* integer          */
-	private Integer   cfgCode;                            /* integer          */
-	private Date      cfgCodeUpdateDate;                  /* date             */
-	private Double    energyKcal;                         /* double precision */
-	private Double    sodiumAmountPer100g;                /* double precision */
-	private String    sodiumImputationReference;          /* text             */
-	private Date      sodiumImputationDate;               /* date             */
-	private Double    sugarAmountPer100g;                 /* double precision */
-	private String    sugarImputationReference;           /* text             */
-	private Date      sugarImputationDate;                /* date             */
-	private Double    transfatAmountPer100g;              /* double precision */
-	private String    transfatImputationReference;        /* text             */
-	private Date      transfatImputationDate;             /* date             */
-	private Double    satfatAmountPer100g;                /* double precision */
-	private String    satfatImputationReference;          /* text             */
-	private Date      satfatImputationDate;               /* date             */
-	private Double    totalfatAmountPer100g;              /* double precision */
-	private String    totalfatImputationReference;        /* text             */
-	private Date      totalfatImputationDate;             /* date             */
-	private Integer   containsAddedSodium;                /* smallint         */
-	private Date      containsAddedSodiumUpdateDate;      /* date             */
-	private Integer   containsAddedSugar;                 /* smallint         */
-	private Date      containsAddedSugarUpdateDate;       /* date             */
-	private Integer   containsFreeSugars;                 /* smallint         */
-	private Date      containsFreeSugarsUpdateDate;       /* date             */
-	private Integer   containsAddedFat;                   /* smallint         */
-	private Date      containsAddedFatUpdateDate;         /* date             */
-	private Integer   containsAddedTransfat;              /* smallint         */
-	private Date      containsAddedTransfatUpdateDate;    /* date             */
-	private Integer   containsCaffeine;                   /* smallint         */
-	private Date      containsCaffeineUpdateDate;         /* date             */
-	private Integer   containsSugarSubstitutes;           /* smallint         */
-	private Date      containsSugarSubstitutesUpdateDate; /* date             */
-	private Double    referenceAmountG;                   /* double precision */
-	private String    referenceAmountMeasure;             /* text             */
-	private Date      referenceAmountUpdateDate;          /* date             */
-	private Double    foodGuideServingG;                  /* double precision */
-	private String    foodGuideServingMeasure;            /* text             */
-	private Date      foodGuideUpdateDate;                /* date             */
-	private Double    tier4ServingG;                      /* double precision */
-	private String    tier4ServingMeasure;                /* text             */
-	private Date      tier4ServingUpdateDate;             /* date             */
-	private Integer   rolledUp;                           /* smallint         */
-	private Date      rolledUpUpdateDate;                 /* date             */
-	private Integer   applySmallRaAdjustment;             /* smallint         */
-	private Integer   replacementCode;                    /* integer          */
-	private Date      commitDate;                         /* date             */
-	private String    comments;                           /* text             */
+	private String  type;                               /* smallint         */
+	private Integer code;                               /* integer          */
+	private String  name;                               /* text             */
+	private Integer cnfGroupCode;                       /* integer          */
+	private Integer cfgCode;                            /* integer          */
+	private Date    cfgCodeUpdateDate;                  /* date             */
+	private Double  energyKcal;                         /* double precision */
+	private Double  sodiumAmountPer100g;                /* double precision */
+	private String  sodiumImputationReference;          /* text             */
+	private Date    sodiumImputationDate;               /* date             */
+	private Double  sugarAmountPer100g;                 /* double precision */
+	private String  sugarImputationReference;           /* text             */
+	private Date    sugarImputationDate;                /* date             */
+	private Double  transfatAmountPer100g;              /* double precision */
+	private String  transfatImputationReference;        /* text             */
+	private Date    transfatImputationDate;             /* date             */
+	private Double  satfatAmountPer100g;                /* double precision */
+	private String  satfatImputationReference;          /* text             */
+	private Date    satfatImputationDate;               /* date             */
+	private Double  totalfatAmountPer100g;              /* double precision */
+	private String  totalfatImputationReference;        /* text             */
+	private Date    totalfatImputationDate;             /* date             */
+	private Integer containsAddedSodium;                /* smallint         */
+	private Date    containsAddedSodiumUpdateDate;      /* date             */
+	private Integer containsAddedSugar;                 /* smallint         */
+	private Date    containsAddedSugarUpdateDate;       /* date             */
+	private Integer containsFreeSugars;                 /* smallint         */
+	private Date    containsFreeSugarsUpdateDate;       /* date             */
+	private Integer containsAddedFat;                   /* smallint         */
+	private Date    containsAddedFatUpdateDate;         /* date             */
+	private Integer containsAddedTransfat;              /* smallint         */
+	private Date    containsAddedTransfatUpdateDate;    /* date             */
+	private Integer containsCaffeine;                   /* smallint         */
+	private Date    containsCaffeineUpdateDate;         /* date             */
+	private Integer containsSugarSubstitutes;           /* smallint         */
+	private Date    containsSugarSubstitutesUpdateDate; /* date             */
+	private Double  referenceAmountG;                   /* double precision */
+	private String  referenceAmountMeasure;             /* text             */
+	private Date    referenceAmountUpdateDate;          /* date             */
+	private Double  foodGuideServingG;                  /* double precision */
+	private String  foodGuideServingMeasure;            /* text             */
+	private Date    foodGuideUpdateDate;                /* date             */
+	private Double  tier4ServingG;                      /* double precision */
+	private String  tier4ServingMeasure;                /* text             */
+	private Date    tier4ServingUpdateDate;             /* date             */
+	private Integer rolledUp;                           /* smallint         */
+	private Date    rolledUpUpdateDate;                 /* date             */
+	private Integer applySmallRaAdjustment;             /* smallint         */
+	private Integer replacementCode;                    /* integer          */
+	private Date    commitDate;                         /* date             */
+	private String  comments;                           /* text             */
+
+	// added by Robin
+	private Boolean lowSodium;
+	private Boolean highSodium;
+	private Boolean lowSugar;
+	private Boolean highSugar;
+	private Boolean lowFat;
+	private Boolean highFat;
+	private Boolean highSatFat;
+	private Double  adjustedReferenceAmount;
+	private Double  sodiumPerReferenceAmount;
+	private Double  sugarPerReferenceAmount;
+	private Double  fatPerReferenceAmount;
+	private Double  satFatPerReferenceAmount;
+	// checks to see if it has finished classification
+	private Boolean done;
 
 	/**
 	 * @return the type
@@ -767,5 +783,187 @@ public class CanadaFoodGuideDataset {
 	 */
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	/**
+	 * @return the lowSodium
+	 */
+	public Boolean getLowSodium() {
+		return lowSodium;
+	}
+
+	/**
+	 * @param lowSodium the lowSodium to set
+	 */
+	public void setLowSodium(Boolean lowSodium) {
+		this.lowSodium = lowSodium;
+	}
+
+	/**
+	 * @return the highSodium
+	 */
+	public Boolean getHighSodium() {
+		return highSodium;
+	}
+
+	/**
+	 * @param highSodium the highSodium to set
+	 */
+	public void setHighSodium(Boolean highSodium) {
+		this.highSodium = highSodium;
+	}
+
+	/**
+	 * @return the lowSugar
+	 */
+	public Boolean getLowSugar() {
+		return lowSugar;
+	}
+
+	/**
+	 * @param lowSugar the lowSugar to set
+	 */
+	public void setLowSugar(Boolean lowSugar) {
+		this.lowSugar = lowSugar;
+	}
+
+	/**
+	 * @return the highSugar
+	 */
+	public Boolean getHighSugar() {
+		return highSugar;
+	}
+
+	/**
+	 * @param highSugar the highSugar to set
+	 */
+	public void setHighSugar(Boolean highSugar) {
+		this.highSugar = highSugar;
+	}
+
+	/**
+	 * @return the lowFat
+	 */
+	public Boolean getLowFat() {
+		return lowFat;
+	}
+
+	/**
+	 * @param lowFat the lowFat to set
+	 */
+	public void setLowFat(Boolean lowFat) {
+		this.lowFat = lowFat;
+	}
+
+	/**
+	 * @return the highFat
+	 */
+	public Boolean getHighFat() {
+		return highFat;
+	}
+
+	/**
+	 * @param highFat the highFat to set
+	 */
+	public void setHighFat(Boolean highFat) {
+		this.highFat = highFat;
+	}
+
+	/**
+	 * @return the highSatFat
+	 */
+	public Boolean getHighSatFat() {
+		return highSatFat;
+	}
+
+	/**
+	 * @param highSatFat the highSatFat to set
+	 */
+	public void setHighSatFat(Boolean highSatFat) {
+		this.highSatFat = highSatFat;
+	}
+
+	/**
+	 * @return the adjustedReferenceAmount
+	 */
+	public Double getAdjustedReferenceAmount() {
+		return adjustedReferenceAmount;
+	}
+
+	/**
+	 * @param adjustedReferenceAmount the adjustedReferenceAmount to set
+	 */
+	public void setAdjustedReferenceAmount(Double adjustedReferenceAmount) {
+		this.adjustedReferenceAmount = adjustedReferenceAmount;
+	}
+
+	/**
+	 * @return the sodiumPerReferenceAmount
+	 */
+	public Double getSodiumPerReferenceAmount() {
+		return sodiumPerReferenceAmount;
+	}
+
+	/**
+	 * @param sodiumPerReferenceAmount the sodiumPerReferenceAmount to set
+	 */
+	public void setSodiumPerReferenceAmount(Double sodiumPerReferenceAmount) {
+		this.sodiumPerReferenceAmount = sodiumPerReferenceAmount;
+	}
+
+	/**
+	 * @return the sugarPerReferenceAmount
+	 */
+	public Double getSugarPerReferenceAmount() {
+		return sugarPerReferenceAmount;
+	}
+
+	/**
+	 * @param sugarPerReferenceAmount the sugarPerReferenceAmount to set
+	 */
+	public void setSugarPerReferenceAmount(Double sugarPerReferenceAmount) {
+		this.sugarPerReferenceAmount = sugarPerReferenceAmount;
+	}
+
+	/**
+	 * @return the fatPerReferenceAmount
+	 */
+	public Double getFatPerReferenceAmount() {
+		return fatPerReferenceAmount;
+	}
+
+	/**
+	 * @param fatPerReferenceAmount the fatPerReferenceAmount to set
+	 */
+	public void setFatPerReferenceAmount(Double fatPerReferenceAmount) {
+		this.fatPerReferenceAmount = fatPerReferenceAmount;
+	}
+
+	/**
+	 * @return the satFatPerReferenceAmount
+	 */
+	public Double getSatFatPerReferenceAmount() {
+		return satFatPerReferenceAmount;
+	}
+
+	/**
+	 * @param satFatPerReferenceAmount the satFatPerReferenceAmount to set
+	 */
+	public void setSatFatPerReferenceAmount(Double satFatPerReferenceAmount) {
+		this.satFatPerReferenceAmount = satFatPerReferenceAmount;
+	}
+
+	/**
+	 * @return the done
+	 */
+	public Boolean getDone() {
+		return done;
+	}
+
+	/**
+	 * @param done the done to set
+	 */
+	public void setDone(Boolean done) {
+		this.done = done;
 	}
 }
