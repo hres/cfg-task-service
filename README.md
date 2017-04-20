@@ -8,12 +8,12 @@ This project provides the CFG Task REST Services.
 This project uses the following components and features:
 
 <!-- * Drools Decision Table (Excel) -->
+<!-- * Drools Eclipse Plugin -->
+<!-- * Drools Runtime 6.5 -->
 * Java 8
 * Maven 3.3.9
 * Tomcat 8.0
 * Eclipse Neon
-<!-- * Drools Eclipse Plugin -->
-<!-- * Drools Runtime 6.5 -->
 * MongoDB 3.4.2 LTS
 * JAX-RS REST Service with Jersey and Jackson consuming and producing XML and JSON.
 
@@ -34,6 +34,15 @@ For a standalone deployment, do the following:
 3. `cd cfg-task-service`
 4. `mvn clean install`
 5. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0
+
+## How to Install MongoDB 3.4.2 LTS
+
+1. Go to `https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/`
+2. Import the public key used by the package management system.
+3. Create a list file for MongoDB.
+4. Reload local package database.
+5. Install the MongoDB packages.
+6. Start MongoDB as a service rather than manually.
 
 <!--
 
