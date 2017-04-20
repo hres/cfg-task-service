@@ -40,8 +40,7 @@ For a standalone deployment, do the following:
 Go to <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
 
 1. Import the public key used by the package management system.
-2. Create a list file for MongoDB.
-  * Ubuntu 16.04
+2. Create a list file for MongoDB for Ubuntu 16.04
 3. Reload local package database.
 4. Install the MongoDB packages.
 
