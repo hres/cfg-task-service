@@ -246,7 +246,7 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response updateDataset(@PathParam("id") String id, Dataset dataset) {
-		Map<String, Map<String, String>> original_values_map = new HashMap<String, Map<String, String>>();
+		Map<String, Map<String, Object>> original_values_map = new HashMap<String, Map<String, Object>>();
 		Map<String, Map<String, String>> toupdate_values_map = new HashMap<String, Map<String, String>>();
 		List<Object> list = null;
 
@@ -258,13 +258,13 @@ public class FoodsResource {
 			list = castList(doc.get("data"), Object.class);
 			for (Object obj : list) {
 				Map<?, ?> mObj = (Map<?, ?>)obj;
-				Map<String, String> tmp = new HashMap<String, String>();
+				Map<String, Object> tmp = new HashMap<String, Object>();
 				Iterator<?> it = mObj.keySet().iterator();
 				while (it.hasNext()) {
 					String key = (String)it.next();
-					tmp.put(key, (String)mObj.get(key));
+					tmp.put(key, mObj.get(key));
 				}
-				original_values_map.put(tmp.get("code"), tmp);
+				original_values_map.put((String)tmp.get("code"), tmp);
 			}
 		}
 
@@ -293,7 +293,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("cfgCode")                            != null && !toupdate_values_map .get (map .get ("code")) .get ("cfgCode")                            .equals (original_values_map .get (map .get ("code")) .get ("cfgCode"))) {
 				sets.add(set("data.$.cfgCode", map.get("cfgCode")));
-				sets.add(currentDate("cfgCodeUpdateDate"));
+				sets.add(currentDate("data.$.cfgCodeUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("cfgCode") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                  != null && !toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                  .equals (original_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate"))) {
@@ -304,7 +304,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g")                != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g"))) {
 				sets.add(set("data.$.sodiumAmountPer100g", map.get("sodiumAmountPer100g")));
-				sets.add(currentDate("sodiumImputationDate"));
+				sets.add(currentDate("data.$.sodiumImputationDate"));
 				logger.error("[01;31mvalue changed: " + map.get("sodiumAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationReference")          != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationReference"))) {
@@ -315,7 +315,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sugarAmountPer100g")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarAmountPer100g")                 .equals (original_values_map .get (map .get ("code")) .get ("sugarAmountPer100g"))) {
 				sets.add(set("data.$.sugarAmountPer100g", map.get("sugarAmountPer100g")));
-				sets.add(currentDate("sugarImputationDate"));
+				sets.add(currentDate("data.$.sugarImputationDate"));
 				logger.error("[01;31mvalue changed: " + map.get("sugarAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sugarImputationReference")           != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarImputationReference")           .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationReference"))) {
@@ -326,7 +326,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("transfatAmountPer100g")              != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("transfatAmountPer100g"))) {
 				sets.add(set("data.$.transfatAmountPer100g", map.get("transfatAmountPer100g")));
-				sets.add(currentDate("transfatImputationDate"));
+				sets.add(currentDate("data.$.transfatImputationDate"));
 				logger.error("[01;31mvalue changed: " + map.get("transfatAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("transfatImputationReference")        != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationReference"))) {
@@ -337,7 +337,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("satfatAmountPer100g")                != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("satfatAmountPer100g"))) {
 				sets.add(set("data.$.satfatAmountPer100g", map.get("satfatAmountPer100g")));
-				sets.add(currentDate("satfatImputationDate"));
+				sets.add(currentDate("data.$.satfatImputationDate"));
 				logger.error("[01;31mvalue changed: " + map.get("satfatAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("satfatImputationReference")          != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationReference"))) {
@@ -348,7 +348,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g")              != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g"))) {
 				sets.add(set("data.$.totalfatAmountPer100g", map.get("totalfatAmountPer100g")));
-				sets.add(currentDate("totalfatImputationDate"));
+				sets.add(currentDate("data.$.totalfatImputationDate"));
 				logger.error("[01;31mvalue changed: " + map.get("totalfatAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationReference")        != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationReference"))) {
@@ -359,56 +359,56 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodium")                != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodium")                .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodium"))) {
 				sets.add(set("data.$.containsAddedSodium", map.get("containsAddedSodium")));
-				sets.add(currentDate("containsAddedSodiumUpdateDate"));
+				sets.add(currentDate("data.$.containsAddedSodiumUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedSodium") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")      != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")      .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugar")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugar")                 .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugar"))) {
 				sets.add(set("data.$.containsAddedSugar", map.get("containsAddedSugar")));
-				sets.add(currentDate("containsAddedSugarUpdateDate"));
+				sets.add(currentDate("data.$.containsAddedSugarUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedSugar") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")       != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugars")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugars")                 .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugars"))) {
 				sets.add(set("data.$.containsFreeSugars", map.get("containsFreeSugars")));
-				sets.add(currentDate("containsFreeSugarsUpdateDate"));
+				sets.add(currentDate("data.$.containsFreeSugarsUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("containsFreeSugars") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")       != null && !toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedFat")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedFat")                   .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFat"))) {
 				sets.add(set("data.$.containsAddedFat", map.get("containsAddedFat")));
-				sets.add(currentDate("containsAddedFatUpdateDate"));
+				sets.add(currentDate("data.$.containsAddedFatUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedFat") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfat")              != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfat")              .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfat"))) {
 				sets.add(set("data.$.containsAddedTransfat", map.get("containsAddedTransfat")));
-				sets.add(currentDate("containsAddedTransfatUpdateDate"));
+				sets.add(currentDate("data.$.containsAddedTransfatUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedTransfat") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")    != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")    .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsCaffeine")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("containsCaffeine")                   .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeine"))) {
 				sets.add(set("data.$.containsCaffeine", map.get("containsCaffeine")));
-				sets.add(currentDate("containsCaffeineUpdateDate"));
+				sets.add(currentDate("data.$.containsCaffeineUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("containsCaffeine") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes")           != null && !toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes")           .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes"))) {
 				sets.add(set("data.$.containsSugarSubstitutes", map.get("containsSugarSubstitutes")));
-				sets.add(currentDate("containsSugarSubstitutesUpdateDate"));
+				sets.add(currentDate("data.$.containsSugarSubstitutesUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("containsSugarSubstitutes") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                   .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountG"))) {
 				sets.add(set("data.$.referenceAmountG", map.get("referenceAmountG")));
-				sets.add(currentDate("referenceAmountUpdateDate"));
+				sets.add(currentDate("data.$.referenceAmountUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("referenceAmountG") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")             != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")             .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountMeasure"))) {
@@ -419,7 +419,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingG")                  != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingG")                  .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingG"))) {
 				sets.add(set("data.$.foodGuideServingG", map.get("foodGuideServingG")));
-				sets.add(currentDate("foodGuideUpdateDate"));
+				sets.add(currentDate("data.$.foodGuideUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("foodGuideServingG") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure")            != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure")            .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure"))) {
@@ -430,7 +430,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingG")                      != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingG")                      .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingG"))) {
 				sets.add(set("data.$.tier4ServingG", map.get("tier4ServingG")));
-				sets.add(currentDate("tier4ServingUpdateDate"));
+				sets.add(currentDate("data.$.tier4ServingUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("tier4ServingG") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingMeasure")                != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingMeasure")                .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingMeasure"))) {
@@ -441,7 +441,7 @@ public class FoodsResource {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUp")                           != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUp")                           .equals (original_values_map .get (map .get ("code")) .get ("rolledUp"))) {
 				sets.add(set("data.$.rolledUp", map.get("rolledUp")));
-				sets.add(currentDate("rolledUpUpdateDate"));
+				sets.add(currentDate("data.$.rolledUpUpdateDate"));
 				logger.error("[01;31mvalue changed: " + map.get("rolledUp") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                 .equals (original_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate"))) {
