@@ -264,7 +264,7 @@ public class FoodsResource {
 					String key = (String)it.next();
 					tmp.put(key, mObj.get(key));
 				}
-				original_values_map.put(Integer.parseInt((String)tmp.get("code")), tmp);
+				original_values_map.put((Integer)tmp.get("code"), tmp);
 			}
 		}
 
