@@ -246,8 +246,8 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response updateDataset(@PathParam("id") String id, Dataset dataset) {
-		Map<String, Map<String, Object>> original_values_map = new HashMap<String, Map<String, Object>>();
-		Map<String, Map<String, String>> toupdate_values_map = new HashMap<String, Map<String, String>>();
+		Map<Integer, Map<String, Object>> original_values_map = new HashMap<Integer, Map<String, Object>>();
+		Map<Integer, Map<String, Object>> toupdate_values_map = new HashMap<Integer, Map<String, Object>>();
 		List<Object> list = null;
 
 		// retrive the corresponding dataset with id
@@ -264,20 +264,20 @@ public class FoodsResource {
 					String key = (String)it.next();
 					tmp.put(key, mObj.get(key));
 				}
-				original_values_map.put((String)tmp.get("code"), tmp);
+				original_values_map.put(Integer.parseInt((String)tmp.get("code")), tmp);
 			}
 		}
 
-		List<Map<String, String>> updates = dataset.getData();
-		for (Map<String, String> map : updates) {
-			toupdate_values_map.put(map.get("code"), map);
+		List<Map<String, Object>> updates = dataset.getData();
+		for (Map<String, Object> map : updates) {
+			toupdate_values_map.put((Integer)map.get("code"), map);
 
 			logger.error("[01;34mDataset: " + toupdate_values_map.get(map.get("code")) + "[00;00m");
 
 			logger.error("[01;31mname: " + toupdate_values_map.get(map.get("code")).get("name") + "[00;00m");
 		}
 
-		for (Map<String, String> map : updates) {
+		for (Map<String, Object> map : updates) {
 
 			List<Bson> sets = new ArrayList<Bson>();
 

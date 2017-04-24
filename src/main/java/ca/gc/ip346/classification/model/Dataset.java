@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Dataset {
-	private List<Map<String, String>> data;
+	private List<Map<String, Object>> data;
 	private String name;
 	private String env;
 	private String owner;
@@ -16,14 +16,14 @@ public class Dataset {
 	/**
 	 * @return the data
 	 */
-	public List<Map<String, String>> getData() {
+	public List<Map<String, Object>> getData() {
 		return data;
 	}
 
 	/**
 	 * @param data the data to set
 	 */
-	public void setData(List<Map<String, String>> data) {
+	public void setData(List<Map<String, Object>> data) {
 		this.data = data;
 	}
 
