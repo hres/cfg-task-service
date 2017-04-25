@@ -64,6 +64,7 @@ import ca.gc.ip346.classification.model.RecipeRolled;
 import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
 import ca.gc.ip346.util.MongoClientFactory;
+import ca.gc.ip346.util.RequestURI;
 
 @Path("/datasets")
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -506,7 +507,7 @@ public class FoodsResource {
 		// response = invocationBuilder.get();
 		response = ClientBuilder
 			.newClient()
-			.target("http://10.148.178.145:8080/food-classification-service")
+			.target(RequestURI.getHost() + ":" + RequestURI.getPort() + "/food-classification-service")
 			.path("/classify")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
