@@ -23,6 +23,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -490,9 +495,22 @@ public class FoodsResource {
 
 	@POST
 	@Path("/{id}/classify")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void classifyDataset() {
+	public Response classifyDataset(@PathParam("id") String id, Dataset dataset) {
+		Response response = null;
+		// Client client = ClientBuilder.newClient();
+		// WebTarget target = client.target("http://localhost:8080/cfg-task-service").path("/service/datasets/{id}");
+		// Builder invocationBuilder = target.request(); // request(MediaType.APPLICATION_JSON);
+		// response = invocationBuilder.get();
+		response = ClientBuilder
+			.newClient()
+			.target("http://10.148.178.145:8080/food-classification-service")
+			.path("/classify")
+			.request()
+			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
+		return response;
 	}
 
 	@POST
