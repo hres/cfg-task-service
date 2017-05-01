@@ -32,4 +32,8 @@ public class RequestURI {
 		}
 		return port;
 	}
+
+	public static String getUri() {
+		return getHost() + ":" + getPort();
+	}
 }
