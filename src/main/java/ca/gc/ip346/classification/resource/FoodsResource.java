@@ -1,5 +1,11 @@
 package ca.gc.ip346.classification.resource;
 
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.currentDate;
+import static com.mongodb.client.model.Updates.set;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -23,17 +29,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.lang.StringUtils;
-// import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -45,23 +47,19 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.common.net.HttpHeaders;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
-
-import static com.mongodb.client.model.Filters.*;
-// import static com.mongodb.client.model.Projections.*;
-import static com.mongodb.client.model.Updates.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 
 // import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
+// import ca.gc.ip346.classification.model.NewAndImprovedFoodItem;
+import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.classification.model.CfgTier;
 import ca.gc.ip346.classification.model.ContainsAdded;
 import ca.gc.ip346.classification.model.Dataset;
 import ca.gc.ip346.classification.model.FoodItem;
 import ca.gc.ip346.classification.model.Missing;
 import ca.gc.ip346.classification.model.RecipeRolled;
-// import ca.gc.ip346.classification.model.NewAndImprovedFoodItem;
-import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.util.DBConnection;
 import ca.gc.ip346.util.MongoClientFactory;
 import ca.gc.ip346.util.RequestURI;
@@ -227,7 +225,7 @@ public class FoodsResource {
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(list).build();
+			.entity(list.get(0)).build();
 	}
 
 	@DELETE
@@ -255,8 +253,10 @@ public class FoodsResource {
 		Map<Integer, Map<String, Object>> original_values_map = new HashMap<Integer, Map<String, Object>>();
 		Map<Integer, Map<String, Object>> toupdate_values_map = new HashMap<Integer, Map<String, Object>>();
 		List<Object> list = null;
+		List<Bson> firstLevelSets = new ArrayList<Bson>();
+		int changes = 0;
 
-		// retrive the corresponding dataset with id
+		// retrive the corresponding dataset with the given id
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
 		while (cursorDocMap.hasNext()) {
 			Document doc = cursorDocMap.next();
@@ -272,6 +272,27 @@ public class FoodsResource {
 				}
 				original_values_map.put((Integer)tmp.get("code"), tmp);
 			}
+
+			if (!dataset.getName     ().equals(doc.get("name")    )) {
+				firstLevelSets.add(set("name", dataset.getName()));
+				++changes;
+			}
+			if (!dataset.getEnv      ().equals(doc.get("env")     )) {
+				firstLevelSets.add(set("env", dataset.getEnv()));
+				++changes;
+			}
+			if (!dataset.getOwner    ().equals(doc.get("owner")   )) {
+				firstLevelSets.add(set("owner", dataset.getOwner()));
+				++changes;
+			}
+			if (!dataset.getStatus   ().equals(doc.get("status")  )) {
+				firstLevelSets.add(set("status", dataset.getStatus()));
+				++changes;
+			}
+			if (!dataset.getComments ().equals(doc.get("comments"))) {
+				firstLevelSets.add(set("comments", dataset.getComments()));
+				++changes;
+			}
 		}
 
 		List<Map<String, Object>> updates = dataset.getData();
@@ -284,37 +305,42 @@ public class FoodsResource {
 		}
 
 		for (Map<String, Object> map : updates) {
-
 			List<Bson> sets = new ArrayList<Bson>();
 
 			logger.error("[01;31msize: " + sets.size() + "[00;00m");
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("name")                               != null && !toupdate_values_map .get (map .get ("code")) .get ("name")                               .equals (original_values_map .get (map .get ("code")) .get ("name"))) {
 				sets.add(set("data.$.name", map.get("name")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("name") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode")                       != null && !toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode")                       .equals (original_values_map .get (map .get ("code")) .get ("cnfGroupCode"))) {
 				sets.add(set("data.$.cnfGroupCode", map.get("cnfGroupCode")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("cnfGroupCode") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("cfgCode")                            != null && !toupdate_values_map .get (map .get ("code")) .get ("cfgCode")                            .equals (original_values_map .get (map .get ("code")) .get ("cfgCode"))) {
 				sets.add(set("data.$.cfgCode", map.get("cfgCode")));
 				sets.add(currentDate("data.$.cfgCodeUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("cfgCode") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                  != null && !toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                  .equals (original_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("energyKcal")                         != null && !toupdate_values_map .get (map .get ("code")) .get ("energyKcal")                         .equals (original_values_map .get (map .get ("code")) .get ("energyKcal"))) {
 				sets.add(set("data.$.energyKcal", map.get("energyKcal")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("energyKcal") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g")                != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g"))) {
 				sets.add(set("data.$.sodiumAmountPer100g", map.get("sodiumAmountPer100g")));
 				sets.add(currentDate("data.$.sodiumImputationDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("sodiumAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationReference")          != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationReference"))) {
 				sets.add(set("data.$.sodiumImputationReference", map.get("sodiumImputationReference")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("sodiumImputationReference") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate")               != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate")               .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationDate"))) {
@@ -322,10 +348,12 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("sugarAmountPer100g")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarAmountPer100g")                 .equals (original_values_map .get (map .get ("code")) .get ("sugarAmountPer100g"))) {
 				sets.add(set("data.$.sugarAmountPer100g", map.get("sugarAmountPer100g")));
 				sets.add(currentDate("data.$.sugarImputationDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("sugarAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sugarImputationReference")           != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarImputationReference")           .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationReference"))) {
 				sets.add(set("data.$.sugarImputationReference", map.get("sugarImputationReference")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("sugarImputationReference") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("sugarImputationDate")                != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarImputationDate")                .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationDate"))) {
@@ -333,10 +361,12 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("transfatAmountPer100g")              != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("transfatAmountPer100g"))) {
 				sets.add(set("data.$.transfatAmountPer100g", map.get("transfatAmountPer100g")));
 				sets.add(currentDate("data.$.transfatImputationDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("transfatAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("transfatImputationReference")        != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationReference"))) {
 				sets.add(set("data.$.transfatImputationReference", map.get("transfatImputationReference")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("transfatImputationReference") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("transfatImputationDate")             != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatImputationDate")             .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationDate"))) {
@@ -344,10 +374,12 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("satfatAmountPer100g")                != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("satfatAmountPer100g"))) {
 				sets.add(set("data.$.satfatAmountPer100g", map.get("satfatAmountPer100g")));
 				sets.add(currentDate("data.$.satfatImputationDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("satfatAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("satfatImputationReference")          != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationReference"))) {
 				sets.add(set("data.$.satfatImputationReference", map.get("satfatImputationReference")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("satfatImputationReference") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate")               != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate")               .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationDate"))) {
@@ -355,10 +387,12 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g")              != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g"))) {
 				sets.add(set("data.$.totalfatAmountPer100g", map.get("totalfatAmountPer100g")));
 				sets.add(currentDate("data.$.totalfatImputationDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("totalfatAmountPer100g") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationReference")        != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationReference"))) {
 				sets.add(set("data.$.totalfatImputationReference", map.get("totalfatImputationReference")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("totalfatImputationReference") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate")             != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate")             .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationDate"))) {
@@ -366,6 +400,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodium")                != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodium")                .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodium"))) {
 				sets.add(set("data.$.containsAddedSodium", map.get("containsAddedSodium")));
 				sets.add(currentDate("data.$.containsAddedSodiumUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedSodium") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")      != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")      .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate"))) {
@@ -373,6 +408,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugar")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugar")                 .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugar"))) {
 				sets.add(set("data.$.containsAddedSugar", map.get("containsAddedSugar")));
 				sets.add(currentDate("data.$.containsAddedSugarUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedSugar") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")       != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate"))) {
@@ -380,6 +416,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugars")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugars")                 .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugars"))) {
 				sets.add(set("data.$.containsFreeSugars", map.get("containsFreeSugars")));
 				sets.add(currentDate("data.$.containsFreeSugarsUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("containsFreeSugars") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")       != null && !toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate"))) {
@@ -387,6 +424,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedFat")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedFat")                   .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFat"))) {
 				sets.add(set("data.$.containsAddedFat", map.get("containsAddedFat")));
 				sets.add(currentDate("data.$.containsAddedFatUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedFat") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate"))) {
@@ -394,6 +432,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfat")              != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfat")              .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfat"))) {
 				sets.add(set("data.$.containsAddedTransfat", map.get("containsAddedTransfat")));
 				sets.add(currentDate("data.$.containsAddedTransfatUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("containsAddedTransfat") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")    != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")    .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate"))) {
@@ -401,6 +440,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsCaffeine")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("containsCaffeine")                   .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeine"))) {
 				sets.add(set("data.$.containsCaffeine", map.get("containsCaffeine")));
 				sets.add(currentDate("data.$.containsCaffeineUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("containsCaffeine") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate"))) {
@@ -408,6 +448,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes")           != null && !toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes")           .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes"))) {
 				sets.add(set("data.$.containsSugarSubstitutes", map.get("containsSugarSubstitutes")));
 				sets.add(currentDate("data.$.containsSugarSubstitutesUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("containsSugarSubstitutes") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate"))) {
@@ -415,10 +456,12 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                   .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountG"))) {
 				sets.add(set("data.$.referenceAmountG", map.get("referenceAmountG")));
 				sets.add(currentDate("data.$.referenceAmountUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("referenceAmountG") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")             != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")             .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountMeasure"))) {
 				sets.add(set("data.$.referenceAmountMeasure", map.get("referenceAmountMeasure")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("referenceAmountMeasure") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate")          != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate")          .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate"))) {
@@ -426,10 +469,12 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingG")                  != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingG")                  .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingG"))) {
 				sets.add(set("data.$.foodGuideServingG", map.get("foodGuideServingG")));
 				sets.add(currentDate("data.$.foodGuideUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("foodGuideServingG") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure")            != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure")            .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure"))) {
 				sets.add(set("data.$.foodGuideServingMeasure", map.get("foodGuideServingMeasure")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("foodGuideServingMeasure") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate")                != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate")                .equals (original_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate"))) {
@@ -437,10 +482,12 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingG")                      != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingG")                      .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingG"))) {
 				sets.add(set("data.$.tier4ServingG", map.get("tier4ServingG")));
 				sets.add(currentDate("data.$.tier4ServingUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("tier4ServingG") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingMeasure")                != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingMeasure")                .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingMeasure"))) {
 				sets.add(set("data.$.tier4ServingMeasure", map.get("tier4ServingMeasure")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("tier4ServingMeasure") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate")             != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate")             .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate"))) {
@@ -448,22 +495,26 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUp")                           != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUp")                           .equals (original_values_map .get (map .get ("code")) .get ("rolledUp"))) {
 				sets.add(set("data.$.rolledUp", map.get("rolledUp")));
 				sets.add(currentDate("data.$.rolledUpUpdateDate"));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("rolledUp") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                 .equals (original_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")             != null && !toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")             .equals (original_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment"))) {
 				sets.add(set("data.$.applySmallRaAdjustment", map.get("applySmallRaAdjustment")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("applySmallRaAdjustment") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("replacementCode")                    != null && !toupdate_values_map .get (map .get ("code")) .get ("replacementCode")                    .equals (original_values_map .get (map .get ("code")) .get ("replacementCode"))) {
 				sets.add(set("data.$.replacementCode", map.get("replacementCode")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("replacementCode") + "[00;00m");
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("commitDate")                         != null && !toupdate_values_map .get (map .get ("code")) .get ("commitDate")                         .equals (original_values_map .get (map .get ("code")) .get ("commitDate"))) {
 			}
 			if (toupdate_values_map .get (map .get ("code")) .get ("comments")                           != null && !toupdate_values_map .get (map .get ("code")) .get ("comments")                           .equals (original_values_map .get (map .get ("code")) .get ("comments"))) {
 				sets.add(set("data.$.comments", map.get("comments")));
+				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("comments") + "[00;00m");
 			}
 
@@ -476,12 +527,17 @@ public class FoodsResource {
 			}
 		}
 
-		cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
-		while (cursorDocMap.hasNext()) {
-			Document doc = cursorDocMap.next();
-
-			list = castList(doc.get("data"), Object.class);
+		if (changes != 0) {
+			firstLevelSets.add(currentDate("modifiedDate"));
+			collection.updateOne(eq("_id", new ObjectId(id)), combine(firstLevelSets));
 		}
+
+		// cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		// while (cursorDocMap.hasNext()) {
+			// Document doc = cursorDocMap.next();
+
+			// list = castList(doc.get("data"), Object.class);
+		// }
 
 		mongoClient.close();
 
@@ -491,7 +547,7 @@ public class FoodsResource {
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(list).build();
+			.entity("Successfully updated dataset").build();
 	}
 
 	@POST
@@ -500,15 +556,55 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response classifyDataset(@PathParam("id") String id, Dataset dataset) {
-		Response response = null;
-		// Client client = ClientBuilder.newClient();
-		// WebTarget target = client.target("http://localhost:8080/cfg-task-service").path("/service/datasets/{id}");
-		// Builder invocationBuilder = target.request(); // request(MediaType.APPLICATION_JSON);
-		// response = invocationBuilder.get();
-		response = ClientBuilder
+		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getHost() + ":" + RequestURI.getPort() + "/food-classification-service")
+			.target(RequestURI.getUri() + "/food-classification-service")
 			.path("/classify")
+			.request()
+			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
+		return response;
+	}
+
+	@POST
+	@Path("/{id}/flags")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response flagsDataset(@PathParam("id") String id, Dataset dataset) {
+		Response response = ClientBuilder
+			.newClient()
+			.target(RequestURI.getUri() + "/food-classification-service")
+			.path("/flags")
+			.request()
+			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
+		return response;
+	}
+
+	@POST
+	@Path("/{id}/init")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response initDataset(@PathParam("id") String id, Dataset dataset) {
+		Response response = ClientBuilder
+			.newClient()
+			.target(RequestURI.getUri() + "/food-classification-service")
+			.path("/init")
+			.request()
+			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
+		return response;
+	}
+
+	@POST
+	@Path("/{id}/adjustment")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response adjustmentDataset(@PathParam("id") String id, Dataset dataset) {
+		Response response = ClientBuilder
+			.newClient()
+			.target(RequestURI.getUri() + "/food-classification-service")
+			.path("/adjustment")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
 		return response;
