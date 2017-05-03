@@ -542,13 +542,16 @@ public class FoodsResource {
 
 		mongoClient.close();
 
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "Successfully updated dataset");
+
 		return Response.status(Response.Status.OK)
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity("Successfully updated dataset").build();
+			.entity(msg).build();
 	}
 
 	@POST
