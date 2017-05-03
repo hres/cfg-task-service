@@ -25,19 +25,19 @@ public class CanadaFoodGuideDataset {
 	private Double  totalfatAmountPer100g;              /* double precision */
 	private String  totalfatImputationReference;        /* text             */
 	private Date    totalfatImputationDate;             /* date             */
-	private Integer containsAddedSodium;                /* smallint         */
+	private Boolean containsAddedSodium;                /* smallint         */
 	private Date    containsAddedSodiumUpdateDate;      /* date             */
-	private Integer containsAddedSugar;                 /* smallint         */
+	private Boolean containsAddedSugar;                 /* smallint         */
 	private Date    containsAddedSugarUpdateDate;       /* date             */
-	private Integer containsFreeSugars;                 /* smallint         */
+	private Boolean containsFreeSugars;                 /* smallint         */
 	private Date    containsFreeSugarsUpdateDate;       /* date             */
-	private Integer containsAddedFat;                   /* smallint         */
+	private Boolean containsAddedFat;                   /* smallint         */
 	private Date    containsAddedFatUpdateDate;         /* date             */
-	private Integer containsAddedTransfat;              /* smallint         */
+	private Boolean containsAddedTransfat;              /* smallint         */
 	private Date    containsAddedTransfatUpdateDate;    /* date             */
-	private Integer containsCaffeine;                   /* smallint         */
+	private Boolean containsCaffeine;                   /* smallint         */
 	private Date    containsCaffeineUpdateDate;         /* date             */
-	private Integer containsSugarSubstitutes;           /* smallint         */
+	private Boolean containsSugarSubstitutes;           /* smallint         */
 	private Date    containsSugarSubstitutesUpdateDate; /* date             */
 	private Double  referenceAmountG;                   /* double precision */
 	private String  referenceAmountMeasure;             /* text             */
@@ -48,12 +48,17 @@ public class CanadaFoodGuideDataset {
 	private Double  tier4ServingG;                      /* double precision */
 	private String  tier4ServingMeasure;                /* text             */
 	private Date    tier4ServingUpdateDate;             /* date             */
-	private Integer rolledUp;                           /* smallint         */
+	private Boolean rolledUp;                           /* smallint         */
 	private Date    rolledUpUpdateDate;                 /* date             */
-	private Integer applySmallRaAdjustment;             /* smallint         */
+	private Boolean overrideSmallRaAdjustment;          /* smallint         */
 	private Integer replacementCode;                    /* integer          */
 	private Date    commitDate;                         /* date             */
 	private String  comments;                           /* text             */
+
+	// special input
+	private Double  sodiumDV;
+	private Double  sugarDV;
+	private Double  satFatDV;
 
 	// added by Robin
 	private Boolean lowSodium;
@@ -62,14 +67,31 @@ public class CanadaFoodGuideDataset {
 	private Boolean highSugar;
 	private Boolean lowFat;
 	private Boolean highFat;
+	private Boolean lowSatFat;
 	private Boolean highSatFat;
-	private Double  adjustedReferenceAmount;
-	private Double  sodiumPerReferenceAmount;
-	private Double  sugarPerReferenceAmount;
-	private Double  fatPerReferenceAmount;
-	private Double  satFatPerReferenceAmount;
+	private Boolean lowTransFat;
+	private Boolean highTransFat;
+
+	private Double      adjustedReferenceAmount;
+	private Double   fopAdjustedReferenceAmount;
+	private Double     sodiumPerReferenceAmount;
+	private Double      sugarPerReferenceAmount;
+	private Double        fatPerReferenceAmount;
+	private Double     satFatPerReferenceAmount;
+	private Double   transFatPerReferenceAmount;
+	private Double   fopSugarPerReferenceAmount;
+	private Double  fopSodiumPerReferenceAmount;
+
 	// checks to see if it has finished classification
 	private Boolean done;
+	private Integer tier;
+	private Integer shift;
+	private Boolean absolute;
+
+	private Boolean satFatFopWarning;
+	private Boolean sugarFopWarning;
+	private Boolean sodiumFopWarning;
+	private Boolean marketedToKids;
 
 	/**
 	 * @return the type
@@ -382,14 +404,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the containsAddedSodium
 	 */
-	public Integer getContainsAddedSodium() {
+	public Boolean getContainsAddedSodium() {
 		return containsAddedSodium;
 	}
 
 	/**
 	 * @param containsAddedSodium the containsAddedSodium to set
 	 */
-	public void setContainsAddedSodium(Integer containsAddedSodium) {
+	public void setContainsAddedSodium(Boolean containsAddedSodium) {
 		this.containsAddedSodium = containsAddedSodium;
 	}
 
@@ -410,14 +432,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the containsAddedSugar
 	 */
-	public Integer getContainsAddedSugar() {
+	public Boolean getContainsAddedSugar() {
 		return containsAddedSugar;
 	}
 
 	/**
 	 * @param containsAddedSugar the containsAddedSugar to set
 	 */
-	public void setContainsAddedSugar(Integer containsAddedSugar) {
+	public void setContainsAddedSugar(Boolean containsAddedSugar) {
 		this.containsAddedSugar = containsAddedSugar;
 	}
 
@@ -438,14 +460,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the containsFreeSugars
 	 */
-	public Integer getContainsFreeSugars() {
+	public Boolean getContainsFreeSugars() {
 		return containsFreeSugars;
 	}
 
 	/**
 	 * @param containsFreeSugars the containsFreeSugars to set
 	 */
-	public void setContainsFreeSugars(Integer containsFreeSugars) {
+	public void setContainsFreeSugars(Boolean containsFreeSugars) {
 		this.containsFreeSugars = containsFreeSugars;
 	}
 
@@ -466,14 +488,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the containsAddedFat
 	 */
-	public Integer getContainsAddedFat() {
+	public Boolean getContainsAddedFat() {
 		return containsAddedFat;
 	}
 
 	/**
 	 * @param containsAddedFat the containsAddedFat to set
 	 */
-	public void setContainsAddedFat(Integer containsAddedFat) {
+	public void setContainsAddedFat(Boolean containsAddedFat) {
 		this.containsAddedFat = containsAddedFat;
 	}
 
@@ -494,14 +516,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the containsAddedTransfat
 	 */
-	public Integer getContainsAddedTransfat() {
+	public Boolean getContainsAddedTransfat() {
 		return containsAddedTransfat;
 	}
 
 	/**
 	 * @param containsAddedTransfat the containsAddedTransfat to set
 	 */
-	public void setContainsAddedTransfat(Integer containsAddedTransfat) {
+	public void setContainsAddedTransfat(Boolean containsAddedTransfat) {
 		this.containsAddedTransfat = containsAddedTransfat;
 	}
 
@@ -522,14 +544,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the containsCaffeine
 	 */
-	public Integer getContainsCaffeine() {
+	public Boolean getContainsCaffeine() {
 		return containsCaffeine;
 	}
 
 	/**
 	 * @param containsCaffeine the containsCaffeine to set
 	 */
-	public void setContainsCaffeine(Integer containsCaffeine) {
+	public void setContainsCaffeine(Boolean containsCaffeine) {
 		this.containsCaffeine = containsCaffeine;
 	}
 
@@ -550,14 +572,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the containsSugarSubstitutes
 	 */
-	public Integer getContainsSugarSubstitutes() {
+	public Boolean getContainsSugarSubstitutes() {
 		return containsSugarSubstitutes;
 	}
 
 	/**
 	 * @param containsSugarSubstitutes the containsSugarSubstitutes to set
 	 */
-	public void setContainsSugarSubstitutes(Integer containsSugarSubstitutes) {
+	public void setContainsSugarSubstitutes(Boolean containsSugarSubstitutes) {
 		this.containsSugarSubstitutes = containsSugarSubstitutes;
 	}
 
@@ -704,14 +726,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the rolledUp
 	 */
-	public Integer getRolledUp() {
+	public Boolean getRolledUp() {
 		return rolledUp;
 	}
 
 	/**
 	 * @param rolledUp the rolledUp to set
 	 */
-	public void setRolledUp(Integer rolledUp) {
+	public void setRolledUp(Boolean rolledUp) {
 		this.rolledUp = rolledUp;
 	}
 
@@ -730,17 +752,17 @@ public class CanadaFoodGuideDataset {
 	}
 
 	/**
-	 * @return the applySmallRaAdjustment
+	 * @return the overrideSmallRaAdjustment
 	 */
-	public Integer getApplySmallRaAdjustment() {
-		return applySmallRaAdjustment;
+	public Boolean getOverrideSmallRaAdjustment() {
+		return overrideSmallRaAdjustment;
 	}
 
 	/**
-	 * @param applySmallRaAdjustment the applySmallRaAdjustment to set
+	 * @param overrideSmallRaAdjustment the overrideSmallRaAdjustment to set
 	 */
-	public void setApplySmallRaAdjustment(Integer applySmallRaAdjustment) {
-		this.applySmallRaAdjustment = applySmallRaAdjustment;
+	public void setOverrideSmallRaAdjustment(Boolean overrideSmallRaAdjustment) {
+		this.overrideSmallRaAdjustment = overrideSmallRaAdjustment;
 	}
 
 	/**
@@ -786,9 +808,51 @@ public class CanadaFoodGuideDataset {
 	}
 
 	/**
+	 * @return the sodiumDV
+	 */
+	public Double getSodiumDV() {
+		return sodiumDV;
+	}
+
+	/**
+	 * @param sodiumDV the sodiumDV to set
+	 */
+	public void setSodiumDV(Double sodiumDV) {
+		this.sodiumDV = sodiumDV;
+	}
+
+	/**
+	 * @return the sugarDV
+	 */
+	public Double getSugarDV() {
+		return sugarDV;
+	}
+
+	/**
+	 * @param sugarDV the sugarDV to set
+	 */
+	public void setSugarDV(Double sugarDV) {
+		this.sugarDV = sugarDV;
+	}
+
+	/**
+	 * @return the satFatDV
+	 */
+	public Double getSatFatDV() {
+		return satFatDV;
+	}
+
+	/**
+	 * @param satFatDV the satFatDV to set
+	 */
+	public void setSatFatDV(Double satFatDV) {
+		this.satFatDV = satFatDV;
+	}
+
+	/**
 	 * @return the lowSodium
 	 */
-	public Boolean getLowSodium() {
+	public Boolean isLowSodium() {
 		return lowSodium;
 	}
 
@@ -802,7 +866,7 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the highSodium
 	 */
-	public Boolean getHighSodium() {
+	public Boolean isHighSodium() {
 		return highSodium;
 	}
 
@@ -816,7 +880,7 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the lowSugar
 	 */
-	public Boolean getLowSugar() {
+	public Boolean isLowSugar() {
 		return lowSugar;
 	}
 
@@ -830,7 +894,7 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the highSugar
 	 */
-	public Boolean getHighSugar() {
+	public Boolean isHighSugar() {
 		return highSugar;
 	}
 
@@ -844,7 +908,7 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the lowFat
 	 */
-	public Boolean getLowFat() {
+	public Boolean isLowFat() {
 		return lowFat;
 	}
 
@@ -858,7 +922,7 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the highFat
 	 */
-	public Boolean getHighFat() {
+	public Boolean isHighFat() {
 		return highFat;
 	}
 
@@ -870,9 +934,23 @@ public class CanadaFoodGuideDataset {
 	}
 
 	/**
+	 * @return the lowSatFat
+	 */
+	public Boolean isLowSatFat() {
+		return lowSatFat;
+	}
+
+	/**
+	 * @param lowSatFat the lowSatFat to set
+	 */
+	public void setLowSatFat(Boolean lowSatFat) {
+		this.lowSatFat = lowSatFat;
+	}
+
+	/**
 	 * @return the highSatFat
 	 */
-	public Boolean getHighSatFat() {
+	public Boolean isHighSatFat() {
 		return highSatFat;
 	}
 
@@ -881,6 +959,34 @@ public class CanadaFoodGuideDataset {
 	 */
 	public void setHighSatFat(Boolean highSatFat) {
 		this.highSatFat = highSatFat;
+	}
+
+	/**
+	 * @return the lowTransFat
+	 */
+	public Boolean isLowTransFat() {
+		return lowTransFat;
+	}
+
+	/**
+	 * @param lowTransFat the lowTransFat to set
+	 */
+	public void setLowTransFat(Boolean lowTransFat) {
+		this.lowTransFat = lowTransFat;
+	}
+
+	/**
+	 * @return the highTransFat
+	 */
+	public Boolean isHighTransFat() {
+		return highTransFat;
+	}
+
+	/**
+	 * @param highTransFat the highTransFat to set
+	 */
+	public void setHighTransFat(Boolean highTransFat) {
+		this.highTransFat = highTransFat;
 	}
 
 	/**
@@ -895,6 +1001,20 @@ public class CanadaFoodGuideDataset {
 	 */
 	public void setAdjustedReferenceAmount(Double adjustedReferenceAmount) {
 		this.adjustedReferenceAmount = adjustedReferenceAmount;
+	}
+
+	/**
+	 * @return the fopAdjustedReferenceAmount
+	 */
+	public Double getFopAdjustedReferenceAmount() {
+		return fopAdjustedReferenceAmount;
+	}
+
+	/**
+	 * @param fopAdjustedReferenceAmount the fopAdjustedReferenceAmount to set
+	 */
+	public void setFopAdjustedReferenceAmount(Double fopAdjustedReferenceAmount) {
+		this.fopAdjustedReferenceAmount = fopAdjustedReferenceAmount;
 	}
 
 	/**
@@ -954,9 +1074,51 @@ public class CanadaFoodGuideDataset {
 	}
 
 	/**
+	 * @return the transFatPerReferenceAmount
+	 */
+	public Double getTransFatPerReferenceAmount() {
+		return transFatPerReferenceAmount;
+	}
+
+	/**
+	 * @param transFatPerReferenceAmount the transFatPerReferenceAmount to set
+	 */
+	public void setTransFatPerReferenceAmount(Double transFatPerReferenceAmount) {
+		this.transFatPerReferenceAmount = transFatPerReferenceAmount;
+	}
+
+	/**
+	 * @return the fopSugarPerReferenceAmount
+	 */
+	public Double getFopSugarPerReferenceAmount() {
+		return fopSugarPerReferenceAmount;
+	}
+
+	/**
+	 * @param fopSugarPerReferenceAmount the fopSugarPerReferenceAmount to set
+	 */
+	public void setFopSugarPerReferenceAmount(Double fopSugarPerReferenceAmount) {
+		this.fopSugarPerReferenceAmount = fopSugarPerReferenceAmount;
+	}
+
+	/**
+	 * @return the fopSodiumPerReferenceAmount
+	 */
+	public Double getFopSodiumPerReferenceAmount() {
+		return fopSodiumPerReferenceAmount;
+	}
+
+	/**
+	 * @param fopSodiumPerReferenceAmount the fopSodiumPerReferenceAmount to set
+	 */
+	public void setFopSodiumPerReferenceAmount(Double fopSodiumPerReferenceAmount) {
+		this.fopSodiumPerReferenceAmount = fopSodiumPerReferenceAmount;
+	}
+
+	/**
 	 * @return the done
 	 */
-	public Boolean getDone() {
+	public Boolean isDone() {
 		return done;
 	}
 
@@ -965,5 +1127,114 @@ public class CanadaFoodGuideDataset {
 	 */
 	public void setDone(Boolean done) {
 		this.done = done;
+	}
+
+	/**
+	 * @return the tier
+	 */
+	public Integer getTier() {
+		return tier;
+	}
+
+	/**
+	 * @param tier the tier to set
+	 */
+	public void setTier(Integer tier) {
+		this.tier = tier;
+	}
+	public void setAdjustedTier(Integer tier) {
+		this.tier     = tier;
+		this.done     = true;
+		this.absolute = true;
+	}
+	public void shiftTier(int shift) {
+		if (!done) {
+			this.tier  += shift;
+			this.shift += shift;
+		}
+	}
+
+	/**
+	 * @return the shift
+	 */
+	public Integer getShift() {
+		return shift;
+	}
+
+	/**
+	 * @param shift the shift to set
+	 */
+	public void setShift(Integer shift) {
+		this.shift = shift;
+	}
+
+	/**
+	 * @return the absolute
+	 */
+	public Boolean getAbsolute() {
+		return absolute;
+	}
+
+	/**
+	 * @param absolute the absolute to set
+	 */
+	public void setAbsolute(Boolean absolute) {
+		this.absolute = absolute;
+	}
+
+	/**
+	 * @return the satFatFopWarning
+	 */
+	public Boolean getSatFatFopWarning() {
+		return satFatFopWarning;
+	}
+
+	/**
+	 * @param satFatFopWarning the satFatFopWarning to set
+	 */
+	public void setSatFatFopWarning(Boolean satFatFopWarning) {
+		this.satFatFopWarning = satFatFopWarning;
+	}
+
+	/**
+	 * @return the sugarFopWarning
+	 */
+	public Boolean getSugarFopWarning() {
+		return sugarFopWarning;
+	}
+
+	/**
+	 * @param sugarFopWarning the sugarFopWarning to set
+	 */
+	public void setSugarFopWarning(Boolean sugarFopWarning) {
+		this.sugarFopWarning = sugarFopWarning;
+	}
+
+	/**
+	 * @return the sodiumFopWarning
+	 */
+	public Boolean getSodiumFopWarning() {
+		return sodiumFopWarning;
+	}
+
+	/**
+	 * @param sodiumFopWarning the sodiumFopWarning to set
+	 */
+	public void setSodiumFopWarning(Boolean sodiumFopWarning) {
+		this.sodiumFopWarning = sodiumFopWarning;
+	}
+
+	/**
+	 * @return the marketedToKids
+	 */
+	public Boolean getMarketedToKids() {
+		return marketedToKids;
+	}
+
+	/**
+	 * @param marketedToKids the marketedToKids to set
+	 */
+	public void setMarketedToKids(Boolean marketedToKids) {
+		this.marketedToKids = marketedToKids;
 	}
 }
