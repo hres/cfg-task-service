@@ -6,11 +6,11 @@ import java.util.Map;
 
 public class Dataset {
 	private List<Map<String, Object>> data;
-	private String name;
-	private String env;
-	private String owner;
-	private String status;
-	private String comments;
+	private String name     = "Jean-Gabriel Pageau";
+	private String env      = "prod";
+	private String owner    = "Jean-Gabriel Pageau";
+	private String status   = "In Progress";
+	private String comments = "Go Sens Go!";
 	private Date modifiedDate;
 
 	/**
