@@ -151,6 +151,8 @@ public class FoodsResource {
 
 		mongoClient.close();
 
+		logger.error("[01;31m" + "response status: " + response.build().getStatusInfo() + "[00;00m");
+
 		return response
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
@@ -184,13 +186,7 @@ public class FoodsResource {
 
 		mongoClient.close();
 
-		return Response.status(Response.Status.OK)
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(list).build();
+		return getResponse(Response.Status.OK, list);
 	}
 
 	@GET
@@ -200,6 +196,18 @@ public class FoodsResource {
 	public /* List<Map<String, Object>> */ Response getDataset(@PathParam("id") String id) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+
+		if (!cursorDocMap.hasNext()) {
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Dataset with ID " + id + " does not exist!");
+
+			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+
+			mongoClient.close();
+
+			return getResponse(Response.Status.NOT_FOUND, msg);
+		}
+
 		while (cursorDocMap.hasNext()) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
@@ -220,21 +228,27 @@ public class FoodsResource {
 
 		mongoClient.close();
 
-		return Response.status(Response.Status.OK)
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(list.get(0)).build();
+		return getResponse(Response.Status.OK, list.get(0));
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void deleteDataset(@PathParam("id") String id) {
+	public Response deleteDataset(@PathParam("id") String id) {
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+
+		if (!cursorDocMap.hasNext()) {
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Dataset with ID " + id + " does not exist!");
+
+			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+
+			mongoClient.close();
+
+			return getResponse(Response.Status.NOT_FOUND, msg);
+		}
+
 		while (cursorDocMap.hasNext()) {
 			Document doc = cursorDocMap.next();
 			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
@@ -243,6 +257,11 @@ public class FoodsResource {
 		}
 
 		mongoClient.close();
+
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "Successfully deleted dataset with ID: " + id);
+
+		return getResponse(Response.Status.OK, msg);
 	}
 
 	@DELETE
@@ -256,13 +275,7 @@ public class FoodsResource {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "Successfully deleted all datasets");
 
-		return Response.status(Response.Status.OK)
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(msg).build();
+		return getResponse(Response.Status.OK, msg);
 	}
 
 	@PUT
@@ -565,13 +578,7 @@ public class FoodsResource {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "Successfully updated dataset");
 
-		return Response.status(Response.Status.OK)
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(msg).build();
+		return getResponse(Response.Status.OK, msg);
 	}
 
 	@POST
@@ -582,6 +589,18 @@ public class FoodsResource {
 	public Response classifyDataset(@PathParam("id") String id) {
 		Map<String, Object> map = null;
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+
+		if (!cursorDocMap.hasNext()) {
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Dataset with ID " + id + " does not exist!");
+
+			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+
+			mongoClient.close();
+
+			return getResponse(Response.Status.NOT_FOUND, msg);
+		}
+
 		while (cursorDocMap.hasNext()) {
 			map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
@@ -606,6 +625,9 @@ public class FoodsResource {
 			.path("/classify")
 			.request()
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
+
+		logger.error("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
+
 		return response;
 	}
 
@@ -1299,13 +1321,17 @@ public class FoodsResource {
 			// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 		}
 
-		return Response.status(Response.Status.OK)
+		return getResponse(Response.Status.OK, list);
+	}
+
+	private Response getResponse(Response.Status status, Object obj) {
+		return Response.status(status)
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
 			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(list).build();
+			.entity(obj).build();
 	}
 
 	private static <T> List<T> castList(Object obj, Class<T> clazz) {
