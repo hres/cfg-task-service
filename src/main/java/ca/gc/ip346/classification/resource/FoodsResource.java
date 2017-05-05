@@ -245,6 +245,26 @@ public class FoodsResource {
 		mongoClient.close();
 	}
 
+	@DELETE
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response deleteAllDatasets() {
+		collection.deleteMany(new Document());
+
+		mongoClient.close();
+
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "Successfully deleted all datasets");
+
+		return Response.status(Response.Status.OK)
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
+			.entity(msg).build();
+	}
+
 	@PUT
 	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
