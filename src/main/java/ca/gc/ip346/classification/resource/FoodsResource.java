@@ -93,6 +93,7 @@ public class FoodsResource {
 	public /* List<CanadaFoodGuideDataset> */ Response getFoodList(@BeanParam CfgFilter search) {
 		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
 		search.setSql(sql);
+		mongoClient.close();
 		return doSearchCriteria(search);
 	}
 
@@ -747,6 +748,8 @@ public class FoodsResource {
 			}
 			System.out.println();
 		}
+
+		mongoClient.close();
 	}
 
 	public List<FoodItem> getFoodItem(@PathParam("id") Integer id) {
