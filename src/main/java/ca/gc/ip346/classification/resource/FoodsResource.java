@@ -52,12 +52,10 @@ import com.mongodb.client.MongoCursor;
 
 // import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
-// import ca.gc.ip346.classification.model.NewAndImprovedFoodItem;
 import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.classification.model.CfgTier;
 import ca.gc.ip346.classification.model.ContainsAdded;
 import ca.gc.ip346.classification.model.Dataset;
-import ca.gc.ip346.classification.model.FoodItem;
 import ca.gc.ip346.classification.model.Missing;
 import ca.gc.ip346.classification.model.RecipeRolled;
 import ca.gc.ip346.util.DBConnection;
@@ -567,13 +565,6 @@ public class FoodsResource {
 			collection.updateOne(eq("_id", new ObjectId(id)), combine(firstLevelSets));
 		}
 
-		// cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
-		// while (cursorDocMap.hasNext()) {
-			// Document doc = cursorDocMap.next();
-
-			// list = castList(doc.get("data"), Object.class);
-		// }
-
 		mongoClient.close();
 
 		Map<String, String> msg = new HashMap<String, String>();
@@ -750,101 +741,6 @@ public class FoodsResource {
 		}
 
 		mongoClient.close();
-	}
-
-	public List<FoodItem> getFoodItem(@PathParam("id") Integer id) {
-		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
-
-		try {
-			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
-			String sql = ContentHandler.read("food_item_cnf.sql", getClass());
-			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				FoodItem food = new FoodItem();
-				food.setId(rs.getInt("food_c"));
-				food.setName(rs.getString("eng_name"));
-				food.setLabel(rs.getString("food_desc"));
-				food.setGroup(rs.getString("group_c"));
-				food.setSubGroup(rs.getString("canada_food_subgroup_id"));
-				food.setCountryCode(rs.getString("country_c"));
-				list.add(food);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-
-		logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
-
-		return list;
-	}
-
-	@GET
-	@Path("/group/{groupId}")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<FoodItem> getFoodListForGroup(@PathParam("groupId") Integer groupId) {
-		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
-
-		try {
-			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
-			String sql = ContentHandler.read("food_table_group_cnf.sql", getClass());
-			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
-			stmt.setInt(1, groupId);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				FoodItem food = new FoodItem();
-				food.setId(rs.getInt("food_c"));
-				food.setName(rs.getString("eng_name"));
-				food.setLabel(rs.getString("food_desc"));
-				food.setGroup(rs.getString("group_c"));
-				food.setSubGroup(rs.getString("canada_food_subgroup_id"));
-				food.setCountryCode(rs.getString("country_c"));
-				list.add(food);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-
-		// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
-
-		return list;
-	}
-
-	@GET
-	@Path("/subgroup/{subgroupId}")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public List<FoodItem> getFoodListForsubGroup(@PathParam("subgroupId") Integer subgroupId) {
-		List<FoodItem> list = new ArrayList<FoodItem>(); // Create list
-
-		try {
-			meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-			logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
-			String sql = ContentHandler.read("food_table_subgroup_cnf.sql", getClass());
-			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
-			stmt.setInt(1, subgroupId);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				FoodItem food = new FoodItem();
-				food.setId(rs.getInt("food_c"));
-				food.setName(rs.getString("eng_name"));
-				food.setLabel(rs.getString("food_desc"));
-				food.setGroup(rs.getString("group_c"));
-				food.setSubGroup(rs.getString("canada_food_subgroup_id"));
-				food.setCountryCode(rs.getString("country_c"));
-				list.add(food);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-
-		// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
-
-		return list;
 	}
 
 	private /* List<CanadaFoodGuideDataset> */ Response doSearchCriteria(CfgFilter search) {
