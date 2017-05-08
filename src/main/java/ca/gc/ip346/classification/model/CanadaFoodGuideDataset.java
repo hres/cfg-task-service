@@ -3,58 +3,58 @@ package ca.gc.ip346.classification.model;
 import java.util.Date;
 
 public class CanadaFoodGuideDataset {
-	private String  type;                               /* smallint         */
-	private Integer code;                               /* integer          */
-	private String  name;                               /* text             */
-	private Integer cnfGroupCode;                       /* integer          */
-	private Integer cfgCode;                            /* integer          */
-	private Integer classifiedCfgCode;                  /* integer          */
-	private Date    cfgCodeUpdateDate;                  /* date             */
-	private Double  energyKcal = 0.0;                   /* double precision */
-	private Double  sodiumAmountPer100g = 0.0;          /* double precision */
-	private String  sodiumImputationReference;          /* text             */
-	private Date    sodiumImputationDate;               /* date             */
-	private Double  sugarAmountPer100g = 0.0;           /* double precision */
-	private String  sugarImputationReference;           /* text             */
-	private Date    sugarImputationDate;                /* date             */
-	private Double  transfatAmountPer100g = 0.0;        /* double precision */
-	private String  transfatImputationReference;        /* text             */
-	private Date    transfatImputationDate;             /* date             */
-	private Double  satfatAmountPer100g = 0.0;          /* double precision */
-	private String  satfatImputationReference;          /* text             */
-	private Date    satfatImputationDate;               /* date             */
-	private Double  totalfatAmountPer100g = 0.0;        /* double precision */
-	private String  totalfatImputationReference;        /* text             */
-	private Date    totalfatImputationDate;             /* date             */
-	private Boolean containsAddedSodium = false;        /* smallint         */
-	private Date    containsAddedSodiumUpdateDate;      /* date             */
-	private Boolean containsAddedSugar = false;         /* smallint         */
-	private Date    containsAddedSugarUpdateDate;       /* date             */
-	private Boolean containsFreeSugars = false;         /* smallint         */
-	private Date    containsFreeSugarsUpdateDate;       /* date             */
-	private Boolean containsAddedFat = false;           /* smallint         */
-	private Date    containsAddedFatUpdateDate;         /* date             */
-	private Boolean containsAddedTransfat = false;      /* smallint         */
-	private Date    containsAddedTransfatUpdateDate;    /* date             */
-	private Boolean containsCaffeine = false;           /* smallint         */
-	private Date    containsCaffeineUpdateDate;         /* date             */
-	private Boolean containsSugarSubstitutes = false;   /* smallint         */
-	private Date    containsSugarSubstitutesUpdateDate; /* date             */
-	private Double  referenceAmountG = 0.0;             /* double precision */
-	private String  referenceAmountMeasure;             /* text             */
-	private Date    referenceAmountUpdateDate;          /* date             */
-	private Double  foodGuideServingG = 0.0;            /* double precision */
-	private String  foodGuideServingMeasure;            /* text             */
-	private Date    foodGuideUpdateDate;                /* date             */
-	private Double  tier4ServingG = 0.0;                /* double precision */
-	private String  tier4ServingMeasure;                /* text             */
-	private Date    tier4ServingUpdateDate;             /* date             */
-	private Boolean rolledUp = false;                   /* smallint         */
-	private Date    rolledUpUpdateDate;                 /* date             */
-	private Boolean overrideSmallRaAdjustment = false;  /* smallint         */
-	private Integer replacementCode;                    /* integer          */
-	private Date    commitDate;                         /* date             */
-	private String  comments;                           /* text             */
+	private String  type;                                     /* smallint         */
+	private Integer code;                                     /* integer          */
+	private String  name;                                     /* text             */
+	private Integer cnfGroupCode;                             /* integer          */
+	private Integer cfgCode;                                  /* integer          */
+	private Integer classifiedCfgCode;                        /* integer          */
+	private Date    cfgCodeUpdateDate;                        /* date             */
+	private Double  energyKcal; /* = 0.0; */                  /* double precision */
+	private Double  sodiumAmountPer100g; /* = 0.0; */         /* double precision */
+	private String  sodiumImputationReference;                /* text             */
+	private Date    sodiumImputationDate;                     /* date             */
+	private Double  sugarAmountPer100g; /* = 0.0; */          /* double precision */
+	private String  sugarImputationReference;                 /* text             */
+	private Date    sugarImputationDate;                      /* date             */
+	private Double  transfatAmountPer100g; /* = 0.0; */       /* double precision */
+	private String  transfatImputationReference;              /* text             */
+	private Date    transfatImputationDate;                   /* date             */
+	private Double  satfatAmountPer100g; /* = 0.0; */         /* double precision */
+	private String  satfatImputationReference;                /* text             */
+	private Date    satfatImputationDate;                     /* date             */
+	private Double  totalfatAmountPer100g; /* = 0.0; */       /* double precision */
+	private String  totalfatImputationReference;              /* text             */
+	private Date    totalfatImputationDate;                   /* date             */
+	private Boolean containsAddedSodium; /* = false; */       /* smallint         */
+	private Date    containsAddedSodiumUpdateDate;            /* date             */
+	private Boolean containsAddedSugar; /* = false; */        /* smallint         */
+	private Date    containsAddedSugarUpdateDate;             /* date             */
+	private Boolean containsFreeSugars; /* = false; */        /* smallint         */
+	private Date    containsFreeSugarsUpdateDate;             /* date             */
+	private Boolean containsAddedFat; /* = false; */          /* smallint         */
+	private Date    containsAddedFatUpdateDate;               /* date             */
+	private Boolean containsAddedTransfat; /* = false; */     /* smallint         */
+	private Date    containsAddedTransfatUpdateDate;          /* date             */
+	private Boolean containsCaffeine; /* = false; */          /* smallint         */
+	private Date    containsCaffeineUpdateDate;               /* date             */
+	private Boolean containsSugarSubstitutes; /* = false; */  /* smallint         */
+	private Date    containsSugarSubstitutesUpdateDate;       /* date             */
+	private Double  referenceAmountG; /* = 0.0; */            /* double precision */
+	private String  referenceAmountMeasure;                   /* text             */
+	private Date    referenceAmountUpdateDate;                /* date             */
+	private Double  foodGuideServingG; /* = 0.0; */           /* double precision */
+	private String  foodGuideServingMeasure;                  /* text             */
+	private Date    foodGuideUpdateDate;                      /* date             */
+	private Double  tier4ServingG; /* = 0.0; */               /* double precision */
+	private String  tier4ServingMeasure;                      /* text             */
+	private Date    tier4ServingUpdateDate;                   /* date             */
+	private Boolean rolledUp; /* = false; */                  /* smallint         */
+	private Date    rolledUpUpdateDate;                       /* date             */
+	private Boolean overrideSmallRaAdjustment; /* = false; */ /* smallint         */
+	private Integer replacementCode;                          /* integer          */
+	private Date    commitDate;                               /* date             */
+	private String  comments;                                 /* text             */
 
 	// special input
 	private Double  sodiumDV;
