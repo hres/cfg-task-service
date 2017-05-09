@@ -18,7 +18,7 @@ These need be setup in order for the application/services to function on HRES
 
 ## How to Install MongoDB 3.4.2 LTS
 
-Go to <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
+Go to [install-mongodb-on-ubuntu]
 
 1. Import the public key used by the package management system
 2. Create a list file for MongoDB for Ubuntu 16.04
@@ -41,7 +41,7 @@ Start MongoDB as a service rather than manually
 
 ## Maven Build and Deployment
 
-To deploy the task services, do the following:
+To deploy the [cfg-task-services], do the following:
 
 1. `cd ~/repositories`
 2. `git clone https://github.com/hres/cfg-task-service.git`
@@ -49,7 +49,7 @@ To deploy the task services, do the following:
 4. `mvn clean install`
 5. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0 on HRES
 
-Similarly for the classification services:
+Similarly for the [cfg-classification-services]:
 
 1. `cd ~/repositories`
 2. `git clone https://github.com/hres/cfg-classification-service.git`
@@ -57,3 +57,8 @@ Similarly for the classification services:
 4. `mvn clean install`
 5. copy `target/cfg-classification-service.war` to `webapps` directory of Tomcat 8.0 on HRES
 
+[//]: # These are the references links used in the body of this note and get stripped out when the markdown processor does its thing.  There is no need to format nicely because it should not be seen.
+
+[install-mongodb-on-ubuntu]: <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
+[cfg-task-services]: <https://github.com/hres/cfg-task-service.git>
+[cfg-classification-services]: <https://github.com/hres/cfg-classification-service.git>
