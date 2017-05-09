@@ -31,7 +31,7 @@ Start MongoDB as a service rather than manually
 
 ## How to Install/Update PostgreSQL schema/data to the latest and greatest
 
-1. On the command-line run `psql` and login to postgres and ensure you are not using/connected to the `cnfadm` database
+1. On the command-line run `psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database
 2. `DROP DATABASE cnfadm;`
 3. `CREATE DATABASE cnfadm;`
 4. `\i create_canada_food_guide_dataset.sql`
