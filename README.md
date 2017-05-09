@@ -20,19 +20,19 @@ These need be setup in order for the application/services to function on HRES
 
 To deploy the task services, do the following:
 
-1 `cd ~/repositories`
-2 `git clone https://github.com/hres/cfg-task-service.git`
-3 `cd cfg-task-service`
-4 `mvn clean install`
-5 copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0 on HRES
+1. `cd ~/repositories`
+2. `git clone https://github.com/hres/cfg-task-service.git`
+3. `cd cfg-task-service`
+4. `mvn clean install`
+5. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0 on HRES
 
 Similarly for the classification services:
 
-1 `cd ~/repositories`
-2 `git clone https://github.com/hres/cfg-classification-service.git`
-3 `cd cfg-classification-service`
-4 `mvn clean install`
-5 copy `target/cfg-classification-service.war` to `webapps` directory of Tomcat 8.0 on HRES
+1. `cd ~/repositories`
+2. `git clone https://github.com/hres/cfg-classification-service.git`
+3. `cd cfg-classification-service`
+4. `mvn clean install`
+5. copy `target/cfg-classification-service.war` to `webapps` directory of Tomcat 8.0 on HRES
 
 ---
 
@@ -40,10 +40,10 @@ Similarly for the classification services:
 
 Go to <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
 
-1 Import the public key used by the package management system
-2 Create a list file for MongoDB for Ubuntu 16.04
-3 Reload local package database
-4 Install the MongoDB packages
+1. Import the public key used by the package management system
+2. Create a list file for MongoDB for Ubuntu 16.04
+3. Reload local package database
+4. Install the MongoDB packages
 
 Start MongoDB as a service rather than manually
 
@@ -51,9 +51,9 @@ Start MongoDB as a service rather than manually
 
 ## How to Install/Update PostgreSQL schema/data to the latest and greatest
 
-1 On the command-line run `psql` and login to postgres and ensure you are not using/connected to the `cnfadm` database
-2 `DROP DATABASE cnfadm;`
-3 `CREATE DATABASE cnfadm;`
-4 `\i create_canada_food_guide_dataset.sql`
-5 `\i insert_canada_food_guide_dataset.sql`
+1. On the command-line run `psql` and login to postgres and ensure you are not using/connected to the `cnfadm` database
+2. `DROP DATABASE cnfadm;`
+3. `CREATE DATABASE cnfadm;`
+4. `\i create_canada_food_guide_dataset.sql`
+5. `\i insert_canada_food_guide_dataset.sql`
 
