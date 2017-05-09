@@ -16,26 +16,6 @@ These need be setup in order for the application/services to function on HRES
 
 ---
 
-## Maven Build and Deployment
-
-To deploy the task services, do the following:
-
-1. `cd ~/repositories`
-2. `git clone https://github.com/hres/cfg-task-service.git`
-3. `cd cfg-task-service`
-4. `mvn clean install`
-5. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0 on HRES
-
-Similarly for the classification services:
-
-1. `cd ~/repositories`
-2. `git clone https://github.com/hres/cfg-classification-service.git`
-3. `cd cfg-classification-service`
-4. `mvn clean install`
-5. copy `target/cfg-classification-service.war` to `webapps` directory of Tomcat 8.0 on HRES
-
----
-
 ## How to Install MongoDB 3.4.2 LTS
 
 Go to <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
@@ -56,4 +36,24 @@ Start MongoDB as a service rather than manually
 3. `CREATE DATABASE cnfadm;`
 4. `\i create_canada_food_guide_dataset.sql`
 5. `\i insert_canada_food_guide_dataset.sql`
+
+---
+
+## Maven Build and Deployment
+
+To deploy the task services, do the following:
+
+1. `cd ~/repositories`
+2. `git clone https://github.com/hres/cfg-task-service.git`
+3. `cd cfg-task-service`
+4. `mvn clean install`
+5. copy `target/cfg-task-service.war` to `webapps` directory of Tomcat 8.0 on HRES
+
+Similarly for the classification services:
+
+1. `cd ~/repositories`
+2. `git clone https://github.com/hres/cfg-classification-service.git`
+3. `cd cfg-classification-service`
+4. `mvn clean install`
+5. copy `target/cfg-classification-service.war` to `webapps` directory of Tomcat 8.0 on HRES
 
