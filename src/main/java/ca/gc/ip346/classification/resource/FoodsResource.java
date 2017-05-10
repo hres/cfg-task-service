@@ -195,15 +195,17 @@ public class FoodsResource {
 	public /* List<Map<String, Object>> */ Response getDataset(@PathParam("id") String id) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
-		System.out.println("[01;31m" + "Valid hexadecimal representation of ObjectId " + id + ": " + ObjectId.isValid(id) + "[00;00m");
-
 		MongoCursor<Document> cursorDocMap = null;
 
 		if (ObjectId.isValid(id)) {
+			System.out.println("[01;31m" + "Valid hexadecimal representation of ObjectId " + id + "[00;00m");
+
 			cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
 		} else {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Invalid hexadecimal representation of ObjectId " + id + "");
+
+			System.out.println("[01;31m" + "Invalid hexadecimal representation of ObjectId " + id + "[00;00m");
 
 			mongoClient.close();
 
