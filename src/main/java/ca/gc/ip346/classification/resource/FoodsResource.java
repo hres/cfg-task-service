@@ -194,7 +194,21 @@ public class FoodsResource {
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, Object>> */ Response getDataset(@PathParam("id") String id) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+
+		System.out.println("[01;31m" + "Valid hexadecimal representation of ObjectId " + id + ": " + ObjectId.isValid(id) + "[00;00m");
+
+		MongoCursor<Document> cursorDocMap = null;
+
+		if (ObjectId.isValid(id)) {
+			cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		} else {
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Invalid hexadecimal representation of ObjectId " + id + "");
+
+			mongoClient.close();
+
+			return getResponse(Response.Status.BAD_REQUEST, msg);
+		}
 
 		if (!cursorDocMap.hasNext()) {
 			Map<String, String> msg = new HashMap<String, String>();
