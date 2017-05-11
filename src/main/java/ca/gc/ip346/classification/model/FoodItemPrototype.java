@@ -2,7 +2,7 @@ package ca.gc.ip346.classification.model;
 
 import java.util.Date;
 
-public class CanadaFoodGuideFoodItem {
+public class FoodItemPrototype {
 	private /* text             */ String type;
 	private /* integer          */ String code;
 	private /* text             */ String name;
