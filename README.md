@@ -6,10 +6,10 @@ This project provides the CFG Task REST Services
 
 This project uses the following components and features:
 
-* Java 8
-* Maven 3.3.9
-* Tomcat 8.0
-* MongoDB 3.4.2 LTS
+* Java       8
+* Maven      3.3.9
+* Tomcat     8.0
+* MongoDB    3.4.2 LTS
 * PostgreSQL 9.5
 
 These need be setup in order for the application/services to function on [Tomcat 8.0 on HRES]
@@ -34,8 +34,9 @@ Start MongoDB as a service rather than manually
 1. On the command-line run `psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database
 2. `DROP DATABASE cnfadm;`
 3. `CREATE DATABASE cnfadm;`
-4. `\i create_canada_food_guide_dataset.sql`
-5. `\i insert_canada_food_guide_dataset.sql`
+4. `\c cnfadm`
+5. `\i create_canada_food_guide_dataset.sql`
+6. `\i insert_canada_food_guide_dataset.sql`
 
 ---
 
