@@ -327,6 +327,8 @@ public class FoodsResource {
 				original_values_map.put((Integer)tmp.get("code"), tmp);
 			}
 
+			logger.error("[01;31mUpdate: " + "casting property 'data' seems to have passed!" + "[00;00m");
+
 			if (!dataset.getName     ().equals(doc.get("name")    )) {
 				firstLevelSets.add(set("name", dataset.getName()));
 				++changes;
@@ -353,9 +355,8 @@ public class FoodsResource {
 		for (Map<String, Object> map : updates) {
 			toupdate_values_map.put((Integer)map.get("code"), map);
 
-			logger.error("[01;34mDataset: " + toupdate_values_map.get(map.get("code")) + "[00;00m");
-
-			logger.error("[01;31mname: " + toupdate_values_map.get(map.get("code")).get("name") + "[00;00m");
+			logger.error("[01;34mDataset: " + toupdate_values_map.get(map.get("code"))             + "[00;00m");
+			logger.error("[01;31mname: "    + toupdate_values_map.get(map.get("code")).get("name") + "[00;00m");
 		}
 
 		for (Map<String, Object> map : updates) {
@@ -363,213 +364,214 @@ public class FoodsResource {
 
 			logger.error("[01;31msize: " + sets.size() + "[00;00m");
 
-			if (toupdate_values_map .get (map .get ("code")) .get ("name")                               != null && !toupdate_values_map .get (map .get ("code")) .get ("name")                               .equals (original_values_map .get (map .get ("code")) .get ("name"))) {
+			if (toupdate_values_map.get(map.get("code")).get("name")                                                                                       != null && !toupdate_values_map .get (map .get ("code")) .get ("name")                                                      .equals (original_values_map .get (map .get ("code")) .get ("name"))) {
 				sets.add(set("data.$.name", map.get("name")));
 				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("name") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode")                       != null && !toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode")                       .equals (original_values_map .get (map .get ("code")) .get ("cnfGroupCode"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode")                                                                         != null && !toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode")                                              .equals (original_values_map .get (map .get ("code")) .get ("cnfGroupCode"))) {
 				sets.add(set("data.$.cnfGroupCode", map.get("cnfGroupCode")));
 				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("cnfGroupCode") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("cfgCode")                            != null && !toupdate_values_map .get (map .get ("code")) .get ("cfgCode")                            .equals (original_values_map .get (map .get ("code")) .get ("cfgCode"))) {
-				sets.add(set("data.$.cfgCode", map.get("cfgCode")));
+			logger.error("[01;34mCFG Code: " + ((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("cfgCode")).get("value") + "[00;00m");
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("cfgCode")).get("value")                                                != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("cfgCode")).get("value")                     .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("cfgCode")).get("value"))) {
+				sets.add(set("data.$.cfgCode.value", ((Map<String, Object>)map.get("cfgCode")).get("value")));
 				sets.add(currentDate("data.$.cfgCodeUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("cfgCode") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("cfgCode")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                  != null && !toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                  .equals (original_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                                                                    != null && !toupdate_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate")                                         .equals (original_values_map .get (map .get ("code")) .get ("cfgCodeUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("energyKcal")                         != null && !toupdate_values_map .get (map .get ("code")) .get ("energyKcal")                         .equals (original_values_map .get (map .get ("code")) .get ("energyKcal"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("energyKcal")                                                                           != null && !toupdate_values_map .get (map .get ("code")) .get ("energyKcal")                                                .equals (original_values_map .get (map .get ("code")) .get ("energyKcal"))) {
 				sets.add(set("data.$.energyKcal", map.get("energyKcal")));
 				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("energyKcal") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g")                != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("sodiumAmountPer100g"))) {
-				sets.add(set("data.$.sodiumAmountPer100g", map.get("sodiumAmountPer100g")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sodiumAmountPer100g")).get("value")                                    != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sodiumAmountPer100g")).get("value")         .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("sodiumAmountPer100g")).get("value"))) {
+				sets.add(set("data.$.sodiumAmountPer100g.value", ((Map<String, Object>)map.get("sodiumAmountPer100g")).get("value")));
 				sets.add(currentDate("data.$.sodiumImputationDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("sodiumAmountPer100g") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("sodiumAmountPer100g")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationReference")          != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationReference"))) {
-				sets.add(set("data.$.sodiumImputationReference", map.get("sodiumImputationReference")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sodiumImputationReference")).get("value")                              != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sodiumImputationReference")).get("value")   .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("sodiumImputationReference")).get("value"))) {
+				sets.add(set("data.$.sodiumImputationReference.value", ((Map<String, Object>)map.get("sodiumImputationReference")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("sodiumImputationReference") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("sodiumImputationReference")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate")               != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate")               .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate")                                                                 != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate")                                      .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("sugarAmountPer100g")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarAmountPer100g")                 .equals (original_values_map .get (map .get ("code")) .get ("sugarAmountPer100g"))) {
-				sets.add(set("data.$.sugarAmountPer100g", map.get("sugarAmountPer100g")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sugarAmountPer100g")).get("value")                                     != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sugarAmountPer100g")).get("value")          .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("sugarAmountPer100g")).get("value"))) {
+				sets.add(set("data.$.sugarAmountPer100g.value", ((Map<String, Object>)map.get("sugarAmountPer100g")).get("value")));
 				sets.add(currentDate("data.$.sugarImputationDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("sugarAmountPer100g") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("sugarAmountPer100g")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("sugarImputationReference")           != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarImputationReference")           .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationReference"))) {
-				sets.add(set("data.$.sugarImputationReference", map.get("sugarImputationReference")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sugarImputationReference")).get("value")                               != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("sugarImputationReference")).get("value")    .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("sugarImputationReference")).get("value"))) {
+				sets.add(set("data.$.sugarImputationReference.value", ((Map<String, Object>)map.get("sugarImputationReference")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("sugarImputationReference") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("sugarImputationReference")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("sugarImputationDate")                != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarImputationDate")                .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("sugarImputationDate")                                                                  != null && !toupdate_values_map .get (map .get ("code")) .get ("sugarImputationDate")                                       .equals (original_values_map .get (map .get ("code")) .get ("sugarImputationDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("transfatAmountPer100g")              != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("transfatAmountPer100g"))) {
-				sets.add(set("data.$.transfatAmountPer100g", map.get("transfatAmountPer100g")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("transfatAmountPer100g")).get("value")                                  != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("transfatAmountPer100g")).get("value")       .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("transfatAmountPer100g")).get("value"))) {
+				sets.add(set("data.$.transfatAmountPer100g.value", ((Map<String, Object>)map.get("transfatAmountPer100g")).get("value")));
 				sets.add(currentDate("data.$.transfatImputationDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("transfatAmountPer100g") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("transfatAmountPer100g")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("transfatImputationReference")        != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationReference"))) {
-				sets.add(set("data.$.transfatImputationReference", map.get("transfatImputationReference")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("transfatImputationReference")).get("value")                            != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("transfatImputationReference")).get("value") .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("transfatImputationReference")).get("value"))) {
+				sets.add(set("data.$.transfatImputationReference.value", ((Map<String, Object>)map.get("transfatImputationReference")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("transfatImputationReference") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("transfatImputationReference")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("transfatImputationDate")             != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatImputationDate")             .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("transfatImputationDate")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("transfatImputationDate")                                    .equals (original_values_map .get (map .get ("code")) .get ("transfatImputationDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("satfatAmountPer100g")                != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatAmountPer100g")                .equals (original_values_map .get (map .get ("code")) .get ("satfatAmountPer100g"))) {
-				sets.add(set("data.$.satfatAmountPer100g", map.get("satfatAmountPer100g")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("satfatAmountPer100g")).get("value")                                    != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("satfatAmountPer100g")).get("value")         .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("satfatAmountPer100g")).get("value"))) {
+				sets.add(set("data.$.satfatAmountPer100g.value", ((Map<String, Object>)map.get("satfatAmountPer100g")).get("value")));
 				sets.add(currentDate("data.$.satfatImputationDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("satfatAmountPer100g") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("satfatAmountPer100g")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("satfatImputationReference")          != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatImputationReference")          .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationReference"))) {
-				sets.add(set("data.$.satfatImputationReference", map.get("satfatImputationReference")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("satfatImputationReference")).get("value")                              != null && !toupdate_values_map.get(map.get("code")).get ("satfatImputationReference")                                      .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("satfatImputationReference")).get("value"))) {
+				sets.add(set("data.$.satfatImputationReference.value", ((Map<String, Object>)map.get("satfatImputationReference")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("satfatImputationReference") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("satfatImputationReference")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate")               != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate")               .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate")                                                                 != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate")                                      .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g")              != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g")              .equals (original_values_map .get (map .get ("code")) .get ("totalfatAmountPer100g"))) {
-				sets.add(set("data.$.totalfatAmountPer100g", map.get("totalfatAmountPer100g")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("totalfatAmountPer100g")).get("value")                                  != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("totalfatAmountPer100g")).get("value")       .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("totalfatAmountPer100g")).get("value"))) {
+				sets.add(set("data.$.totalfatAmountPer100g.value", ((Map<String, Object>)map.get("totalfatAmountPer100g")).get("value")));
 				sets.add(currentDate("data.$.totalfatImputationDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("totalfatAmountPer100g") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("totalfatAmountPer100g")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationReference")        != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationReference")        .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationReference"))) {
-				sets.add(set("data.$.totalfatImputationReference", map.get("totalfatImputationReference")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("totalfatImputationReference")).get("value")                            != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("totalfatImputationReference")).get("value") .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("totalfatImputationReference")).get("value"))) {
+				sets.add(set("data.$.totalfatImputationReference.value", ((Map<String, Object>)map.get("totalfatImputationReference")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("totalfatImputationReference") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("totalfatImputationReference")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate")             != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate")             .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate")                                    .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodium")                != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodium")                .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodium"))) {
-				sets.add(set("data.$.containsAddedSodium", map.get("containsAddedSodium")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedSodium")).get("value")                                    != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedSodium")).get("value")         .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("containsAddedSodium")).get("value"))) {
+				sets.add(set("data.$.containsAddedSodium.value", ((Map<String, Object>)map.get("containsAddedSodium")).get("value")));
 				sets.add(currentDate("data.$.containsAddedSodiumUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("containsAddedSodium") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("containsAddedSodium")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")      != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")      .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")                                                        != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate")                             .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugar")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugar")                 .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugar"))) {
-				sets.add(set("data.$.containsAddedSugar", map.get("containsAddedSugar")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedSugar")).get("value")                                     != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedSugar")).get("value")          .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("containsAddedSugar")).get("value"))) {
+				sets.add(set("data.$.containsAddedSugar.value", ((Map<String, Object>)map.get("containsAddedSugar")).get("value")));
 				sets.add(currentDate("data.$.containsAddedSugarUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("containsAddedSugar") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("containsAddedSugar")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")       != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")                                                         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate")                              .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSugarUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugars")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugars")                 .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugars"))) {
-				sets.add(set("data.$.containsFreeSugars", map.get("containsFreeSugars")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsFreeSugars")).get("value")                                     != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsFreeSugars")).get("value")          .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("containsFreeSugars")).get("value"))) {
+				sets.add(set("data.$.containsFreeSugars.value", ((Map<String, Object>)map.get("containsFreeSugars")).get("value")));
 				sets.add(currentDate("data.$.containsFreeSugarsUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("containsFreeSugars") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("containsFreeSugars")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")       != null && !toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")       .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")                                                         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate")                              .equals (original_values_map .get (map .get ("code")) .get ("containsFreeSugarsUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedFat")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedFat")                   .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFat"))) {
-				sets.add(set("data.$.containsAddedFat", map.get("containsAddedFat")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedFat")).get("value")                                       != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedFat")).get("value")            .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("containsAddedFat")).get("value"))) {
+				sets.add(set("data.$.containsAddedFat.value", ((Map<String, Object>)map.get("containsAddedFat")).get("value")));
 				sets.add(currentDate("data.$.containsAddedFatUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("containsAddedFat") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("containsAddedFat")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")                                                           != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate")                                .equals (original_values_map .get (map .get ("code")) .get ("containsAddedFatUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfat")              != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfat")              .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfat"))) {
-				sets.add(set("data.$.containsAddedTransfat", map.get("containsAddedTransfat")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedTransfat")).get("value")                                  != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsAddedTransfat")).get("value")       .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("containsAddedTransfat")).get("value"))) {
+				sets.add(set("data.$.containsAddedTransfat.value", ((Map<String, Object>)map.get("containsAddedTransfat")).get("value")));
 				sets.add(currentDate("data.$.containsAddedTransfatUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("containsAddedTransfat") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("containsAddedTransfat")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")    != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")    .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")                                                      != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate")                           .equals (original_values_map .get (map .get ("code")) .get ("containsAddedTransfatUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsCaffeine")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("containsCaffeine")                   .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeine"))) {
-				sets.add(set("data.$.containsCaffeine", map.get("containsCaffeine")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsCaffeine")).get("value")                                       != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsCaffeine")).get("value")            .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("containsCaffeine")).get("value"))) {
+				sets.add(set("data.$.containsCaffeine.value", ((Map<String, Object>)map.get("containsCaffeine")).get("value")));
 				sets.add(currentDate("data.$.containsCaffeineUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("containsCaffeine") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("containsCaffeine")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")         != null && !toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")         .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")                                                           != null && !toupdate_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate")                                .equals (original_values_map .get (map .get ("code")) .get ("containsCaffeineUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes")           != null && !toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes")           .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutes"))) {
-				sets.add(set("data.$.containsSugarSubstitutes", map.get("containsSugarSubstitutes")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsSugarSubstitutes")).get("value")                               != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("containsSugarSubstitutes")).get("value")    .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("containsSugarSubstitutes")).get("value"))) {
+				sets.add(set("data.$.containsSugarSubstitutes.value", ((Map<String, Object>)map.get("containsSugarSubstitutes")).get("value")));
 				sets.add(currentDate("data.$.containsSugarSubstitutesUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("containsSugarSubstitutes") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("containsSugarSubstitutes")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate")                                                   != null && !toupdate_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate")                        .equals (original_values_map .get (map .get ("code")) .get ("containsSugarSubstitutesUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                   != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                   .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountG"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                                                                     != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountG")                                          .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountG"))) {
 				sets.add(set("data.$.referenceAmountG", map.get("referenceAmountG")));
 				sets.add(currentDate("data.$.referenceAmountUpdateDate"));
 				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("referenceAmountG") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")             != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")             .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountMeasure"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure")                                    .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountMeasure"))) {
 				sets.add(set("data.$.referenceAmountMeasure", map.get("referenceAmountMeasure")));
 				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("referenceAmountMeasure") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate")          != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate")          .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate")                                                            != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate")                                 .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingG")                  != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingG")                  .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingG"))) {
-				sets.add(set("data.$.foodGuideServingG", map.get("foodGuideServingG")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("foodGuideServingG")).get("value")                                      != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("foodGuideServingG")).get("value")           .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("foodGuideServingG")).get("value"))) {
+				sets.add(set("data.$.foodGuideServingG.value", ((Map<String, Object>)map.get("foodGuideServingG")).get("value")));
 				sets.add(currentDate("data.$.foodGuideUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("foodGuideServingG") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("foodGuideServingG")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure")            != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure")            .equals (original_values_map .get (map .get ("code")) .get ("foodGuideServingMeasure"))) {
-				sets.add(set("data.$.foodGuideServingMeasure", map.get("foodGuideServingMeasure")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("foodGuideServingMeasure")).get("value")                                != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("foodGuideServingMeasure")).get("value")     .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("foodGuideServingMeasure")).get("value"))) {
+				sets.add(set("data.$.foodGuideServingMeasure.value", ((Map<String, Object>)map.get("foodGuideServingMeasure")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("foodGuideServingMeasure") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("foodGuideServingMeasure")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate")                != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate")                .equals (original_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate")                                                                  != null && !toupdate_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate")                                       .equals (original_values_map .get (map .get ("code")) .get ("foodGuideUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingG")                      != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingG")                      .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingG"))) {
-				sets.add(set("data.$.tier4ServingG", map.get("tier4ServingG")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("tier4ServingG")).get("value")                                          != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("tier4ServingG")).get("value")               .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("tier4ServingG")).get("value"))) {
+				sets.add(set("data.$.tier4ServingG.value", ((Map<String, Object>)map.get("tier4ServingG")).get("value")));
 				sets.add(currentDate("data.$.tier4ServingUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("tier4ServingG") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("tier4ServingG")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingMeasure")                != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingMeasure")                .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingMeasure"))) {
-				sets.add(set("data.$.tier4ServingMeasure", map.get("tier4ServingMeasure")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("tier4ServingMeasure")).get("value")                                    != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("tier4ServingMeasure")).get("value")         .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("tier4ServingMeasure")).get("value"))) {
+				sets.add(set("data.$.tier4ServingMeasure.value", ((Map<String, Object>)map.get("tier4ServingMeasure")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("tier4ServingMeasure") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("tier4ServingMeasure")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate")             != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate")             .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate")                                    .equals (original_values_map .get (map .get ("code")) .get ("tier4ServingUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUp")                           != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUp")                           .equals (original_values_map .get (map .get ("code")) .get ("rolledUp"))) {
-				sets.add(set("data.$.rolledUp", map.get("rolledUp")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("rolledUp")).get("value")                                               != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("rolledUp")).get("value")                    .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("rolledUp")).get("value"))) {
+				sets.add(set("data.$.rolledUp.value", ((Map<String, Object>)map.get("rolledUp")).get("value")));
 				sets.add(currentDate("data.$.rolledUpUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("rolledUp") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("rolledUp")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                 != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                 .equals (original_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                                                                   != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate")                                        .equals (original_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")             != null && !toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")             .equals (original_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")                                    .equals (original_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment"))) {
 				sets.add(set("data.$.applySmallRaAdjustment", map.get("applySmallRaAdjustment")));
 				++changes;
 				logger.error("[01;31mvalue changed: " + map.get("applySmallRaAdjustment") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("replacementCode")                    != null && !toupdate_values_map .get (map .get ("code")) .get ("replacementCode")                    .equals (original_values_map .get (map .get ("code")) .get ("replacementCode"))) {
-				sets.add(set("data.$.replacementCode", map.get("replacementCode")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("replacementCode")).get("value")                                        != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("replacementCode")).get("value")             .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("replacementCode")).get("value"))) {
+				sets.add(set("data.$.replacementCode.value", ((Map<String, Object>)map.get("replacementCode")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("replacementCode") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("replacementCode")).get("value") + "[00;00m");
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("commitDate")                         != null && !toupdate_values_map .get (map .get ("code")) .get ("commitDate")                         .equals (original_values_map .get (map .get ("code")) .get ("commitDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("commitDate")                                                                           != null && !toupdate_values_map .get (map .get ("code")) .get ("commitDate")                                                .equals (original_values_map .get (map .get ("code")) .get ("commitDate"))) {
 			}
-			if (toupdate_values_map .get (map .get ("code")) .get ("comments")                           != null && !toupdate_values_map .get (map .get ("code")) .get ("comments")                           .equals (original_values_map .get (map .get ("code")) .get ("comments"))) {
-				sets.add(set("data.$.comments", map.get("comments")));
+			if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("comments")).get("value")                                               != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("comments")).get("value")                    .equals (((Map<String, Object>)original_values_map.get(map.get("code")).get("comments")).get("value"))) {
+				sets.add(set("data.$.comments.value", ((Map<String, Object>)map.get("comments")).get("value")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("comments") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get("comments")).get("value") + "[00;00m");
 			}
 
 			logger.error("[01;31msize: " + sets.size() + "[00;00m");
