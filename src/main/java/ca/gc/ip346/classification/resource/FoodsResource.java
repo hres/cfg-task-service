@@ -407,6 +407,10 @@ public class FoodsResource {
 
 			logger.error("[01;34mCFG Code: " + ((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("cfgCode")).get("value") + "[00;00m");
 
+			for (String key : updateDatePair.keySet()) {
+				 changes = updateIfModified(key, updateDatePair.get(key), sets, changes, original_values_map, toupdate_values_map, map);
+			}
+
 			// updateDatePair.put("cfgCode", "cfgCodeUpdateDate");
 
 			// if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get("cfgCode")).get("value")
@@ -1501,21 +1505,14 @@ public class FoodsResource {
 	}
 
 	private int updateIfModified(String key, String value, List<Bson> sets, int changes, Map<Integer, Map<String, Object>> original_values_map, Map<Integer, Map<String, Object>> toupdate_values_map, Map<String, Object> map) {
-		if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key))
-				.get("value")
-				!= null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key))
-				.get("value")
-				.equals (((Map<String, Object>)original_values_map.get(map.get("code")).get(key))
-					.get("value"))) {
-			sets.add(set("data.$." + key
-						+ ".value",
-						((Map<String, Object>)map.get(key))
-						.get("value")));
-			sets.add(currentDate("data.$." + value));
+		if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value") != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value").equals(((Map<String, Object>)original_values_map.get(map.get("code")).get(key)).get("value"))) {
+			sets.add(set("data.$." + key + ".value", ((Map<String, Object>)map.get(key)).get("value")));
+			if (!value.isEmpty()) {
+				sets.add(currentDate("data.$." + value));
+			}
 			++changes;
-			logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get(key))
-					.get("value") + "[00;00m");
-					}
+			logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get(key)).get("value") + "[00;00m");
+		}
 
 		return changes;
 	}
