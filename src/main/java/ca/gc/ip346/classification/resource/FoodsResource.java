@@ -663,6 +663,20 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getStatusCodes() {
+		Map<Integer, String> list = null;
+		String sql = ContentHandler.read("connectivity_test.sql", getClass());
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
+			ResultSet rs = stmt.executeQuery();
+			list = new HashMap<Integer, String>();
+			while (rs.next()) {
+				list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
+			}
+		} catch(SQLException e) {
+			// TODO: proper response to handle exceptions
+			e.printStackTrace();
+		}
+
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		for (Response.Status obj : Response.Status.values()) {
 			map.put(obj.getStatusCode(), obj.name());
@@ -725,7 +739,8 @@ public class FoodsResource {
 
 		mongoClient.close();
 
-		return getResponse(Response.Status.OK, Response.Status.values());
+		// return getResponse(Response.Status.OK, Response.Status.values());
+		return getResponse(Response.Status.OK, list);
 	}
 
 	private /* List<CanadaFoodGuideDataset> */ Response doSearchCriteria(CfgFilter search) {
