@@ -517,6 +517,8 @@ public class FoodsResource {
 	public Response classifyDataset(@PathParam("id") String id) {
 		Map<String, Object> map = null;
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		List<Object> list = null;
+		List<Document> dox = new ArrayList<Document>();
 
 		if (!cursorDocMap.hasNext()) {
 			Map<String, String> msg = new HashMap<String, String>();
@@ -529,13 +531,58 @@ public class FoodsResource {
 			return getResponse(Response.Status.NOT_FOUND, msg);
 		}
 
+		Map<String, String> updateDatePair = new HashMap<String, String>();
+		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate");
+		updateDatePair.put("comments",                    "");
+		updateDatePair.put("containsAddedFat",            "containsAddedFatUpdateDate");
+		updateDatePair.put("containsAddedSodium",         "containsAddedSodiumUpdateDate");
+		updateDatePair.put("containsAddedSugar",          "containsAddedSugarUpdateDate");
+		updateDatePair.put("containsAddedTransfat",       "containsAddedTransfatUpdateDate");
+		updateDatePair.put("containsCaffeine",            "containsCaffeineUpdateDate");
+		updateDatePair.put("containsFreeSugars",          "containsFreeSugarsUpdateDate");
+		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate");
+		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate");
+		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate");
+		updateDatePair.put("replacementCode",             "");
+		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate");
+		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate");
+		updateDatePair.put("satfatImputationReference",   "satfatImputationDate");
+		updateDatePair.put("sodiumAmountPer100g",         "sodiumImputationDate");
+		updateDatePair.put("sodiumImputationReference",   "sodiumImputationDate");
+		updateDatePair.put("sugarAmountPer100g",          "sugarImputationDate");
+		updateDatePair.put("sugarImputationReference",    "sugarImputationDate");
+		updateDatePair.put("tier4ServingG",               "tier4ServingUpdateDate");
+		updateDatePair.put("tier4ServingMeasure",         "tier4ServingUpdateDate");
+		updateDatePair.put("totalfatAmountPer100g",       "totalfatImputationDate");
+		updateDatePair.put("totalfatImputationReference", "totalfatImputationDate");
+		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate");
+		updateDatePair.put("transfatImputationReference", "transfatImputationDate");
+
 		while (cursorDocMap.hasNext()) {
 			map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
 			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 
+			logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc));
+
 			if (doc != null) {
-				map.put("data",         doc.get("data"));
+				list = castList(doc.get("data"), Object.class);
+				for (Object obj : list) {
+					logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(obj));
+					for (String key : updateDatePair.keySet()) {
+						Document value = (Document)((Document)obj).get(key + "");
+						((Document)obj).put(key, value.get("value"));
+						logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(value.get("value")));
+					}
+					dox.add((Document)obj);
+				}
+
+				logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dox));
+
+				map.put("data",         dox);
+
+				logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc.get("data")));
+
 				map.put("name",         doc.get("name"));
 				map.put("env",          doc.get("env"));
 				map.put("owner",        doc.get("owner"));
@@ -615,7 +662,7 @@ public class FoodsResource {
 	@Path("/status")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void getStatusCodes() {
+	public Response getStatusCodes() {
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		for (Response.Status obj : Response.Status.values()) {
 			map.put(obj.getStatusCode(), obj.name());
@@ -677,6 +724,8 @@ public class FoodsResource {
 		}
 
 		mongoClient.close();
+
+		return getResponse(Response.Status.OK, Response.Status.values());
 	}
 
 	private /* List<CanadaFoodGuideDataset> */ Response doSearchCriteria(CfgFilter search) {
@@ -1208,8 +1257,6 @@ public class FoodsResource {
 				// TODO: proper response to handle exceptions
 				e.printStackTrace();
 			}
-
-			// logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list));
 		}
 
 		return getResponse(Response.Status.OK, list);
@@ -1250,5 +1297,10 @@ public class FoodsResource {
 		}
 
 		return changes;
+	}
+
+	private void convertMetaDataObjectToSingleValue(Document obj, String key) {
+		obj.put(key, obj.get(key + "value"));
+						// convertMetaDataObjectToSingleValue((Document)obj, key);
 	}
 }
