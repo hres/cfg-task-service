@@ -1,0 +1,2 @@
+SELECT canada_food_group_id, canada_food_group_desc_e
+  FROM canada_food_group
