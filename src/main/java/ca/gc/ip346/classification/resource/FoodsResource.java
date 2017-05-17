@@ -62,6 +62,7 @@ import ca.gc.ip346.classification.model.PseudoDouble;
 import ca.gc.ip346.classification.model.PseudoInteger;
 import ca.gc.ip346.classification.model.PseudoString;
 import ca.gc.ip346.classification.model.RecipeRolled;
+import ca.gc.ip346.util.ClassificationProperties;
 import ca.gc.ip346.util.DBConnection;
 import ca.gc.ip346.util.MongoClientFactory;
 import ca.gc.ip346.util.RequestURI;
@@ -548,7 +549,7 @@ public class FoodsResource {
 
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getUri() + "/food-classification-service")
+			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
 			.path("/classify")
 			.request()
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
@@ -566,7 +567,7 @@ public class FoodsResource {
 	public Response flagsDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getUri() + "/food-classification-service")
+			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
 			.path("/flags")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -581,7 +582,7 @@ public class FoodsResource {
 	public Response initDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getUri() + "/food-classification-service")
+			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
 			.path("/init")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -596,7 +597,7 @@ public class FoodsResource {
 	public Response adjustmentDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getUri() + "/food-classification-service")
+			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
 			.path("/adjustment")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));

@@ -7,7 +7,7 @@ import java.util.Properties;
 public class RequestURI {
 	private static Properties getProps() throws IOException {
 		Properties props = new Properties();
-		InputStream in   = DBConnection.class.getClassLoader().getResourceAsStream("ca/gc/ip346/util/requestUri.properties");
+		InputStream in   = RequestURI.class.getClassLoader().getResourceAsStream("ca/gc/ip346/util/requestUri.properties");
 		props.load(in);
 		in.close();
 		return props;
