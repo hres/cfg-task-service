@@ -478,10 +478,16 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate"))) {
 			}
 
-			if (toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment")                                    .equals (original_values_map .get (map .get ("code")) .get ("applySmallRaAdjustment"))) {
-				sets.add(set("data.$.applySmallRaAdjustment", map.get("applySmallRaAdjustment")));
+			if (toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                    .equals (original_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment"))) {
+				sets.add(set("data.$.overrideSmallRaAdjustment", map.get("overrideSmallRaAdjustment")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("applySmallRaAdjustment") + "[00;00m");
+				logger.error("[01;31mvalue changed: " + map.get("overrideSmallRaAdjustment") + "[00;00m");
+			}
+
+			if (toupdate_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount")                                    .equals (original_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount"))) {
+				sets.add(set("data.$.adjustedReferenceAmount", map.get("adjustedReferenceAmount")));
+				++changes;
+				logger.error("[01;31mvalue changed: " + map.get("adjustedReferenceAmount") + "[00;00m");
 			}
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("commitDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("commitDate") .equals (original_values_map .get (map .get ("code")) .get ("commitDate"))) {
@@ -563,25 +569,17 @@ public class FoodsResource {
 			Document doc = cursorDocMap.next();
 			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 
-			logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc));
-
 			if (doc != null) {
 				list = castList(doc.get("data"), Object.class);
 				for (Object obj : list) {
-					logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(obj));
 					for (String key : updateDatePair.keySet()) {
 						Document value = (Document)((Document)obj).get(key + "");
 						((Document)obj).put(key, value.get("value"));
-						logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(value.get("value")));
 					}
 					dox.add((Document)obj);
 				}
 
-				logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dox));
-
 				map.put("data",         dox);
-
-				logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc.get("data")));
 
 				map.put("name",         doc.get("name"));
 				map.put("env",          doc.get("env"));
@@ -672,6 +670,7 @@ public class FoodsResource {
 			while (rs.next()) {
 				list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
 			}
+			conn.close();
 		} catch(SQLException e) {
 			// TODO: proper response to handle exceptions
 			e.printStackTrace();
@@ -1268,6 +1267,7 @@ public class FoodsResource {
 
 					list.add(foodItem);
 				}
+				conn.close();
 			} catch(SQLException e) {
 				// TODO: proper response to handle exceptions
 				e.printStackTrace();

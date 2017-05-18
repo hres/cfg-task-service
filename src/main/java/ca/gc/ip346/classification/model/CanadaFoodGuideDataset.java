@@ -40,7 +40,7 @@ public class CanadaFoodGuideDataset {
 	private Date          containsCaffeineUpdateDate;               /* date             */
 	private PseudoBoolean containsSugarSubstitutes; /* = false; */  /* smallint         */ // editable
 	private Date          containsSugarSubstitutesUpdateDate;       /* date             */
-	private Double        referenceAmountG; /* = 0.0; */            /* double precision */
+	private Double        referenceAmountG = 0.0;                   /* double precision */
 	private String        referenceAmountMeasure;                   /* text             */
 	private Date          referenceAmountUpdateDate;                /* date             */
 	private PseudoDouble  foodGuideServingG; /* = 0.0; */           /* double precision */ // editable
