@@ -661,19 +661,21 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getStatusCodes() {
-		Map<Integer, String> list = null;
+		Map<Integer, String> list = new HashMap<Integer, String>();
 		String sql = ContentHandler.read("connectivity_test.sql", getClass());
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
 			ResultSet rs = stmt.executeQuery();
-			list = new HashMap<Integer, String>();
 			while (rs.next()) {
 				list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
 			}
 			conn.close();
 		} catch(SQLException e) {
 			// TODO: proper response to handle exceptions
-			e.printStackTrace();
+			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			for (Response.Status status : Response.Status.values()) {
+				list.put(new Integer(status.getStatusCode()), status.getReasonPhrase());
+			}
 		}
 
 		Map<Integer, String> map = new HashMap<Integer, String>();
