@@ -520,6 +520,7 @@ public class FoodsResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	@SuppressWarnings("unchecked")
 	public Response classifyDataset(@PathParam("id") String id) {
 		Map<String, Object> map = null;
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
@@ -601,7 +602,21 @@ public class FoodsResource {
 
 		logger.error("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
 
-		return response;
+		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
+		List<Object> dataArray = (List<Object>)(deserialized).get("data");
+		for (Object obj : dataArray) {
+			for (String key : updateDatePair.keySet()) {
+				Object value = ((Map<String, Object>)obj).get(key + "");
+				Map<String, Object> metadataObject = new HashMap<String, Object>();
+				metadataObject.put("value", value);
+				metadataObject.put("modified", false);
+				((Map<String, Object>)obj).put(key, metadataObject);
+			}
+		}
+
+		logger.error("[01;31m" + "response status: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
+
+		return getResponse(Response.Status.OK, deserialized);
 	}
 
 	@POST
@@ -1314,10 +1329,5 @@ public class FoodsResource {
 		}
 
 		return changes;
-	}
-
-	private void convertMetaDataObjectToSingleValue(Document obj, String key) {
-		obj.put(key, obj.get(key + "value"));
-						// convertMetaDataObjectToSingleValue((Document)obj, key);
 	}
 }
