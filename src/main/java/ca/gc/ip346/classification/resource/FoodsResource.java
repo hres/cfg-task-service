@@ -86,7 +86,8 @@ public class FoodsResource {
 			conn = DBConnection.getConnections();
 		} catch(Exception e) {
 			// TODO: proper response to handle exceptions
-			e.printStackTrace();
+			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
 		}
 	}
 
@@ -678,20 +679,6 @@ public class FoodsResource {
 	public Response getStatusCodes() {
 		Map<Integer, String> list = new HashMap<Integer, String>();
 		String sql = ContentHandler.read("connectivity_test.sql", getClass());
-		try {
-			PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
-			}
-			conn.close();
-		} catch(SQLException e) {
-			// TODO: proper response to handle exceptions
-			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
-			for (Response.Status status : Response.Status.values()) {
-				list.put(new Integer(status.getStatusCode()), status.getReasonPhrase());
-			}
-		}
 
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		for (Response.Status obj : Response.Status.values()) {
@@ -768,6 +755,36 @@ public class FoodsResource {
 			System.out.println();
 		}
 
+		try {
+			if (conn != null) {
+				PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
+				}
+				conn.close();
+			} else {
+				list.put(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(), "Unable to connect to PostgreSQL Database!");
+				return getResponse(Response.Status.SERVICE_UNAVAILABLE, list);
+			}
+		} catch(SQLException e) {
+			// TODO: proper response to handle exceptions
+			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			for (Response.Status status : Response.Status.values()) {
+				list.put(new Integer(status.getStatusCode()), status.getReasonPhrase());
+			}
+		}
+
+		try {
+			mongoClient.getAddress();
+		} catch(Exception e) {
+			// TODO: proper response to handle exceptions
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", e.getMessage());
+			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			mongoClient.close();
+			return getResponse(Response.Status.GATEWAY_TIMEOUT, msg);
+		}
 		mongoClient.close();
 
 		// return getResponse(Response.Status.OK, Response.Status.values());
