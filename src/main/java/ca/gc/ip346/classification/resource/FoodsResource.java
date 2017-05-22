@@ -705,22 +705,29 @@ public class FoodsResource {
 			}
 		}
 		String format = new StringBuffer()
-			.append("%d %-")
+			.append("  %d %-")
 			.append(len)
 			.append("s")
 			.toString();
-		String tamrof = new StringBuffer()
-			.append("%-")
-			.append(len + 4)
-			.append("s")
-			.toString();
+//		 String tamrof = new StringBuffer()
+//			 .append("%-")
+//			 .append(len + 6)
+//			 .append("s")
+//			 .toString();
 		Integer[][] arr = new Integer[6][18];
+		Integer[][] brr = new Integer[2][18];
 		Integer series = 0;
 		int i = 0;
+		int k = 0;
 		for (Integer key : map.keySet()) {
 			if (key / 100 != series) {
 				series = key / 100;
 				i = 0;
+			}
+			if (series == 4) {
+				brr[0][i] = key;
+			} else {
+				brr[1][k++] = key;
 			}
 			arr[series][i++] = key;
 		}
@@ -728,27 +735,35 @@ public class FoodsResource {
 			arr[0][j] = null;
 			arr[1][j] = null;
 		}
+//		 for (int l = 0; l < 18; ++l) {
+//			 for (int m = 2; m < 6; ++m) {
+//				 Integer key = arr[m][l];
+//				 if (key != null) {
+//					 System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 36 : 35, key, Response.Status.fromStatusCode(key).name());
+//				 } else {
+//					 System.out.printf(tamrof, "");
+//				 }
+//			 }
+//			 System.out.println();
+//		 }
+//		 System.out.println();
+//		 System.out.println();
+//		 for (int l = 0; l < 18; ++l) {
+//			 for (int m = 2; m < 6; ++m) {
+//				 Integer key = arr[m][l];
+//				 if (key != null) {
+//					 System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
+//				 } else {
+//					 System.out.printf(tamrof, "");
+//				 }
+//			 }
+//			 System.out.println();
+//		 }
+//		 System.out.println();
 		for (int l = 0; l < 18; ++l) {
-			for (int m = 2; m < 6; ++m) {
-				Integer key = arr[m][l];
-				if (key != null) {
-					System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 36 : 35, key, Response.Status.fromStatusCode(key).name());
-				} else {
-					System.out.printf(tamrof, "");
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
-		System.out.println();
-		for (int l = 0; l < 18; ++l) {
-			for (int m = 2; m < 6; ++m) {
-				Integer key = arr[m][l];
-				if (key != null) {
-					System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
-				} else {
-					System.out.printf(tamrof, "");
-				}
+			for (int m = 0; m < 2; ++m) {
+				Integer key = brr[m][l];
+				System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
 			}
 			System.out.println();
 		}
