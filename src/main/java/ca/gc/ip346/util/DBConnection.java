@@ -22,7 +22,7 @@ public class DBConnection {
 		in.close();
 
 		String driver = props.getProperty("jdbc.driver");
-		logger.error("[01;34mpostgresql driver name: " + driver + "[00;00m");
+		logger.error("[01;03;34m" + "postgresql driver name test: " + driver + "[00;00m");
 		if (driver == null) {
 			throw new Exception("jdbc.driver is not defined");
 		}

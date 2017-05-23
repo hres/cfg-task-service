@@ -750,7 +750,7 @@ public class FoodsResource {
 		for (int l = 0; l < 18; ++l) {
 			for (int m = 0; m < 2; ++m) {
 				Integer key = brr[m][l];
-				System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
+				System.out.printf("[01;03;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
 			}
 			System.out.println();
 		}
@@ -776,7 +776,8 @@ public class FoodsResource {
 		}
 
 		try {
-			mongoClient.getAddress();
+			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getAddress() + "[00;00m");
+			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getConnectPoint() + "[00;00m");
 		} catch(Exception e) {
 			// TODO: proper response to handle exceptions
 			Map<String, String> msg = new HashMap<String, String>();
