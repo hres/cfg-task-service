@@ -3,58 +3,58 @@ package ca.gc.ip346.classification.model;
 import java.util.Date;
 
 public class CanadaFoodGuideDataset {
-	private String        type;                                     /* smallint         */
-	private Integer       code;                                     /* integer          */
-	private String        name;                                     /* text             */
-	private Integer       cnfGroupCode;                             /* integer          */
-	private PseudoInteger cfgCode = new PseudoInteger();            /* integer          */ // editable
-	private Integer       classifiedCfgCode;                        /* integer          */
-	private Date          cfgCodeUpdateDate;                        /* date             */
-	private Double        energyKcal; /* = 0.0; */                  /* double precision */
-	private PseudoDouble  sodiumAmountPer100g; /* = 0.0; */         /* double precision */ // editable
-	private PseudoString  sodiumImputationReference;                /* text             */
-	private Date          sodiumImputationDate;                     /* date             */
-	private PseudoDouble  sugarAmountPer100g; /* = 0.0; */          /* double precision */ // editable
-	private PseudoString  sugarImputationReference;                 /* text             */
-	private Date          sugarImputationDate;                      /* date             */
-	private PseudoDouble  transfatAmountPer100g; /* = 0.0; */       /* double precision */ // editable
-	private PseudoString  transfatImputationReference;              /* text             */
-	private Date          transfatImputationDate;                   /* date             */
-	private PseudoDouble  satfatAmountPer100g; /* = 0.0; */         /* double precision */ // editable
-	private PseudoString  satfatImputationReference;                /* text             */
-	private Date          satfatImputationDate;                     /* date             */
-	private PseudoDouble  totalfatAmountPer100g; /* = 0.0; */       /* double precision */ // editable
-	private PseudoString  totalfatImputationReference;              /* text             */
-	private Date          totalfatImputationDate;                   /* date             */
-	private PseudoBoolean containsAddedSodium; /* = false; */       /* smallint         */ // editable
-	private Date          containsAddedSodiumUpdateDate;            /* date             */
-	private PseudoBoolean containsAddedSugar; /* = false; */        /* smallint         */ // editable
-	private Date          containsAddedSugarUpdateDate;             /* date             */
-	private PseudoBoolean containsFreeSugars; /* = false; */        /* smallint         */ // editable
-	private Date          containsFreeSugarsUpdateDate;             /* date             */
-	private PseudoBoolean containsAddedFat; /* = false; */          /* smallint         */ // editable
-	private Date          containsAddedFatUpdateDate;               /* date             */
-	private PseudoBoolean containsAddedTransfat; /* = false; */     /* smallint         */ // editable
-	private Date          containsAddedTransfatUpdateDate;          /* date             */
-	private PseudoBoolean containsCaffeine; /* = false; */          /* smallint         */ // editable
-	private Date          containsCaffeineUpdateDate;               /* date             */
-	private PseudoBoolean containsSugarSubstitutes; /* = false; */  /* smallint         */ // editable
-	private Date          containsSugarSubstitutesUpdateDate;       /* date             */
-	private Double        referenceAmountG = 0.0;                   /* double precision */
-	private String        referenceAmountMeasure;                   /* text             */
-	private Date          referenceAmountUpdateDate;                /* date             */
-	private PseudoDouble  foodGuideServingG; /* = 0.0; */           /* double precision */ // editable
-	private PseudoString  foodGuideServingMeasure;                  /* text             */ // editable
-	private Date          foodGuideUpdateDate;                      /* date             */
-	private PseudoDouble  tier4ServingG; /* = 0.0; */               /* double precision */ // editable
-	private PseudoString  tier4ServingMeasure;                      /* text             */ // editable
-	private Date          tier4ServingUpdateDate;                   /* date             */
-	private PseudoBoolean rolledUp; /* = false; */                  /* smallint         */ // editable
-	private Date          rolledUpUpdateDate;                       /* date             */
-	private Boolean       overrideSmallRaAdjustment; /* = false; */ /* smallint         */
-	private PseudoInteger replacementCode;                          /* integer          */ // editable
-	private Date          commitDate;                               /* date             */
-	private PseudoString  comments;                                 /* text             */ // editable
+	private String        type;                                                                    /* smallint         */
+	private Integer       code;                                                                    /* integer          */
+	private String        name;                                                                    /* text             */
+	private Integer       cnfGroupCode;                                                            /* integer          */
+	private PseudoInteger cfgCode;                                                                 /* integer          */ // editable
+	private Integer       classifiedCfgCode;                                                       /* integer          */
+	private Date          cfgCodeUpdateDate;                                                       /* date             */
+	private Double        energyKcal; /* = 0.0; */                                                 /* double precision */
+	private PseudoDouble  sodiumAmountPer100g;                                                     /* double precision */ // editable
+	private PseudoString  sodiumImputationReference;                                               /* text             */
+	private Date          sodiumImputationDate;                                                    /* date             */
+	private PseudoDouble  sugarAmountPer100g;                                                      /* double precision */ // editable
+	private PseudoString  sugarImputationReference;                                                /* text             */
+	private Date          sugarImputationDate;                                                     /* date             */
+	private PseudoDouble  transfatAmountPer100g;                                                   /* double precision */ // editable
+	private PseudoString  transfatImputationReference;                                             /* text             */
+	private Date          transfatImputationDate;                                                  /* date             */
+	private PseudoDouble  satfatAmountPer100g;                                                     /* double precision */ // editable
+	private PseudoString  satfatImputationReference;                                               /* text             */
+	private Date          satfatImputationDate;                                                    /* date             */
+	private PseudoDouble  totalfatAmountPer100g;                                                   /* double precision */ // editable
+	private PseudoString  totalfatImputationReference;                                             /* text             */
+	private Date          totalfatImputationDate;                                                  /* date             */
+	private PseudoBoolean containsAddedSodium;                                                     /* smallint         */ // editable
+	private Date          containsAddedSodiumUpdateDate;                                           /* date             */
+	private PseudoBoolean containsAddedSugar;                                                      /* smallint         */ // editable
+	private Date          containsAddedSugarUpdateDate;                                            /* date             */
+	private PseudoBoolean containsFreeSugars;                                                      /* smallint         */ // editable
+	private Date          containsFreeSugarsUpdateDate;                                            /* date             */
+	private PseudoBoolean containsAddedFat;                                                        /* smallint         */ // editable
+	private Date          containsAddedFatUpdateDate;                                              /* date             */
+	private PseudoBoolean containsAddedTransfat;                                                   /* smallint         */ // editable
+	private Date          containsAddedTransfatUpdateDate;                                         /* date             */
+	private PseudoBoolean containsCaffeine;                                                        /* smallint         */ // editable
+	private Date          containsCaffeineUpdateDate;                                              /* date             */
+	private PseudoBoolean containsSugarSubstitutes;                                                /* smallint         */ // editable
+	private Date          containsSugarSubstitutesUpdateDate;                                      /* date             */
+	private Double        referenceAmountG = 0.0;                                                  /* double precision */
+	private String        referenceAmountMeasure;                                                  /* text             */
+	private Date          referenceAmountUpdateDate;                                               /* date             */
+	private PseudoDouble  foodGuideServingG;                                                       /* double precision */ // editable
+	private PseudoString  foodGuideServingMeasure;                                                 /* text             */ // editable
+	private Date          foodGuideUpdateDate;                                                     /* date             */
+	private PseudoDouble  tier4ServingG;                                                           /* double precision */ // editable
+	private PseudoString  tier4ServingMeasure;                                                     /* text             */ // editable
+	private Date          tier4ServingUpdateDate;                                                  /* date             */
+	private PseudoBoolean rolledUp;                                                                /* smallint         */ // editable
+	private Date          rolledUpUpdateDate;                                                      /* date             */
+	private Boolean       overrideSmallRaAdjustment; /* = false; */                                /* smallint         */
+	private PseudoInteger replacementCode;                                                         /* integer          */ // editable
+	private Date          commitDate;                                                              /* date             */
+	private PseudoString  comments;                                                                /* text             */ // editable
 
 	// special input
 	private Double  sodiumDV;

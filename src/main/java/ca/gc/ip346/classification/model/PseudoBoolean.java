@@ -1,7 +1,7 @@
 package ca.gc.ip346.classification.model;
 
 public class PseudoBoolean {
-	private Boolean value;
+	private Boolean value = false;
 	private Boolean modified = false;
 
 	public PseudoBoolean(Boolean value) {

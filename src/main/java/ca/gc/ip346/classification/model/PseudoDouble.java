@@ -1,7 +1,7 @@
 package ca.gc.ip346.classification.model;
 
 public class PseudoDouble {
-	private Double value;
+	private Double value = 0.0;
 	private Boolean modified = false;
 
 	public PseudoDouble(Double value) {
