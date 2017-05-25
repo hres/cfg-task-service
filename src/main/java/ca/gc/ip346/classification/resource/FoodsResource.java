@@ -373,6 +373,8 @@ public class FoodsResource {
 		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate");
 		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate");
 		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate");
+		updateDatePair.put("marketedToKids",              "");
+		updateDatePair.put("overrideSmallRaAdjustment",   "");
 		updateDatePair.put("replacementCode",             "");
 		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate");
 		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate");
@@ -479,11 +481,11 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("rolledUpUpdateDate"))) {
 			}
 
-			if (toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                    .equals (original_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment"))) {
-				sets.add(set("data.$.overrideSmallRaAdjustment", map.get("overrideSmallRaAdjustment")));
-				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("overrideSmallRaAdjustment") + "[00;00m");
-			}
+			// if (toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                    .equals (original_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment"))) {
+				// sets.add(set("data.$.overrideSmallRaAdjustment", map.get("overrideSmallRaAdjustment")));
+				// ++changes;
+				// logger.error("[01;31mvalue changed: " + map.get("overrideSmallRaAdjustment") + "[00;00m");
+			// }
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount")                                    .equals (original_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount"))) {
 				sets.add(set("data.$.adjustedReferenceAmount", map.get("adjustedReferenceAmount")));
@@ -551,6 +553,8 @@ public class FoodsResource {
 		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate");
 		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate");
 		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate");
+		updateDatePair.put("marketedToKids",              "");
+		updateDatePair.put("overrideSmallRaAdjustment",   "");
 		updateDatePair.put("replacementCode",             "");
 		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate");
 		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate");
@@ -1187,133 +1191,135 @@ public class FoodsResource {
 				while (rs.next()) {
 					CanadaFoodGuideDataset foodItem = new CanadaFoodGuideDataset();
 
-					foodItem.setType(rs.getInt                                               ("type") == 1 ? "food" : "recipe"          );
-					foodItem.setCode(rs.getInt                                               ("code")                                   );
-					foodItem.setName(rs.getString                                            ("name")                                   );
+					foodItem.setType(rs.getInt                                                ("type") == 1 ? "food" : "recipe"          );
+					foodItem.setCode(rs.getInt                                                ("code")                                   );
+					foodItem.setName(rs.getString                                             ("name")                                   );
 					if (rs.getString("cnf_group_code") != null) {
-						foodItem.setCnfGroupCode(rs.getInt                                   ("cnf_group_code")                         );
+						foodItem.setCnfGroupCode(rs.getInt                                    ("cnf_group_code")                         );
 					}
 					if (rs.getString("cfg_code") != null) {
-						foodItem.setCfgCode(new PseudoInteger(rs.getInt                      ("cfg_code"))                              ); // editable
+						foodItem.setCfgCode(new PseudoInteger(rs.getInt                       ("cfg_code"))                              ); // editable
 					} else {
-						foodItem.setCfgCode(new PseudoInteger()                                                                         );
+						foodItem.setCfgCode(new PseudoInteger()                                                                          );
 					}
-					foodItem.setCommitDate(rs.getDate                                        ("cfg_code_update_date")                   );
+					foodItem.setCommitDate(rs.getDate                                         ("cfg_code_update_date")                   );
 					if (rs.getString("energy_kcal") != null) {
-						foodItem.setEnergyKcal(rs.getDouble                                  ("energy_kcal")                            );
+						foodItem.setEnergyKcal(rs.getDouble                                   ("energy_kcal")                            );
 					}
 					if (rs.getString("sodium_amount_per_100g") != null) {
-						foodItem.setSodiumAmountPer100g(new PseudoDouble(rs.getDouble        ("sodium_amount_per_100g"))                ); // editable
+						foodItem.setSodiumAmountPer100g(new PseudoDouble(rs.getDouble         ("sodium_amount_per_100g"))                ); // editable
 					} else {
-						foodItem.setSodiumAmountPer100g(new PseudoDouble()                                                              );
+						foodItem.setSodiumAmountPer100g(new PseudoDouble()                                                               );
 					}
-					foodItem.setSodiumImputationReference(new PseudoString(rs.getString      ("sodium_imputation_reference"))           );
-					foodItem.setSodiumImputationDate(rs.getDate                              ("sodium_imputation_date")                 );
+					foodItem.setSodiumImputationReference(new PseudoString(rs.getString       ("sodium_imputation_reference"))           );
+					foodItem.setSodiumImputationDate(rs.getDate                               ("sodium_imputation_date")                 );
 					if (rs.getString("sugar_amount_per_100g") != null) {
-						foodItem.setSugarAmountPer100g(new PseudoDouble(rs.getDouble         ("sugar_amount_per_100g"))                 ); // editable
+						foodItem.setSugarAmountPer100g(new PseudoDouble(rs.getDouble          ("sugar_amount_per_100g"))                 ); // editable
 					} else {
-						foodItem.setSugarAmountPer100g(new PseudoDouble()                                                               );
+						foodItem.setSugarAmountPer100g(new PseudoDouble()                                                                );
 					}
-					foodItem.setSugarImputationReference(new PseudoString(rs.getString       ("sugar_imputation_reference"))            );
-					foodItem.setSugarImputationDate(rs.getDate                               ("sugar_imputation_date")                  );
+					foodItem.setSugarImputationReference(new PseudoString(rs.getString        ("sugar_imputation_reference"))            );
+					foodItem.setSugarImputationDate(rs.getDate                                ("sugar_imputation_date")                  );
 					if (rs.getString("transfat_amount_per_100g") != null) {
-						foodItem.setTransfatAmountPer100g(new PseudoDouble(rs.getDouble      ("transfat_amount_per_100g"))              ); // editable
+						foodItem.setTransfatAmountPer100g(new PseudoDouble(rs.getDouble       ("transfat_amount_per_100g"))              ); // editable
 					} else {
-						foodItem.setTransfatAmountPer100g(new PseudoDouble()                                                            );
+						foodItem.setTransfatAmountPer100g(new PseudoDouble()                                                             );
 					}
-					foodItem.setTransfatImputationReference(new PseudoString(rs.getString    ("transfat_imputation_reference"))         );
-					foodItem.setTransfatImputationDate(rs.getDate                            ("transfat_imputation_date")               );
+					foodItem.setTransfatImputationReference(new PseudoString(rs.getString     ("transfat_imputation_reference"))         );
+					foodItem.setTransfatImputationDate(rs.getDate                             ("transfat_imputation_date")               );
 					if (rs.getString("satfat_amount_per_100g") != null) {
-						foodItem.setSatfatAmountPer100g(new PseudoDouble(rs.getDouble        ("satfat_amount_per_100g"))                ); // editable
+						foodItem.setSatfatAmountPer100g(new PseudoDouble(rs.getDouble         ("satfat_amount_per_100g"))                ); // editable
 					} else {
-						foodItem.setSatfatAmountPer100g(new PseudoDouble()                                                              );
+						foodItem.setSatfatAmountPer100g(new PseudoDouble()                                                               );
 					}
-					foodItem.setSatfatImputationReference(new PseudoString(rs.getString      ("satfat_imputation_reference"))           );
-					foodItem.setSatfatImputationDate(rs.getDate                              ("satfat_imputation_date")                 );
+					foodItem.setSatfatImputationReference(new PseudoString(rs.getString       ("satfat_imputation_reference"))           );
+					foodItem.setSatfatImputationDate(rs.getDate                               ("satfat_imputation_date")                 );
 					if (rs.getString("totalfat_amount_per_100g") != null) {
-						foodItem.setTotalfatAmountPer100g(new PseudoDouble(rs.getDouble      ("totalfat_amount_per_100g"))              ); // editable
+						foodItem.setTotalfatAmountPer100g(new PseudoDouble(rs.getDouble       ("totalfat_amount_per_100g"))              ); // editable
 					} else {
-						foodItem.setTotalfatAmountPer100g(new PseudoDouble()                                                            );
+						foodItem.setTotalfatAmountPer100g(new PseudoDouble()                                                             );
 					}
-					foodItem.setTotalfatImputationReference(new PseudoString(rs.getString    ("totalfat_imputation_reference"))         );
-					foodItem.setTotalfatImputationDate(rs.getDate                            ("totalfat_imputation_date")               );
+					foodItem.setTotalfatImputationReference(new PseudoString(rs.getString     ("totalfat_imputation_reference"))         );
+					foodItem.setTotalfatImputationDate(rs.getDate                             ("totalfat_imputation_date")               );
 					if (rs.getString("contains_added_sodium") != null) {
-						foodItem.setContainsAddedSodium(new PseudoBoolean(rs.getBoolean      ("contains_added_sodium"))                 ); // editable
+						foodItem.setContainsAddedSodium(new PseudoBoolean(rs.getBoolean       ("contains_added_sodium"))                 ); // editable
 					} else {
-						foodItem.setContainsAddedSodium(new PseudoBoolean()                                                             );
+						foodItem.setContainsAddedSodium(new PseudoBoolean()                                                              );
 					}
-					foodItem.setContainsAddedSodiumUpdateDate(rs.getDate                     ("contains_added_sodium_update_date")      );
+					foodItem.setContainsAddedSodiumUpdateDate(rs.getDate                      ("contains_added_sodium_update_date")      );
 					if (rs.getString("contains_added_sugar") != null) {
-						foodItem.setContainsAddedSugar(new PseudoBoolean(rs.getBoolean       ("contains_added_sugar"))                  ); // editable
+						foodItem.setContainsAddedSugar(new PseudoBoolean(rs.getBoolean        ("contains_added_sugar"))                  ); // editable
 					} else {
-						foodItem.setContainsAddedSugar(new PseudoBoolean()                                                              );
+						foodItem.setContainsAddedSugar(new PseudoBoolean()                                                               );
 					}
-					foodItem.setContainsAddedSugarUpdateDate(rs.getDate                      ("contains_added_sugar_update_date")       );
+					foodItem.setContainsAddedSugarUpdateDate(rs.getDate                       ("contains_added_sugar_update_date")       );
 					if (rs.getString("contains_free_sugars") != null) {
-						foodItem.setContainsFreeSugars(new PseudoBoolean(rs.getBoolean       ("contains_free_sugars"))                  ); // editable
+						foodItem.setContainsFreeSugars(new PseudoBoolean(rs.getBoolean        ("contains_free_sugars"))                  ); // editable
 					} else {
-						foodItem.setContainsFreeSugars(new PseudoBoolean()                                                              );
+						foodItem.setContainsFreeSugars(new PseudoBoolean()                                                               );
 					}
-					foodItem.setContainsFreeSugarsUpdateDate(rs.getDate                      ("contains_free_sugars_update_date")       );
+					foodItem.setContainsFreeSugarsUpdateDate(rs.getDate                       ("contains_free_sugars_update_date")       );
 					if (rs.getString("contains_added_fat") != null) {
-						foodItem.setContainsAddedFat(new PseudoBoolean(rs.getBoolean         ("contains_added_fat"))                    ); // editable
+						foodItem.setContainsAddedFat(new PseudoBoolean(rs.getBoolean          ("contains_added_fat"))                    ); // editable
 					} else {
-						foodItem.setContainsAddedFat(new PseudoBoolean()                                                                );
+						foodItem.setContainsAddedFat(new PseudoBoolean()                                                                 );
 					}
-					foodItem.setContainsAddedFatUpdateDate(rs.getDate                        ("contains_added_fat_update_date")         );
+					foodItem.setContainsAddedFatUpdateDate(rs.getDate                         ("contains_added_fat_update_date")         );
 					if (rs.getString("contains_added_transfat") != null) {
-						foodItem.setContainsAddedTransfat(new PseudoBoolean(rs.getBoolean    ("contains_added_transfat"))               ); // editable
+						foodItem.setContainsAddedTransfat(new PseudoBoolean(rs.getBoolean     ("contains_added_transfat"))               ); // editable
 					} else {
-						foodItem.setContainsAddedTransfat(new PseudoBoolean()                                                           );
+						foodItem.setContainsAddedTransfat(new PseudoBoolean()                                                            );
 					}
-					foodItem.setContainsAddedTransfatUpdateDate(rs.getDate                   ("contains_added_transfat_update_date")    );
+					foodItem.setContainsAddedTransfatUpdateDate(rs.getDate                    ("contains_added_transfat_update_date")    );
 					if (rs.getString("contains_caffeine") != null) {
-						foodItem.setContainsCaffeine(new PseudoBoolean(rs.getBoolean         ("contains_caffeine"))                     ); // editable
+						foodItem.setContainsCaffeine(new PseudoBoolean(rs.getBoolean          ("contains_caffeine"))                     ); // editable
 					} else {
-						foodItem.setContainsCaffeine(new PseudoBoolean()                                                                );
+						foodItem.setContainsCaffeine(new PseudoBoolean()                                                                 );
 					}
-					foodItem.setContainsCaffeineUpdateDate(rs.getDate                        ("contains_caffeine_update_date")          );
+					foodItem.setContainsCaffeineUpdateDate(rs.getDate                         ("contains_caffeine_update_date")          );
 					if (rs.getString("contains_sugar_substitutes") != null) {
-						foodItem.setContainsSugarSubstitutes(new PseudoBoolean(rs.getBoolean ("contains_sugar_substitutes"))            ); // editable
+						foodItem.setContainsSugarSubstitutes(new PseudoBoolean(rs.getBoolean  ("contains_sugar_substitutes"))            ); // editable
 					} else {
-						foodItem.setContainsSugarSubstitutes(new PseudoBoolean()                                                        );
+						foodItem.setContainsSugarSubstitutes(new PseudoBoolean()                                                         );
 					}
-					foodItem.setContainsSugarSubstitutesUpdateDate(rs.getDate                ("contains_sugar_substitutes_update_date") );
+					foodItem.setContainsSugarSubstitutesUpdateDate(rs.getDate                 ("contains_sugar_substitutes_update_date") );
 					if (rs.getString("reference_amount_g") != null) {
-						foodItem.setReferenceAmountG(rs.getDouble                            ("reference_amount_g")                     ); // editable
+						foodItem.setReferenceAmountG(rs.getDouble                             ("reference_amount_g")                     ); // editable
 					}
-					foodItem.setReferenceAmountMeasure(rs.getString                          ("reference_amount_measure")               );
-					foodItem.setReferenceAmountUpdateDate(rs.getDate                         ("reference_amount_update_date")           );
+					foodItem.setReferenceAmountMeasure(rs.getString                           ("reference_amount_measure")               );
+					foodItem.setReferenceAmountUpdateDate(rs.getDate                          ("reference_amount_update_date")           );
 					if (rs.getString("food_guide_serving_g") != null) {
-						foodItem.setFoodGuideServingG(new PseudoDouble(rs.getDouble          ("food_guide_serving_g"))                  ); // editable
+						foodItem.setFoodGuideServingG(new PseudoDouble(rs.getDouble           ("food_guide_serving_g"))                  ); // editable
 					} else {
-						foodItem.setFoodGuideServingG(new PseudoDouble()                                                                );
+						foodItem.setFoodGuideServingG(new PseudoDouble()                                                                 );
 					}
-					foodItem.setFoodGuideServingMeasure(new PseudoString(rs.getString        ("food_guide_serving_measure"))            );
-					foodItem.setFoodGuideUpdateDate(rs.getDate                               ("food_guide_update_date")                 );
+					foodItem.setFoodGuideServingMeasure(new PseudoString(rs.getString         ("food_guide_serving_measure"))            );
+					foodItem.setFoodGuideUpdateDate(rs.getDate                                ("food_guide_update_date")                 );
 					if (rs.getString("tier_4_serving_g") != null) {
-						foodItem.setTier4ServingG(new PseudoDouble(rs.getDouble              ("tier_4_serving_g"))                      ); // editable
+						foodItem.setTier4ServingG(new PseudoDouble(rs.getDouble               ("tier_4_serving_g"))                      ); // editable
 					} else {
-						foodItem.setTier4ServingG(new PseudoDouble()                                                                    );
+						foodItem.setTier4ServingG(new PseudoDouble()                                                                     );
 					}
-					foodItem.setTier4ServingMeasure(new PseudoString(rs.getString            ("tier_4_serving_measure"))                );
-					foodItem.setTier4ServingUpdateDate(rs.getDate                            ("tier_4_serving_update_date")             );
+					foodItem.setTier4ServingMeasure(new PseudoString(rs.getString             ("tier_4_serving_measure"))                );
+					foodItem.setTier4ServingUpdateDate(rs.getDate                             ("tier_4_serving_update_date")             );
 					if (rs.getString("rolled_up") != null) {
-						foodItem.setRolledUp(new PseudoBoolean(rs.getBoolean                 ("rolled_up"))                             ); // editable
+						foodItem.setRolledUp(new PseudoBoolean(rs.getBoolean                  ("rolled_up"))                             ); // editable
 					} else {
-						foodItem.setRolledUp(new PseudoBoolean()                                                                        );
+						foodItem.setRolledUp(new PseudoBoolean()                                                                         );
 					}
-					foodItem.setRolledUpUpdateDate(rs.getDate                                ("rolled_up_update_date")                  );
+					foodItem.setRolledUpUpdateDate(rs.getDate                                 ("rolled_up_update_date")                  );
 					if (rs.getString("apply_small_ra_adjustment") != null) {
-						foodItem.setOverrideSmallRaAdjustment(rs.getBoolean                  ("apply_small_ra_adjustment")              );
+						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean(rs.getBoolean ("apply_small_ra_adjustment"))             );
+					} else {
+						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean()                                                        );
 					}
 					if (rs.getString("replacement_code") != null) {
-						foodItem.setReplacementCode(new PseudoInteger(rs.getInt              ("replacement_code"))                      ); // editable
+						foodItem.setReplacementCode(new PseudoInteger(rs.getInt               ("replacement_code"))                      ); // editable
 					} else {
-						foodItem.setReplacementCode(new PseudoInteger()                                                                 );
+						foodItem.setReplacementCode(new PseudoInteger()                                                                  );
 					}
-					foodItem.setCommitDate(rs.getDate                                        ("commit_date")                            );
-					foodItem.setComments(new PseudoString(rs.getString                       ("comments"))                              ); // editable
+					foodItem.setCommitDate(rs.getDate                                         ("commit_date")                            );
+					foodItem.setComments(new PseudoString(rs.getString                        ("comments"))                              ); // editable
 
 					list.add(foodItem);
 				}

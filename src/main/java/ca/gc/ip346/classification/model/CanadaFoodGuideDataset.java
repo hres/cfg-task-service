@@ -51,7 +51,7 @@ public class CanadaFoodGuideDataset {
 	private Date          tier4ServingUpdateDate;                                                  /* date             */
 	private PseudoBoolean rolledUp;                                                                /* smallint         */ // editable
 	private Date          rolledUpUpdateDate;                                                      /* date             */
-	private Boolean       overrideSmallRaAdjustment; /* = false; */                                /* smallint         */
+	private PseudoBoolean overrideSmallRaAdjustment;                                               /* smallint         */ // editable
 	private PseudoInteger replacementCode;                                                         /* integer          */ // editable
 	private Date          commitDate;                                                              /* date             */
 	private PseudoString  comments;                                                                /* text             */ // editable
@@ -92,7 +92,7 @@ public class CanadaFoodGuideDataset {
 	private Boolean satFatFopWarning;
 	private Boolean sugarFopWarning;
 	private Boolean sodiumFopWarning;
-	private Boolean marketedToKids = false;
+	private PseudoBoolean marketedToKids = new PseudoBoolean(false);
 	private Integer initialCfgCode;
 
 	/**
@@ -770,14 +770,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the overrideSmallRaAdjustment
 	 */
-	public Boolean getOverrideSmallRaAdjustment() {
+	public PseudoBoolean getOverrideSmallRaAdjustment() {
 		return overrideSmallRaAdjustment;
 	}
 
 	/**
 	 * @param overrideSmallRaAdjustment the overrideSmallRaAdjustment to set
 	 */
-	public void setOverrideSmallRaAdjustment(Boolean overrideSmallRaAdjustment) {
+	public void setOverrideSmallRaAdjustment(PseudoBoolean overrideSmallRaAdjustment) {
 		this.overrideSmallRaAdjustment = overrideSmallRaAdjustment;
 	}
 
@@ -1243,14 +1243,14 @@ public class CanadaFoodGuideDataset {
 	/**
 	 * @return the marketedToKids
 	 */
-	public Boolean getMarketedToKids() {
+	public PseudoBoolean getMarketedToKids() {
 		return marketedToKids;
 	}
 
 	/**
 	 * @param marketedToKids the marketedToKids to set
 	 */
-	public void setMarketedToKids(Boolean marketedToKids) {
+	public void setMarketedToKids(PseudoBoolean marketedToKids) {
 		this.marketedToKids = marketedToKids;
 	}
 
