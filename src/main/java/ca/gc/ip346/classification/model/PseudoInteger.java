@@ -1,7 +1,7 @@
 package ca.gc.ip346.classification.model;
 
 public class PseudoInteger {
-	private Integer value = 123;
+	private Integer value; /* = 123; */
 	private Boolean modified = false;
 
 	public PseudoInteger(Integer value) {

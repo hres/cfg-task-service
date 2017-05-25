@@ -1,7 +1,7 @@
 package ca.gc.ip346.classification.model;
 
 public class PseudoString {
-	private String value = "10g";
+	private String value; /* = "10g"; */
 	private Boolean modified = false;
 
 	public PseudoString(String value) {
