@@ -313,7 +313,34 @@ public class FoodsResource {
 		int changes = 0;
 
 		// retrive the corresponding dataset with the given id
-		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		MongoCursor<Document> cursorDocMap = null;
+		
+		if (ObjectId.isValid(id)) {
+			System.out.println("[01;31m" + "Valid hexadecimal representation of ObjectId " + id + "[00;00m");
+
+			cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		} else {
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Invalid hexadecimal representation of ObjectId " + id + "");
+
+			System.out.println("[01;31m" + "Invalid hexadecimal representation of ObjectId " + id + "[00;00m");
+
+			mongoClient.close();
+
+			return getResponse(Response.Status.BAD_REQUEST, msg);
+		}
+
+		if (!cursorDocMap.hasNext()) {
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Dataset with ID " + id + " does not exist!");
+
+			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+
+			mongoClient.close();
+
+			return getResponse(Response.Status.NOT_FOUND, msg);
+		}
+
 		while (cursorDocMap.hasNext()) {
 			Document doc = cursorDocMap.next();
 
