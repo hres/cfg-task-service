@@ -1394,6 +1394,10 @@ public class FoodsResource {
 			logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get(key)).get("value") + "[00;00m");
 		}
 
+		if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("modified") != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("modified").equals(((Map<String, Object>)original_values_map.get(map.get("code")).get(key)).get("modified"))) {
+			sets.add(set("data.$." + key + ".modified", ((Map<String, Object>)map.get(key)).get("modified")));
+		}
+
 		return changes;
 	}
 }
