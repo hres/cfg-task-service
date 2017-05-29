@@ -314,7 +314,7 @@ public class FoodsResource {
 
 		// retrive the corresponding dataset with the given id
 		MongoCursor<Document> cursorDocMap = null;
-		
+
 		if (ObjectId.isValid(id)) {
 			System.out.println("[01;31m" + "Valid hexadecimal representation of ObjectId " + id + "[00;00m");
 
@@ -795,7 +795,7 @@ public class FoodsResource {
 				}
 				conn.close();
 			} else {
-				list.put(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(), "Unable to connect to PostgreSQL Database!");
+				list.put(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(), "PostgreSQL database connectivity test: failed - service unavailable");
 				return getResponse(Response.Status.SERVICE_UNAVAILABLE, list);
 			}
 		} catch(SQLException e) {
