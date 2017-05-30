@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS canada_food_guide_food_item (
 	contains_sugar_substitutes_update_date 	 date,
 	reference_amount_g                     	 float8,
 	reference_amount_measure               	 text,
-	reference_amount_update_date           	 date,
 	food_guide_serving_g                   	 float8,
 	food_guide_serving_measure             	 text,
 	food_guide_update_date                 	 date,
