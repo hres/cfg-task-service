@@ -27,7 +27,7 @@ Go to [install-mongodb-on-ubuntu]
 
 Start MongoDB as a service rather than manually
 
-Now that MongoDB is up-and-running, we need to change the `host` and `port` properties in the `mongodb.properties` file in order to allow the Java API to connect to it
+Now that MongoDB is up-and-running, change the `host` and `port` properties in the `mongodb.properties` file in order to allow the Java API to connect to it: [MongoDB-properties]
 
 ---
 
@@ -72,3 +72,4 @@ Run [Test]
 [cfg-classification-services]:   <https://github.com/hres/cfg-classification-service.git>
 [Tomcat 8.0 on HRES]:            <https://java-dev.hres.ca>
 [Test]:                          <https://java-dev.hres.ca/cfg-task-service/service/datasets/status>
+[MongoDB-properties]:            <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/mongodb.properties>
