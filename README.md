@@ -40,6 +40,7 @@ Now that MongoDB is up-and-running, change the `host` and `port` properties in t
 	3. `\c cnfadm`
 	4. `\i create_canada_food_guide_dataset.sql`
 	5. `\i insert_canada_food_guide_dataset.sql`
+3. Change the relevant properties in the [db.properties] file order to establish connectivity from within Java.
 
 ---
 
@@ -73,3 +74,4 @@ Run [Test]
 [Tomcat 8.0 on HRES]:            <https://java-dev.hres.ca>
 [Test]:                          <https://java-dev.hres.ca/cfg-task-service/service/datasets/status>
 [mongodb.properties]:            <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/mongodb.properties>
+[db.properties]:                 <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/db.properties>
