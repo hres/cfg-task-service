@@ -27,6 +27,8 @@ Go to [install-mongodb-on-ubuntu]
 
 Start MongoDB as a service rather than manually
 
+Now that MongoDB is up-and-running, we need to change the `host` and `port` properties in the `mongodb.properties` file in order to allow the Java API to connect to it
+
 ---
 
 ## How to Install/Update PostgreSQL schema/data to the latest and greatest
