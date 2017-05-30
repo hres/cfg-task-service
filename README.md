@@ -31,12 +31,13 @@ Start MongoDB as a service rather than manually
 
 ## How to Install/Update PostgreSQL schema/data to the latest and greatest
 
-1. On the command-line run `psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database
-2. `DROP DATABASE cnfadm;`
-3. `CREATE DATABASE cnfadm;`
-4. `\c cnfadm`
-5. `\i create_canada_food_guide_dataset.sql`
-6. `\i insert_canada_food_guide_dataset.sql`
+1. On the command-line run `sudo apt-get install postgresql` to install PostgreSQL
+2. On the command-line run `psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database
+3. `DROP DATABASE cnfadm;`
+4. `CREATE DATABASE cnfadm;`
+5. `\c cnfadm`
+6. `\i create_canada_food_guide_dataset.sql`
+7. `\i insert_canada_food_guide_dataset.sql`
 
 ---
 
@@ -64,8 +65,8 @@ Run [Test]
 
 [//]: # (These are the references links used in the body of this note and get stripped out when the markdown processor does its thing.  There is no need to format nicely because it should not be seen.)
 
-[install-mongodb-on-ubuntu]: <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
-[cfg-task-services]: <https://github.com/hres/cfg-task-service.git>
-[cfg-classification-services]: <https://github.com/hres/cfg-classification-service.git>
-[Tomcat 8.0 on HRES]: <https://java-dev.hres.ca>
-[Test]: <https://java-dev.hres.ca/cfg-task-service/service/datasets/status>
+[install-mongodb-on-ubuntu]:     <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
+[cfg-task-services]:             <https://github.com/hres/cfg-task-service.git>
+[cfg-classification-services]:   <https://github.com/hres/cfg-classification-service.git>
+[Tomcat 8.0 on HRES]:            <https://java-dev.hres.ca>
+[Test]:                          <https://java-dev.hres.ca/cfg-task-service/service/datasets/status>
