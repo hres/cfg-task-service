@@ -27,7 +27,7 @@ Go to [install-mongodb-on-ubuntu]
 
 Start MongoDB as a service rather than manually
 
-Now that MongoDB is up-and-running, change the `host` and `port` properties in the [mongodb.properties] file in order to allow the Java API to connect to it.
+Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template] to mongodb.properties (cp mongdb.properties.template mongdb.properties).  Change the `host` and `port` properties in the mongodb.properties file in order to allow the Java API to connect to it.
 
 ---
 
@@ -40,9 +40,11 @@ Now that MongoDB is up-and-running, change the `host` and `port` properties in t
 	3. `\c cnfadm`
 	4. `\i create_canada_food_guide_dataset.sql`
 	5. `\i insert_canada_food_guide_dataset.sql`
-3. Change the relevant properties in the [db.properties] file order to establish connectivity from within Java.
+3. Copy and rename [db.properties.template] to db.properties (cp db.properties.template db.properties
+4. Change the relevant properties in the db.properties file order to establish connectivity from within Java.
 
 ---
+
 
 ## Maven Build and Deployment
 
@@ -68,10 +70,10 @@ Run [Test]
 
 [//]: # (These are the references links used in the body of this note and get stripped out when the markdown processor does its thing.  There is no need to format nicely because it should not be seen.)
 
-[install-mongodb-on-ubuntu]:     <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
-[cfg-task-services]:             <https://github.com/hres/cfg-task-service.git>
-[cfg-classification-services]:   <https://github.com/hres/cfg-classification-service.git>
-[Tomcat 8.0 on HRES]:            <https://java-dev.hres.ca>
-[Test]:                          <https://java-dev.hres.ca/cfg-task-service/service/datasets/status>
-[mongodb.properties]:            <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/mongodb.properties>
-[db.properties]:                 <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/db.properties>
+[install-mongodb-on-ubuntu]:        <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>
+[cfg-task-services]:                <https://github.com/hres/cfg-task-service.git>
+[cfg-classification-services]:      <https://github.com/hres/cfg-classification-service.git>
+[Tomcat 8.0 on HRES]:               <https://java-dev.hres.ca>
+[Test]:                             <https://java-dev.hres.ca/cfg-task-service/service/datasets/status>
+[mongodb.properties.template]:      <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/mongodb.properties>
+[db.properties.template]:           <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/db.properties.template>
