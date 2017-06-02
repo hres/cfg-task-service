@@ -40,7 +40,7 @@ Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template
 	3. `\c cnfadm`
 	4. `\i create_canada_food_guide_dataset.sql`
 	5. `\i insert_canada_food_guide_dataset.sql`
-3. Copy and rename [db.properties.template] to db.properties (cp db.properties.template db.properties
+3. Copy and rename [db.properties.template] to db.properties (cp db.properties.template db.properties)
 4. Change the relevant properties in the db.properties file order to establish connectivity from within Java.
 
 ---
@@ -75,5 +75,5 @@ Run [Test]
 [cfg-classification-services]:      <https://github.com/hres/cfg-classification-service.git>
 [Tomcat 8.0 on HRES]:               <https://java-dev.hres.ca>
 [Test]:                             <https://java-dev.hres.ca/cfg-task-service/service/datasets/status>
-[mongodb.properties.template]:      <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/mongodb.properties>
+[mongodb.properties.template]:      <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/mongodb.properties.template>
 [db.properties.template]:           <https://github.com/hres/cfg-task-service/blob/master/src/main/java/ca/gc/ip346/util/db.properties.template>
