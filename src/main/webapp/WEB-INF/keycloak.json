@@ -1,0 +1,17 @@
+{
+	"realm" : "cfg-classification",
+	"resource" : "cfg-task-service",
+	"auth-server-url" : "http://localhost:4200/auth",
+	"ssl-required" : "none",
+	"use-resource-role-mappings" : false,
+	"enable-cors" : true,
+	"bearer-only" : true,
+	"autodetect-bearer-only" : true,
+	"enable-basic-auth" : false,
+	"expose-token" : false,
+	"allow-any-hostname" : false,
+	"token-minimum-time-to-live" : 10,
+	"min-time-between-jwks-requests" : 10,
+	"public-key-cache-ttl": 86400,
+	"public-client":true
+}
