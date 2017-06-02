@@ -3,3 +3,5 @@
 /.settings
 *.sw[a-z]
 .exrc
+db.properties
+mongodb.properties
