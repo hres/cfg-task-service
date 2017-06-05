@@ -16,16 +16,12 @@ These need be setup in order for the application/services to function on [Tomcat
 
 ---
 
-## How to Install MongoDB 3.4.2 LTS
+## How to Install/Update MongoDB database and collection to the latest and greatest 
+The following are instructions on setting up a MongoDB database and collection (equivalent of table)
 
-Go to [install-mongodb-on-ubuntu]
-
-1. Import the public key used by the package management system
-2. Create a list file for MongoDB for Ubuntu 16.04
-3. Reload local package database
-4. Install the MongoDB packages
-
-Start MongoDB as a service rather than manually
+Launch the mongo shell (equivalent to psql or msql) as the mongodb user: sudo -Hu mongodb mongo
+Create database: use myNewDB where myNewDB is the Database instance name
+Create a collection (think table) and insert some data. The main reason this is done to actually generate the database and collection: db.myNewCollection1.insertOne( { x: 1 } ) where myNewCollection1 is collection name and x is just some random key. db is referring to the database (it is equivalent to self.
 
 Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template] to mongodb.properties (cp mongdb.properties.template mongdb.properties).  Change the `host` and `port` properties in the mongodb.properties file in order to allow the Java API to connect to it.
 
