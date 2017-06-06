@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS canada_food_guide_food_item (
-	type                                   	 boolean,
+	type                                   	 smallint,
 	code                                   	 int4,
 	name                                   	 text,
 	cnf_group_code                         	 int4,
