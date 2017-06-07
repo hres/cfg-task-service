@@ -96,7 +96,7 @@ public class FoodsResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<CanadaFoodGuideDataset> */ Response getFoodList(@BeanParam CfgFilter search) {
-		String sql = ContentHandler.read("canada_food_guide_dataset.sql", getClass());
+		String sql = ContentHandler.read("canada_food_guide_food_item.sql", getClass());
 		search.setSql(sql);
 		mongoClient.close();
 		return doSearchCriteria(search);
@@ -793,6 +793,7 @@ public class FoodsResource {
 				while (rs.next()) {
 					list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
 				}
+				list.put(666, "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version"));
 				conn.close();
 			} else {
 				list.put(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(), "PostgreSQL database connectivity test: failed - service unavailable");
@@ -804,11 +805,13 @@ public class FoodsResource {
 			for (Response.Status status : Response.Status.values()) {
 				list.put(new Integer(status.getStatusCode()), status.getReasonPhrase());
 			}
+			list.put(666, "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version"));
 		}
 
 		try {
 			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getAddress() + "[00;00m");
 			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getConnectPoint() + "[00;00m");
+			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version") + "[00;00m");
 		} catch(Exception e) {
 			// TODO: proper response to handle exceptions
 			Map<String, String> msg = new HashMap<String, String>();
@@ -1110,7 +1113,7 @@ public class FoodsResource {
 			try {
 				meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
 				logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
-				PreparedStatement stmt = conn.prepareStatement(search.getSql()); // Create PreparedStatement
+				PreparedStatement stmt = conn.prepareStatement(search.getSql(), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Create PreparedStatement
 
 				int i = 0; // keeps count of the number of placeholders
 
@@ -1161,7 +1164,7 @@ public class FoodsResource {
 								case caffeine:
 								case freeSugars:
 								case sugarSubstitute:
-									stmt.setInt(++i, map.get(key).equals("true") ? 1 : 2);
+									stmt.setBoolean(++i, map.get(key).equals("true"));
 									break;
 							}
 						}
@@ -1215,6 +1218,11 @@ public class FoodsResource {
 				logger.error("[01;34mSQL query to follow:\n" + stmt.toString() + "[00;00m");
 
 				ResultSet rs = stmt.executeQuery();
+
+				rs.last();
+				logger.error("[01;03;31m" + rs.getRow() + " row" + (rs.getRow() == 1 ? "" : "s") + "[00;00m");
+				rs.beforeFirst();
+
 				while (rs.next()) {
 					CanadaFoodGuideDataset foodItem = new CanadaFoodGuideDataset();
 
@@ -1314,7 +1322,7 @@ public class FoodsResource {
 						foodItem.setReferenceAmountG(rs.getDouble                             ("reference_amount_g")                     ); // editable
 					}
 					foodItem.setReferenceAmountMeasure(rs.getString                           ("reference_amount_measure")               );
-					foodItem.setReferenceAmountUpdateDate(rs.getDate                          ("reference_amount_update_date")           );
+					// foodItem.setReferenceAmountUpdateDate(rs.getDate                          ("reference_amount_update_date")           );
 					if (rs.getString("food_guide_serving_g") != null) {
 						foodItem.setFoodGuideServingG(new PseudoDouble(rs.getDouble           ("food_guide_serving_g"))                  ); // editable
 					} else {
@@ -1335,8 +1343,8 @@ public class FoodsResource {
 						foodItem.setRolledUp(new PseudoBoolean()                                                                         );
 					}
 					foodItem.setRolledUpUpdateDate(rs.getDate                                 ("rolled_up_update_date")                  );
-					if (rs.getString("apply_small_ra_adjustment") != null) {
-						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean(rs.getBoolean ("apply_small_ra_adjustment"))             );
+					if (rs.getString("override_small_ra_adjustment") != null) {
+						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean(rs.getBoolean ("override_small_ra_adjustment"))             );
 					} else {
 						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean()                                                        );
 					}
@@ -1353,7 +1361,11 @@ public class FoodsResource {
 				conn.close();
 			} catch(SQLException e) {
 				// TODO: proper response to handle exceptions
-				e.printStackTrace();
+				logger.error("[01;03;31m" + "" + e.getMessage() + "[00;00m");
+				Map<String, String> msg = new HashMap<String, String>();
+				msg.put("message", e.getMessage());
+				mongoClient.close();
+				return getResponse(Response.Status.SERVICE_UNAVAILABLE, msg);
 			}
 		}
 
