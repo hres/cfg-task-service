@@ -34,9 +34,7 @@ Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template
 	1. `DROP DATABASE cnfadm;`
 	2. `CREATE DATABASE cnfadm;`
 	3. `\c cnfadm`
-	4. `\i create_canada_food_guide_food_item.sql`
-	5. `\i insert_foods.sql`
-	6. `\i insert_recipes.sql`
+	4. `\i create_table_and_load_data.psql`
 3. Copy and rename [db.properties.template] to db.properties (cp db.properties.template db.properties)
 4. Change the relevant properties in the db.properties file order to establish connectivity from within Java.
 
