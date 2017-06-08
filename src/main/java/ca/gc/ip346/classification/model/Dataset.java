@@ -1,11 +1,12 @@
 package ca.gc.ip346.classification.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class Dataset {
-	private List<Map<String, Object>> data;
+	private List<Map<String, Object>> data = Collections.<Map<String, Object>>emptyList();
 	private String name     = "Jean-Gabriel Pageau";
 	private String env      = "prod";
 	private String owner    = "Jean-Gabriel Pageau";
