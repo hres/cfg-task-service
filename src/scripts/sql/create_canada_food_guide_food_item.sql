@@ -52,3 +52,5 @@ CREATE TABLE IF NOT EXISTS canada_food_guide_food_item (
 	comments                               	 text,
 	PRIMARY KEY (code)
 );
+
+ALTER TABLE canada_food_guide_food_item OWNER TO cnfadmuser;
