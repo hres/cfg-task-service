@@ -51,7 +51,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 
 // import ca.gc.ip346.classification.model.Added;
-import ca.gc.ip346.classification.model.CanadaFoodGuideDataset;
+import ca.gc.ip346.classification.model.CanadaFoodGuideFoodItem;
 import ca.gc.ip346.classification.model.CfgFilter;
 import ca.gc.ip346.classification.model.CfgTier;
 import ca.gc.ip346.classification.model.ContainsAdded;
@@ -95,7 +95,7 @@ public class FoodsResource {
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public /* List<CanadaFoodGuideDataset> */ Response getFoodList(@BeanParam CfgFilter search) {
+	public /* List<CanadaFoodGuideFoodItem> */ Response getFoodList(@BeanParam CfgFilter search) {
 		String sql = ContentHandler.read("canada_food_guide_food_item.sql", getClass());
 		search.setSql(sql);
 		mongoClient.close();
@@ -826,8 +826,8 @@ public class FoodsResource {
 		return getResponse(Response.Status.OK, list);
 	}
 
-	private /* List<CanadaFoodGuideDataset> */ Response doSearchCriteria(CfgFilter search) {
-		List<CanadaFoodGuideDataset> list = new ArrayList<CanadaFoodGuideDataset>();
+	private /* List<CanadaFoodGuideFoodItem> */ Response doSearchCriteria(CfgFilter search) {
+		List<CanadaFoodGuideFoodItem> list = new ArrayList<CanadaFoodGuideFoodItem>();
 
 		if (search != null) {
 			StringBuffer sb = new StringBuffer(search.getSql());
@@ -1224,7 +1224,7 @@ public class FoodsResource {
 				rs.beforeFirst();
 
 				while (rs.next()) {
-					CanadaFoodGuideDataset foodItem = new CanadaFoodGuideDataset();
+					CanadaFoodGuideFoodItem foodItem = new CanadaFoodGuideFoodItem();
 
 					foodItem.setType(rs.getInt                                                ("type") == 1 ? "food" : "recipe"          );
 					foodItem.setCode(rs.getInt                                                ("code")                                   );
