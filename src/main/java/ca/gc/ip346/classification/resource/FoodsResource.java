@@ -568,6 +568,84 @@ public class FoodsResource {
 			return getResponse(Response.Status.NOT_FOUND, msg);
 		}
 
+		/**
+		 *
+		 * first server-side validation: required for classification
+		 *
+		 */
+
+		List<Map<String, Object>> dataToBeValidated   = new ArrayList<Map<String, Object>>();
+		Map<String, String> requiredForClassification = new HashMap<String, String>();
+		requiredForClassification.put("type",                      "Scalar"); // Type                         Y                            CFG        Indicates if the item is a Food or Recipe                                                                                             --
+		requiredForClassification.put("code",                      "Scalar"); // Code                         Y                            CNF/NSS    CNF Food Code or NSS Recipe Code                                                                                                      --
+		requiredForClassification.put("name",                      "Scalar"); // Name                         Y                            CNF/NSS    Food or Recipe Name                                                                                                                   --
+		requiredForClassification.put("cfgCode",                   "Object"); // CFG Code                     Y (at least three digits)    CFG        Up to four digit CFG Code (includes tier, if available)                                                                               --
+		requiredForClassification.put("sodiumAmountPer100g",       "Object"); // Sodium    Amount (per 100g)  Y                            CNF/NSS    Amount of Sodium per 100 g                                                                                                            --
+		requiredForClassification.put("sugarAmountPer100g",        "Object"); // Sugar     Amount (per 100g)  Y                            CNF/NSS    Amount of Sugar per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.         --
+		requiredForClassification.put("satfatAmountPer100g",       "Object"); // SatFat    Amount (per 100g)  Y                            CNF/NSS    Amount of Saturated Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification. --
+		requiredForClassification.put("totalfatAmountPer100g",     "Object"); // TotalFat  Amount (per 100g)  Y                            CNF/NSS    Amount of Total Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.     --
+		requiredForClassification.put("containsAddedSodium",       "Object"); // Contains  Added  Sodium      Y                            CFG        Indicates if the item contains added sodium                                                                                           --
+		requiredForClassification.put("containsAddedSugar",        "Object"); // Contains  Added  Sugar       Y                            CFG        Indicates if the item contains added sugar                                                                                            --
+		requiredForClassification.put("containsAddedFat",          "Object"); // Contains  Added  Fat         Y                            CFG        Indicates if the item contains added fat                                                                                              --
+		requiredForClassification.put("referenceAmountG",          "Scalar"); // Reference Amount (g)         Y                            CNF/NSS                                                                                                                                          --
+		requiredForClassification.put("toddlerItem",               "Scalar"); // Toddler   Item               Y                            CFG                                                                                                                                              --
+		requiredForClassification.put("overrideSmallRaAdjustment", "Object"); // Override Small RA Adjustment Y                            CFG        Overrides the Small RA Adjustment that is made for foods that have RA lower than the Small RA Threshold (ie 30g)                      --
+
+		while (cursorDocMap.hasNext()) {
+			Boolean isInvalid = false;
+			Document doc = cursorDocMap.next();
+			if (doc != null) {
+				list = castList(doc.get("data"), Object.class);
+				for (Object obj : list) {
+					Map<String, Object> requiredOnly = new HashMap<String, Object>();
+					for (String key : requiredForClassification.keySet()) {
+						if (requiredForClassification.get(key).equals("Object")) {
+							Document objectifiedValue = (Document)((Document)obj).get(key + "");
+							if (objectifiedValue.get("value") != null) {
+								requiredOnly.put(key, objectifiedValue.get("value"));
+								if (key.equals("cfgCode") && key.length() != 3 && key.length() != 4) {
+									isInvalid = true;
+								}
+							} else {
+								isInvalid = true;
+							}
+						}
+						if (requiredForClassification.get(key).equals("Scalar")) {
+							if (((Document)obj).get(key + "") != null) {
+								requiredOnly.put(key, ((Document)obj).get(key + ""));
+							} else {
+								isInvalid = true;
+							}
+						}
+					}
+					dataToBeValidated.add(requiredOnly);
+				}
+			}
+
+			// use validation rules on "data" property and return response if invalid
+			logger.error("[01;03;31m" + "only required fields:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dataToBeValidated) + "[00;00m");
+
+			if (isInvalid) {
+				Map<String, String> msg = new HashMap<String, String>();
+				msg.put("message", "Expected required field(s) failed to pass validation in preparation for classification.");
+				return getResponse(Response.Status.EXPECTATION_FAILED, msg);
+			}
+		}
+
+		/**
+		 *
+		 * rewind dataset to do the actual classification
+		 *
+		 */
+
+		cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+
+		/**
+		 *
+		 * objectified properties
+		 *
+		 */
+
 		Map<String, String> updateDatePair = new HashMap<String, String>();
 		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate");
 		updateDatePair.put("comments",                    "");
@@ -597,17 +675,23 @@ public class FoodsResource {
 		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate");
 		updateDatePair.put("transfatImputationReference", "transfatImputationDate");
 
+		/**
+		 *
+		 * only transform objectified values to literal values
+		 *
+		 */
+
 		while (cursorDocMap.hasNext()) {
-			map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
+			map = new HashMap<String, Object>();
 			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 
 			if (doc != null) {
 				list = castList(doc.get("data"), Object.class);
 				for (Object obj : list) {
 					for (String key : updateDatePair.keySet()) {
-						Document value = (Document)((Document)obj).get(key + "");
-						((Document)obj).put(key, value.get("value"));
+						Document objectifiedValue = (Document)((Document)obj).get(key + "");
+						((Document)obj).put(key, objectifiedValue.get("value"));
 					}
 					dox.add((Document)obj);
 				}
