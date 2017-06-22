@@ -23,6 +23,8 @@ import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import static javax.ws.rs.HttpMethod.*;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -34,6 +36,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -44,7 +47,7 @@ import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
-import com.google.common.net.HttpHeaders;
+import static com.google.common.net.HttpHeaders.*;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -102,11 +105,21 @@ public class FoodsResource {
 		return doSearchCriteria(search);
 	}
 
+	@OPTIONS
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response saveDatasetPreflight() {
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "options-catch-all");
+		return getResponse(OPTIONS, Response.Status.OK, msg);
+	}
+
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public /* Map<String, Object> */ Response saveDataset(Dataset dataset) {
 		ResponseBuilder response = null;
+		Status status = null;
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -136,7 +149,8 @@ public class FoodsResource {
 
 			logger.error("[01;34m" + Response.Status.CREATED.getStatusCode() + " " + Response.Status.CREATED.toString() + "[00;00m");
 
-			response = Response.status(Response.Status.CREATED);
+			status   = Response.Status.CREATED;
+			response = Response.status(status);
 		} else {
 			List<String> list = new ArrayList<String>();
 
@@ -152,20 +166,15 @@ public class FoodsResource {
 			logger.error("[01;34m" + Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!" + "[00;00m");
 			logger.error("[01;34m" + Response.Status.BAD_REQUEST.getStatusCode() + " " + Response.Status.BAD_REQUEST.toString() + "[00;00m");
 
-			response = Response.status(Response.Status.BAD_REQUEST);
+			status   = Response.Status.BAD_REQUEST;
+			response = Response.status(status);
 		}
 
 		mongoClient.close();
 
 		logger.error("[01;31m" + "response status: " + response.build().getStatusInfo() + "[00;00m");
 
-		return response
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(map).build();
+		return getResponse(POST, status, map);
 	}
 
 	@GET
@@ -192,7 +201,7 @@ public class FoodsResource {
 
 		mongoClient.close();
 
-		return getResponse(Response.Status.OK, list);
+		return getResponse(GET, Response.Status.OK, list);
 	}
 
 	@GET
@@ -216,7 +225,7 @@ public class FoodsResource {
 
 			mongoClient.close();
 
-			return getResponse(Response.Status.BAD_REQUEST, msg);
+			return getResponse(GET, Response.Status.BAD_REQUEST, msg);
 		}
 
 		if (!cursorDocMap.hasNext()) {
@@ -227,7 +236,7 @@ public class FoodsResource {
 
 			mongoClient.close();
 
-			return getResponse(Response.Status.NOT_FOUND, msg);
+			return getResponse(GET, Response.Status.NOT_FOUND, msg);
 		}
 
 		while (cursorDocMap.hasNext()) {
@@ -250,7 +259,17 @@ public class FoodsResource {
 
 		mongoClient.close();
 
-		return getResponse(Response.Status.OK, list.get(0));
+		return getResponse(GET, Response.Status.OK, list.get(0));
+	}
+
+	@OPTIONS
+	@Path("/{id}")
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response deleteDatasetPreflight() {
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "options-catch-all");
+		return getResponse(OPTIONS, Response.Status.OK, msg);
 	}
 
 	@DELETE
@@ -268,7 +287,7 @@ public class FoodsResource {
 
 			mongoClient.close();
 
-			return getResponse(Response.Status.NOT_FOUND, msg);
+			return getResponse(DELETE, Response.Status.NOT_FOUND, msg);
 		}
 
 		while (cursorDocMap.hasNext()) {
@@ -283,7 +302,7 @@ public class FoodsResource {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "Successfully deleted dataset with ID: " + id);
 
-		return getResponse(Response.Status.OK, msg);
+		return getResponse(DELETE, Response.Status.OK, msg);
 	}
 
 	@DELETE
@@ -297,7 +316,7 @@ public class FoodsResource {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "Successfully deleted all datasets");
 
-		return getResponse(Response.Status.OK, msg);
+		return getResponse(DELETE, Response.Status.OK, msg);
 	}
 
 	@PUT
@@ -327,7 +346,7 @@ public class FoodsResource {
 
 			mongoClient.close();
 
-			return getResponse(Response.Status.BAD_REQUEST, msg);
+			return getResponse(PUT, Response.Status.BAD_REQUEST, msg);
 		}
 
 		if (!cursorDocMap.hasNext()) {
@@ -338,7 +357,7 @@ public class FoodsResource {
 
 			mongoClient.close();
 
-			return getResponse(Response.Status.NOT_FOUND, msg);
+			return getResponse(PUT, Response.Status.NOT_FOUND, msg);
 		}
 
 		while (cursorDocMap.hasNext()) {
@@ -542,7 +561,18 @@ public class FoodsResource {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "Successfully updated dataset");
 
-		return getResponse(Response.Status.OK, msg);
+		return getResponse(PUT, Response.Status.OK, msg);
+	}
+
+	@OPTIONS
+	@Path("/{id}/classify")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response classifyDatasetPreflight() {
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "options-catch-all");
+		return getResponse(OPTIONS, Response.Status.OK, msg);
 	}
 
 	@POST
@@ -565,7 +595,7 @@ public class FoodsResource {
 
 			mongoClient.close();
 
-			return getResponse(Response.Status.NOT_FOUND, msg);
+			return getResponse(POST, Response.Status.NOT_FOUND, msg);
 		}
 
 		/**
@@ -587,8 +617,8 @@ public class FoodsResource {
 		requiredForClassification.put("containsAddedSodium",       "Object"); // Contains  Added  Sodium      Y                            CFG        Indicates if the item contains added sodium                                                                                           --
 		requiredForClassification.put("containsAddedSugar",        "Object"); // Contains  Added  Sugar       Y                            CFG        Indicates if the item contains added sugar                                                                                            --
 		requiredForClassification.put("containsAddedFat",          "Object"); // Contains  Added  Fat         Y                            CFG        Indicates if the item contains added fat                                                                                              --
-		requiredForClassification.put("referenceAmountG",          "Scalar"); // Reference Amount (g)         Y                            CNF/NSS                                                                                                                                          --
-		requiredForClassification.put("toddlerItem",               "Scalar"); // Toddler   Item               Y                            CFG                                                                                                                                              --
+		// requiredForClassification.put("referenceAmountG",          "Scalar"); // Reference Amount (g)         Y                            CNF/NSS                                                                                                                                          --
+		// requiredForClassification.put("toddlerItem",               "Scalar"); // Toddler   Item               Y                            CFG                                                                                                                                              --
 		requiredForClassification.put("overrideSmallRaAdjustment", "Object"); // Override Small RA Adjustment Y                            CFG        Overrides the Small RA Adjustment that is made for foods that have RA lower than the Small RA Threshold (ie 30g)                      --
 
 		while (cursorDocMap.hasNext()) {
@@ -603,7 +633,7 @@ public class FoodsResource {
 							Document objectifiedValue = (Document)((Document)obj).get(key + "");
 							if (objectifiedValue.get("value") != null) {
 								requiredOnly.put(key, objectifiedValue.get("value"));
-								if (key.equals("cfgCode") && key.length() != 3 && key.length() != 4) {
+								if (key.equals("cfgCode") && ((Integer)requiredOnly.get(key)).toString().length() != 3 && ((Integer)requiredOnly.get(key)).toString().length() != 4) {
 									isInvalid = true;
 								}
 							} else {
@@ -628,7 +658,7 @@ public class FoodsResource {
 			if (isInvalid) {
 				Map<String, String> msg = new HashMap<String, String>();
 				msg.put("message", "Expected required field(s) failed to pass validation in preparation for classification.");
-				return getResponse(Response.Status.EXPECTATION_FAILED, msg);
+				return getResponse(POST, Response.Status.EXPECTATION_FAILED, msg);
 			}
 		}
 
@@ -647,33 +677,33 @@ public class FoodsResource {
 		 */
 
 		Map<String, String> updateDatePair = new HashMap<String, String>();
-		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate");
-		updateDatePair.put("comments",                    "");
-		updateDatePair.put("containsAddedFat",            "containsAddedFatUpdateDate");
-		updateDatePair.put("containsAddedSodium",         "containsAddedSodiumUpdateDate");
-		updateDatePair.put("containsAddedSugar",          "containsAddedSugarUpdateDate");
-		updateDatePair.put("containsAddedTransfat",       "containsAddedTransfatUpdateDate");
-		updateDatePair.put("containsCaffeine",            "containsCaffeineUpdateDate");
-		updateDatePair.put("containsFreeSugars",          "containsFreeSugarsUpdateDate");
-		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate");
-		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate");
-		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate");
-		updateDatePair.put("marketedToKids",              "");
-		updateDatePair.put("overrideSmallRaAdjustment",   "");
-		updateDatePair.put("replacementCode",             "");
-		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate");
-		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate");
-		updateDatePair.put("satfatImputationReference",   "satfatImputationDate");
-		updateDatePair.put("sodiumAmountPer100g",         "sodiumImputationDate");
-		updateDatePair.put("sodiumImputationReference",   "sodiumImputationDate");
-		updateDatePair.put("sugarAmountPer100g",          "sugarImputationDate");
-		updateDatePair.put("sugarImputationReference",    "sugarImputationDate");
-		updateDatePair.put("tier4ServingG",               "tier4ServingUpdateDate");
-		updateDatePair.put("tier4ServingMeasure",         "tier4ServingUpdateDate");
-		updateDatePair.put("totalfatAmountPer100g",       "totalfatImputationDate");
-		updateDatePair.put("totalfatImputationReference", "totalfatImputationDate");
-		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate");
-		updateDatePair.put("transfatImputationReference", "transfatImputationDate");
+		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate"                  );
+		updateDatePair.put("comments",                    ""                                   );
+		updateDatePair.put("containsAddedFat",            "containsAddedFatUpdateDate"         );
+		updateDatePair.put("containsAddedSodium",         "containsAddedSodiumUpdateDate"      );
+		updateDatePair.put("containsAddedSugar",          "containsAddedSugarUpdateDate"       );
+		updateDatePair.put("containsAddedTransfat",       "containsAddedTransfatUpdateDate"    );
+		updateDatePair.put("containsCaffeine",            "containsCaffeineUpdateDate"         );
+		updateDatePair.put("containsFreeSugars",          "containsFreeSugarsUpdateDate"       );
+		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate" );
+		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate"                );
+		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate"                );
+		updateDatePair.put("marketedToKids",              ""                                   );
+		updateDatePair.put("overrideSmallRaAdjustment",   ""                                   );
+		updateDatePair.put("replacementCode",             ""                                   );
+		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate"                 );
+		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate"               );
+		updateDatePair.put("satfatImputationReference",   "satfatImputationDate"               );
+		updateDatePair.put("sodiumAmountPer100g",         "sodiumImputationDate"               );
+		updateDatePair.put("sodiumImputationReference",   "sodiumImputationDate"               );
+		updateDatePair.put("sugarAmountPer100g",          "sugarImputationDate"                );
+		updateDatePair.put("sugarImputationReference",    "sugarImputationDate"                );
+		updateDatePair.put("tier4ServingG",               "tier4ServingUpdateDate"             );
+		updateDatePair.put("tier4ServingMeasure",         "tier4ServingUpdateDate"             );
+		updateDatePair.put("totalfatAmountPer100g",       "totalfatImputationDate"             );
+		updateDatePair.put("totalfatImputationReference", "totalfatImputationDate"             );
+		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate"             );
+		updateDatePair.put("transfatImputationReference", "transfatImputationDate"             );
 
 		/**
 		 *
@@ -732,7 +762,7 @@ public class FoodsResource {
 
 		logger.error("[01;31m" + "response status: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
 
-		return getResponse(Response.Status.OK, deserialized);
+		return getResponse(POST, Response.Status.OK, deserialized);
 	}
 
 	@POST
@@ -881,7 +911,7 @@ public class FoodsResource {
 				conn.close();
 			} else {
 				list.put(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(), "PostgreSQL database connectivity test: failed - service unavailable");
-				return getResponse(Response.Status.SERVICE_UNAVAILABLE, list);
+				return getResponse(GET, Response.Status.SERVICE_UNAVAILABLE, list);
 			}
 		} catch(SQLException e) {
 			// TODO: proper response to handle exceptions
@@ -902,12 +932,12 @@ public class FoodsResource {
 			msg.put("message", e.getMessage());
 			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
 			mongoClient.close();
-			return getResponse(Response.Status.GATEWAY_TIMEOUT, msg);
+			return getResponse(GET, Response.Status.GATEWAY_TIMEOUT, msg);
 		}
 		mongoClient.close();
 
-		// return getResponse(Response.Status.OK, Response.Status.values());
-		return getResponse(Response.Status.OK, list);
+		// return getResponse(GET, Response.Status.OK, Response.Status.values());
+		return getResponse(GET, Response.Status.OK, list);
 	}
 
 	private /* List<CanadaFoodGuideFoodItem> */ Response doSearchCriteria(CfgFilter search) {
@@ -1449,21 +1479,60 @@ public class FoodsResource {
 				Map<String, String> msg = new HashMap<String, String>();
 				msg.put("message", e.getMessage());
 				mongoClient.close();
-				return getResponse(Response.Status.SERVICE_UNAVAILABLE, msg);
+				return getResponse(GET, Response.Status.SERVICE_UNAVAILABLE, msg);
 			}
 		}
 
-		return getResponse(Response.Status.OK, list);
+		return getResponse(GET, Response.Status.OK, list);
 	}
 
-	private Response getResponse(Response.Status status, Object obj) {
-		return Response.status(status)
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, authorization")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-			.header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1209600")
-			.entity(obj).build();
+	private Response getResponse(String method, Response.Status status, Object obj) {
+		List<String> allowedHttpOrigins = null;
+		List<String> allowedHttpHeaders = null;
+		List<String> allowedHttpMethods = null;
+		List<String> requestHttpMethods = null;
+
+		allowedHttpOrigins = new ArrayList<String>();
+		// allowedHttpOrigins.add("http://localhost");
+		// allowedHttpOrigins.add("http://localhost:8080");
+		allowedHttpOrigins.add("*");
+
+		allowedHttpHeaders = new ArrayList<String>();
+		allowedHttpHeaders.add(ORIGIN);
+		allowedHttpHeaders.add(X_REQUESTED_WITH);
+		allowedHttpHeaders.add(CONTENT_TYPE);
+		allowedHttpHeaders.add(ACCEPT);
+		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_HEADERS);
+		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_METHODS);
+		allowedHttpHeaders.add(AUTHORIZATION);
+
+		allowedHttpMethods = new ArrayList<String>();
+		allowedHttpMethods.add(GET);
+		allowedHttpMethods.add(POST);
+		allowedHttpMethods.add(PUT);
+		allowedHttpMethods.add(DELETE);
+		allowedHttpMethods.add(OPTIONS);
+		allowedHttpMethods.add(HEAD);
+
+		requestHttpMethods = new ArrayList<String>();
+		requestHttpMethods.add(DELETE);
+		requestHttpMethods.add(POST);
+
+		logger.error("[01;03;31m" + StringUtils.join(allowedHttpOrigins.toArray(), ", ") + "[00;00m");
+		logger.error("[01;03;31m" + StringUtils.join(allowedHttpHeaders.toArray(), ", ") + "[00;00m");
+		logger.error("[01;03;31m" + StringUtils.join(allowedHttpMethods.toArray(), ", ") + "[00;00m");
+
+		ResponseBuilder rb = Response.status(status);
+		rb.header(ACCESS_CONTROL_ALLOW_ORIGIN, StringUtils.join(allowedHttpOrigins.toArray(), ", "));
+		rb.header(ACCESS_CONTROL_ALLOW_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
+		rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+		rb.header(ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "));
+		if (method.equals(OPTIONS)) {
+			rb.header(ACCESS_CONTROL_REQUEST_METHOD, StringUtils.join(requestHttpMethods.toArray(), ", "));
+		}
+		rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
+
+		return rb.entity(obj).build();
 	}
 
 	private static <T> List<T> castList(Object obj, Class<T> clazz) {
