@@ -747,6 +747,7 @@ public class FoodsResource {
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
 		logger.error("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
+		logger.error("[01;31m" + "request URI: " + RequestURI.getUri() + "[00;00m");
 
 		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
 		List<Object> dataArray = (List<Object>)(deserialized).get("data");
@@ -759,6 +760,8 @@ public class FoodsResource {
 				((Map<String, Object>)obj).put(key, metadataObject);
 			}
 		}
+
+		deserialized.put("id", id);
 
 		logger.error("[01;31m" + "response status: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
 
@@ -1493,8 +1496,7 @@ public class FoodsResource {
 		List<String> requestHttpMethods = null;
 
 		allowedHttpOrigins = new ArrayList<String>();
-		// allowedHttpOrigins.add("http://localhost");
-		// allowedHttpOrigins.add("http://localhost:8080");
+		// allowedHttpOrigins.add("http://10.148.178.250");
 		allowedHttpOrigins.add("*");
 
 		allowedHttpHeaders = new ArrayList<String>();
@@ -1504,6 +1506,7 @@ public class FoodsResource {
 		allowedHttpHeaders.add(ACCEPT);
 		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_HEADERS);
 		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_METHODS);
+		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_ORIGIN);
 		allowedHttpHeaders.add(AUTHORIZATION);
 
 		allowedHttpMethods = new ArrayList<String>();
@@ -1529,6 +1532,8 @@ public class FoodsResource {
 		rb.header(ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "));
 		if (method.equals(OPTIONS)) {
 			rb.header(ACCESS_CONTROL_REQUEST_METHOD, StringUtils.join(requestHttpMethods.toArray(), ", "));
+			rb.header(ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN);
+			rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
 		}
 		rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
 
