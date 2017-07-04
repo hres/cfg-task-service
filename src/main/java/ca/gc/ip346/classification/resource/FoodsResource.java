@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -562,6 +563,46 @@ public class FoodsResource {
 		msg.put("message", "Successfully updated dataset");
 
 		return getResponse(PUT, Response.Status.OK, msg);
+	}
+
+	@POST
+	@Path("/classify")
+	public Response classifyDataset(Dataset dataset) {
+		Response response = null;
+		Map<String, String> msg = new HashMap<String, String>();
+
+		if (dataset.getEnv().equals("sandbox")) {
+			/**
+			 *
+			 * first, create a new transient dataset
+			 *
+			 */
+			Map<?, ?> tmp = (Map<?, ?>)saveDataset(dataset).getEntity();
+			Map<String, String> map = new HashMap<String, String>();
+			for (Entry<?, ?> entry : tmp.entrySet()) {
+				map.put((String)entry.getKey(), (String)entry.getValue());
+			}
+			String id = map.get("id");
+
+			/**
+			 *
+			 * second, with newly created ID, classify dataset
+			 *
+			 */
+			response = classifyDataset(id);
+
+			/**
+			 *
+			 * third, delete transient dataset
+			 *
+			 */
+			deleteDataset(id);
+
+			return response;
+		} else {
+			msg.put("message", "Invalid environment: " + dataset.getEnv() + "");
+			return getResponse(POST, Response.Status.BAD_REQUEST, msg);
+		}
 	}
 
 	@OPTIONS
