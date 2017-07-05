@@ -565,6 +565,17 @@ public class FoodsResource {
 		return getResponse(PUT, Response.Status.OK, msg);
 	}
 
+	@OPTIONS
+	@Path("/classify")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response classifyDatasetPreflight(Dataset dataset) {
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "options-catch-all");
+		return getResponse(OPTIONS, Response.Status.OK, msg);
+	}
+
 	@POST
 	@Path("/classify")
 	public Response classifyDataset(Dataset dataset) {
@@ -610,7 +621,7 @@ public class FoodsResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response classifyDatasetPreflight() {
+	public Response classifyDatasetPreflight(String id) {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
 		return getResponse(OPTIONS, Response.Status.OK, msg);
@@ -1530,7 +1541,7 @@ public class FoodsResource {
 		return getResponse(GET, Response.Status.OK, list);
 	}
 
-	private Response getResponse(String method, Response.Status status, Object obj) {
+	public static Response getResponse(String method, Response.Status status, Object obj) {
 		List<String> allowedHttpOrigins = null;
 		List<String> allowedHttpHeaders = null;
 		List<String> allowedHttpMethods = null;
