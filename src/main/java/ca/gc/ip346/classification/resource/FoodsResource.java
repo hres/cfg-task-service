@@ -1533,7 +1533,6 @@ public class FoodsResource {
 				logger.error("[01;03;31m" + "" + e.getMessage() + "[00;00m");
 				Map<String, String> msg = new HashMap<String, String>();
 				msg.put("message", e.getMessage());
-				mongoClient.close();
 				return getResponse(GET, Response.Status.SERVICE_UNAVAILABLE, msg);
 			}
 		}
