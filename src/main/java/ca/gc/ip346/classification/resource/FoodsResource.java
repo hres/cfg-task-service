@@ -180,7 +180,7 @@ public class FoodsResource {
 			response = Response.status(status);
 		}
 
-		mongoClient.close();
+		// mongoClient.close();
 
 		logger.error("[01;31m" + "response status: " + response.build().getStatusInfo() + "[00;00m");
 
@@ -798,7 +798,7 @@ public class FoodsResource {
 			}
 		}
 
-		mongoClient.close();
+		// mongoClient.close();
 
 		Response response = ClientBuilder
 			.newClient()
