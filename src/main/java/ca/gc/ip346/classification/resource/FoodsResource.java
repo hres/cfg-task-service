@@ -95,6 +95,15 @@ public class FoodsResource {
 		}
 	}
 
+	@OPTIONS
+	@Path("/search")
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response getFoodListPreflight() {
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "options-catch-all");
+		return getResponse(OPTIONS, Response.Status.OK, msg);
+	}
+
 	@GET
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
