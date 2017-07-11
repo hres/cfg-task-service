@@ -441,8 +441,8 @@ public class FoodsResource {
 		updateDatePair.put("sugarImputationReference",    "sugarImputationDate");
 		updateDatePair.put("tier4ServingG",               "tier4ServingUpdateDate");
 		updateDatePair.put("tier4ServingMeasure",         "tier4ServingUpdateDate");
-		updateDatePair.put("totalfatAmountPer100g",       "totalfatImputationDate");
-		updateDatePair.put("totalfatImputationReference", "totalfatImputationDate");
+		updateDatePair.put("totalFatAmountPer100g",       "totalFatImputationDate");
+		updateDatePair.put("totalFatImputationReference", "totalFatImputationDate");
 		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate");
 		updateDatePair.put("transfatImputationReference", "transfatImputationDate");
 
@@ -488,7 +488,7 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("satfatImputationDate") .equals (original_values_map .get (map .get ("code")) .get ("satfatImputationDate"))) {
 			}
 
-			if (toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("totalfatImputationDate") .equals (original_values_map .get (map .get ("code")) .get ("totalfatImputationDate"))) {
+			if (toupdate_values_map .get (map .get ("code")) .get ("totalFatImputationDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("totalFatImputationDate") .equals (original_values_map .get (map .get ("code")) .get ("totalFatImputationDate"))) {
 			}
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("containsAddedSodiumUpdateDate"))) {
@@ -674,7 +674,7 @@ public class FoodsResource {
 		requiredForClassification.put("sodiumAmountPer100g",       "Object"); // Sodium    Amount (per 100g)  Y                            CNF/NSS    Amount of Sodium per 100 g                                                                                                            --
 		requiredForClassification.put("sugarAmountPer100g",        "Object"); // Sugar     Amount (per 100g)  Y                            CNF/NSS    Amount of Sugar per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.         --
 		requiredForClassification.put("satfatAmountPer100g",       "Object"); // SatFat    Amount (per 100g)  Y                            CNF/NSS    Amount of Saturated Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification. --
-		requiredForClassification.put("totalfatAmountPer100g",     "Object"); // TotalFat  Amount (per 100g)  Y                            CNF/NSS    Amount of Total Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.     --
+		requiredForClassification.put("totalFatAmountPer100g",     "Object"); // TotalFat  Amount (per 100g)  Y                            CNF/NSS    Amount of Total Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.     --
 		requiredForClassification.put("containsAddedSodium",       "Object"); // Contains  Added  Sodium      Y                            CFG        Indicates if the item contains added sodium                                                                                           --
 		requiredForClassification.put("containsAddedSugar",        "Object"); // Contains  Added  Sugar       Y                            CFG        Indicates if the item contains added sugar                                                                                            --
 		requiredForClassification.put("containsAddedFat",          "Object"); // Contains  Added  Fat         Y                            CFG        Indicates if the item contains added fat                                                                                              --
@@ -761,8 +761,8 @@ public class FoodsResource {
 		updateDatePair.put("sugarImputationReference",    "sugarImputationDate"                );
 		updateDatePair.put("tier4ServingG",               "tier4ServingUpdateDate"             );
 		updateDatePair.put("tier4ServingMeasure",         "tier4ServingUpdateDate"             );
-		updateDatePair.put("totalfatAmountPer100g",       "totalfatImputationDate"             );
-		updateDatePair.put("totalfatImputationReference", "totalfatImputationDate"             );
+		updateDatePair.put("totalFatAmountPer100g",       "totalFatImputationDate"             );
+		updateDatePair.put("totalFatImputationReference", "totalFatImputationDate"             );
 		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate"             );
 		updateDatePair.put("transfatImputationReference", "transfatImputationDate"             );
 
@@ -1448,12 +1448,12 @@ public class FoodsResource {
 					foodItem.setSatfatImputationReference(new PseudoString(rs.getString       ("satfat_imputation_reference"))           );
 					foodItem.setSatfatImputationDate(rs.getDate                               ("satfat_imputation_date")                 );
 					if (rs.getString("totalfat_amount_per_100g") != null) {
-						foodItem.setTotalfatAmountPer100g(new PseudoDouble(rs.getDouble       ("totalfat_amount_per_100g"))              ); // editable
+						foodItem.setTotalFatAmountPer100g(new PseudoDouble(rs.getDouble       ("totalfat_amount_per_100g"))              ); // editable
 					} else {
-						foodItem.setTotalfatAmountPer100g(new PseudoDouble()                                                             );
+						foodItem.setTotalFatAmountPer100g(new PseudoDouble()                                                             );
 					}
-					foodItem.setTotalfatImputationReference(new PseudoString(rs.getString     ("totalfat_imputation_reference"))         );
-					foodItem.setTotalfatImputationDate(rs.getDate                             ("totalfat_imputation_date")               );
+					foodItem.setTotalFatImputationReference(new PseudoString(rs.getString     ("totalfat_imputation_reference"))         );
+					foodItem.setTotalFatImputationDate(rs.getDate                             ("totalfat_imputation_date")               );
 					if (rs.getString("contains_added_sodium") != null) {
 						foodItem.setContainsAddedSodium(new PseudoBoolean(rs.getBoolean       ("contains_added_sodium"))                 ); // editable
 					} else {

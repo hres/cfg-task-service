@@ -23,9 +23,9 @@ public class CanadaFoodGuideFoodItem {
 	private PseudoDouble  satfatAmountPer100g;                                                     /* double precision */ // editable
 	private PseudoString  satfatImputationReference;                                               /* text             */
 	private Date          satfatImputationDate;                                                    /* date             */
-	private PseudoDouble  totalfatAmountPer100g;                                                   /* double precision */ // editable
-	private PseudoString  totalfatImputationReference;                                             /* text             */
-	private Date          totalfatImputationDate;                                                  /* date             */
+	private PseudoDouble  totalFatAmountPer100g;                                                   /* double precision */ // editable
+	private PseudoString  totalFatImputationReference;                                             /* text             */
+	private Date          totalFatImputationDate;                                                  /* date             */
 	private PseudoBoolean containsAddedSodium;                                                     /* smallint         */ // editable
 	private Date          containsAddedSodiumUpdateDate;                                           /* date             */
 	private PseudoBoolean containsAddedSugar;                                                      /* smallint         */ // editable
@@ -376,45 +376,45 @@ public class CanadaFoodGuideFoodItem {
 	}
 
 	/**
-	 * @return the totalfatAmountPer100g
+	 * @return the totalFatAmountPer100g
 	 */
-	public PseudoDouble getTotalfatAmountPer100g() {
-		return totalfatAmountPer100g;
+	public PseudoDouble getTotalFatAmountPer100g() {
+		return totalFatAmountPer100g;
 	}
 
 	/**
-	 * @param totalfatAmountPer100g the totalfatAmountPer100g to set
+	 * @param totalFatAmountPer100g the totalFatAmountPer100g to set
 	 */
-	public void setTotalfatAmountPer100g(PseudoDouble totalfatAmountPer100g) {
-		this.totalfatAmountPer100g = totalfatAmountPer100g;
+	public void setTotalFatAmountPer100g(PseudoDouble totalFatAmountPer100g) {
+		this.totalFatAmountPer100g = totalFatAmountPer100g;
 	}
 
 	/**
-	 * @return the totalfatImputationReference
+	 * @return the totalFatImputationReference
 	 */
-	public PseudoString getTotalfatImputationReference() {
-		return totalfatImputationReference;
+	public PseudoString getTotalFatImputationReference() {
+		return totalFatImputationReference;
 	}
 
 	/**
-	 * @param totalfatImputationReference the totalfatImputationReference to set
+	 * @param totalFatImputationReference the totalFatImputationReference to set
 	 */
-	public void setTotalfatImputationReference(PseudoString totalfatImputationReference) {
-		this.totalfatImputationReference = totalfatImputationReference;
+	public void setTotalFatImputationReference(PseudoString totalFatImputationReference) {
+		this.totalFatImputationReference = totalFatImputationReference;
 	}
 
 	/**
-	 * @return the totalfatImputationDate
+	 * @return the totalFatImputationDate
 	 */
-	public Date getTotalfatImputationDate() {
-		return totalfatImputationDate;
+	public Date getTotalFatImputationDate() {
+		return totalFatImputationDate;
 	}
 
 	/**
-	 * @param totalfatImputationDate the totalfatImputationDate to set
+	 * @param totalFatImputationDate the totalFatImputationDate to set
 	 */
-	public void setTotalfatImputationDate(Date totalfatImputationDate) {
-		this.totalfatImputationDate = totalfatImputationDate;
+	public void setTotalFatImputationDate(Date totalFatImputationDate) {
+		this.totalFatImputationDate = totalFatImputationDate;
 	}
 
 	/**
