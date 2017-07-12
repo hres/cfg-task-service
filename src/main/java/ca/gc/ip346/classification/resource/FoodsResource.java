@@ -418,33 +418,35 @@ public class FoodsResource {
 		}
 
 		Map<String, String> updateDatePair = new HashMap<String, String>();
-		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate");
-		updateDatePair.put("comments",                    "");
-		updateDatePair.put("containsAddedFat",            "containsAddedFatUpdateDate");
-		updateDatePair.put("containsAddedSodium",         "containsAddedSodiumUpdateDate");
-		updateDatePair.put("containsAddedSugar",          "containsAddedSugarUpdateDate");
-		updateDatePair.put("containsAddedTransfat",       "containsAddedTransfatUpdateDate");
-		updateDatePair.put("containsCaffeine",            "containsCaffeineUpdateDate");
-		updateDatePair.put("containsFreeSugars",          "containsFreeSugarsUpdateDate");
-		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate");
-		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate");
-		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate");
-		updateDatePair.put("marketedToKids",              "");
-		updateDatePair.put("overrideSmallRaAdjustment",   "");
-		updateDatePair.put("replacementCode",             "");
-		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate");
-		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate");
-		updateDatePair.put("satfatImputationReference",   "satfatImputationDate");
-		updateDatePair.put("sodiumAmountPer100g",         "sodiumImputationDate");
-		updateDatePair.put("sodiumImputationReference",   "sodiumImputationDate");
-		updateDatePair.put("sugarAmountPer100g",          "sugarImputationDate");
-		updateDatePair.put("sugarImputationReference",    "sugarImputationDate");
-		updateDatePair.put("tier4ServingG",               "tier4ServingUpdateDate");
-		updateDatePair.put("tier4ServingMeasure",         "tier4ServingUpdateDate");
-		updateDatePair.put("totalFatAmountPer100g",       "totalFatImputationDate");
-		updateDatePair.put("totalFatImputationReference", "totalFatImputationDate");
-		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate");
-		updateDatePair.put("transfatImputationReference", "transfatImputationDate");
+		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate"                  );
+		updateDatePair.put("comments",                    ""                                   );
+		updateDatePair.put("containsAddedFat",            "containsAddedFatUpdateDate"         );
+		updateDatePair.put("containsAddedSodium",         "containsAddedSodiumUpdateDate"      );
+		updateDatePair.put("containsAddedSugar",          "containsAddedSugarUpdateDate"       );
+		updateDatePair.put("containsAddedTransfat",       "containsAddedTransfatUpdateDate"    );
+		updateDatePair.put("containsCaffeine",            "containsCaffeineUpdateDate"         );
+		updateDatePair.put("containsFreeSugars",          "containsFreeSugarsUpdateDate"       );
+		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate" );
+		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate"                );
+		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate"                );
+		updateDatePair.put("marketedToKids",              ""                                   );
+		updateDatePair.put("overrideSmallRaAdjustment",   ""                                   );
+		updateDatePair.put("replacementCode",             ""                                   );
+		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate"                 );
+		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate"               );
+		updateDatePair.put("satfatImputationReference",   "satfatImputationDate"               );
+		updateDatePair.put("sodiumAmountPer100g",         "sodiumImputationDate"               );
+		updateDatePair.put("sodiumImputationReference",   "sodiumImputationDate"               );
+		updateDatePair.put("sugarAmountPer100g",          "sugarImputationDate"                );
+		updateDatePair.put("sugarImputationReference",    "sugarImputationDate"                );
+		updateDatePair.put("tier4ServingG",               "tier4ServingUpdateDate"             );
+		updateDatePair.put("tier4ServingMeasure",         "tier4ServingUpdateDate"             );
+		updateDatePair.put("totalFatAmountPer100g",       "totalFatImputationDate"             );
+		updateDatePair.put("totalFatImputationReference", "totalFatImputationDate"             );
+		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate"             );
+		updateDatePair.put("transfatImputationReference", "transfatImputationDate"             );
+
+		logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(updateDatePair));
 
 		for (Map<String, Object> map : updates) {
 			List<Bson> sets = new ArrayList<Bson>();
@@ -1613,7 +1615,7 @@ public class FoodsResource {
 
 	@SuppressWarnings("unchecked")
 	private int updateIfModified(String key, String value, List<Bson> sets, int changes, Map<Integer, Map<String, Object>> original_values_map, Map<Integer, Map<String, Object>> toupdate_values_map, Map<String, Object> map) {
-		logger.error("[01;34m" + key + ": " + ((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value") + "[00;00m");
+		logger.error("[01;34m" + "key/value - " + key + ": " + ((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value") + "[00;00m");
 
 		if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value") != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value").equals(((Map<String, Object>)original_values_map.get(map.get("code")).get(key)).get("value"))) {
 			sets.add(set("data.$." + key + ".value", ((Map<String, Object>)map.get(key)).get("value")));
