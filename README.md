@@ -65,7 +65,7 @@ Run [Test]
 
 ## UML Deployment Diagram
 
-![](https://github.com/hres/cfg-task-service/src/main/resources/UML-deployment-diagram.png)
+![UML Deployment Diagram](https://github.com/hres/cfg-task-service/src/main/resources/UML-deployment-diagram.png "UML Deployment Diagram")
 
 [//]: # (These are the references links used in the body of this note and get stripped out when the markdown processor does its thing.  There is no need to format nicely because it should not be seen.)
 
