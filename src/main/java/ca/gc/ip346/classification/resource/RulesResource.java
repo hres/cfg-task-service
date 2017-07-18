@@ -13,6 +13,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -20,6 +22,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.GsonBuilder;
+
+import ca.gc.ip346.util.ClassificationProperties;
+import ca.gc.ip346.util.RequestURI;
 
 @Path("/rulesets")
 @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -39,7 +44,16 @@ public class RulesResource {
 	public Response getRules() {
 		map.put("message", "REST service to return rulesets");
 		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
-		return FoodsResource.getResponse(GET, Response.Status.OK, map);
+
+		Response response = ClientBuilder
+			.newClient()
+			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
+			.path("/rulesets")
+			.request()
+			.get();
+			// .post(Entity.entity(map, MediaType.APPLICATION_JSON));
+
+		return FoodsResource.getResponse(GET, Response.Status.OK, response.getEntity());
 	}
 
 	/**
