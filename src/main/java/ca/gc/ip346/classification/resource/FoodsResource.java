@@ -478,6 +478,14 @@ public class FoodsResource {
 				logger.error("[01;31mvalue changed: " + map.get("energyKcal") + "[00;00m");
 			}
 
+			logger.error("[01;03;31m" + "before: " + original_values_map .get (map .get ("code")) .get ("validated") + " - validated" + "[00;00m");
+			logger.error("[01;03;31m" + " after: " + toupdate_values_map .get (map .get ("code")) .get ("validated") + " - validated" + "[00;00m");
+			if (toupdate_values_map .get (map .get ("code")) .get ("validated") != null && !toupdate_values_map .get (map .get ("code")) .get ("validated") .equals (original_values_map .get (map .get ("code")) .get ("validated"))) {
+				sets.add(set("data.$.validated", map.get("validated")));
+				++changes;
+				logger.error("[01;31mvalue changed: " + map.get("validated") + "[00;00m");
+			}
+
 			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate") .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationDate"))) {
 			}
 
@@ -1524,7 +1532,7 @@ public class FoodsResource {
 					}
 					foodItem.setRolledUpUpdateDate(rs.getDate                                 ("rolled_up_update_date")                  );
 					if (rs.getString("override_small_ra_adjustment") != null) {
-						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean(rs.getBoolean ("override_small_ra_adjustment"))             );
+						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean(rs.getBoolean ("override_small_ra_adjustment"))          );
 					} else {
 						foodItem.setOverrideSmallRaAdjustment(new PseudoBoolean()                                                        );
 					}
@@ -1535,6 +1543,7 @@ public class FoodsResource {
 					}
 					foodItem.setCommitDate(rs.getDate                                         ("commit_date")                            );
 					foodItem.setComments(new PseudoString(rs.getString                        ("comments"))                              ); // editable
+					foodItem.setValidated(                                                    false                                      );
 
 					list.add(foodItem);
 				}

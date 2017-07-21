@@ -56,6 +56,9 @@ public class CanadaFoodGuideFoodItem {
 	private Date          commitDate;                                                              /* date             */
 	private PseudoString  comments;                                                                /* text             */ // editable
 
+	// remember that this food-item has been validated
+	private Boolean validated;
+
 	// special input
 	private Double  sodiumDV;
 	private Double  sugarDV;
@@ -821,6 +824,20 @@ public class CanadaFoodGuideFoodItem {
 	 */
 	public void setComments(PseudoString comments) {
 		this.comments = comments;
+	}
+
+	/**
+	 * @return the validated
+	 */
+	public Boolean getValidated() {
+		return validated;
+	}
+
+	/**
+	 * @param validated the validated to set
+	 */
+	public void setValidated(Boolean validated) {
+		this.validated = validated;
 	}
 
 	/**
