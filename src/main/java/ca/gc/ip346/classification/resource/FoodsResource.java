@@ -836,6 +836,8 @@ public class FoodsResource {
 
 		logger.error("[01;31m" + "response status: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
 
+		logger.error("[01;03;31m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(deserialized) + "[00;00m");
+
 		return getResponse(POST, Response.Status.OK, deserialized);
 	}
 
