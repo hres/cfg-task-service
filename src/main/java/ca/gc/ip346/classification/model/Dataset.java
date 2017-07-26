@@ -13,6 +13,7 @@ public class Dataset {
 	private String status;
 	private String comments;
 	private Date modifiedDate;
+	private String ruleset;
 
 	/**
 	 * @return the data
@@ -110,5 +111,19 @@ public class Dataset {
 	 */
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
+	}
+
+	/**
+	 * @return the ruleset
+	 */
+	public String getRuleset() {
+		return ruleset;
+	}
+
+	/**
+	 * @param ruleset the ruleset to set
+	 */
+	public void setRuleset(String ruleset) {
+		this.ruleset = ruleset;
 	}
 }
