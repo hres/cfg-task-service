@@ -14,13 +14,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 
 import ca.gc.ip346.util.ClassificationProperties;
@@ -41,6 +42,8 @@ public class RulesResource {
 	 * Sprint 5 - Build REST service to return rulesets
 	 */
 	@GET
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getRules() {
 		map.put("message", "REST service to return rulesets");
 		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
@@ -51,7 +54,6 @@ public class RulesResource {
 			.path("/rulesets")
 			.request()
 			.get();
-			// .post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
 		return FoodsResource.getResponse(GET, Response.Status.OK, response.getEntity());
 	}
@@ -60,11 +62,21 @@ public class RulesResource {
 	 * Sprint 5 - Build REST service to return a particular ruleset
 	 */
 	@GET
-	@Path("id")
+	@Path("/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response selectRules(@PathParam("id") String id) {
 		map.put("message", "REST service to return a particular ruleset");
 		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
-		return FoodsResource.getResponse(GET, Response.Status.OK, map);
+
+		Response response = ClientBuilder
+			.newClient()
+			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
+			.path("/rulesets/" + id)
+			.request()
+			.get();
+
+		return FoodsResource.getResponse(GET, Response.Status.OK, response.getEntity());
 	}
 
 	/**
@@ -92,10 +104,20 @@ public class RulesResource {
 	 * Sprint 5 - Build REST service to delete an existing ruleset
 	 */
 	@DELETE
-	@Path("id")
+	@Path("/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteRules(@PathParam("id") String id) {
 		map.put("message", "REST service to delete an existing ruleset");
 		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
-		return FoodsResource.getResponse(DELETE, Response.Status.OK, map);
+
+		Response response = ClientBuilder
+			.newClient()
+			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
+			.path("/rulesets/" + id)
+			.request()
+			.delete();
+
+		return FoodsResource.getResponse(DELETE, Response.Status.OK, response.getEntity());
 	}
 }
