@@ -133,7 +133,7 @@ public class FoodsResource {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		if (dataset.getData() != null && dataset.getName() != null && dataset.getComments() != null) {
+		if (dataset.getData() != null && dataset.getName() != null && dataset.getName() != null) {
 			Document doc = new Document()
 				.append("data",     dataset.getData())
 				.append("name",     dataset.getName())
@@ -1601,7 +1601,7 @@ public class FoodsResource {
 		ResponseBuilder rb = Response.status(status);
 		rb.header(ACCESS_CONTROL_ALLOW_ORIGIN, StringUtils.join(allowedHttpOrigins.toArray(), ", "));
 		rb.header(ACCESS_CONTROL_ALLOW_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
-		rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+		rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "false");
 		rb.header(ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "));
 		if (method.equals(OPTIONS)) {
 			rb.header(ACCESS_CONTROL_REQUEST_METHOD, StringUtils.join(requestHttpMethods.toArray(), ", "));
