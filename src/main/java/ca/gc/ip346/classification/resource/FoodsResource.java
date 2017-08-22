@@ -90,8 +90,8 @@ public class FoodsResource {
 			conn = DBConnection.getConnections();
 		} catch(Exception e) {
 			// TODO: proper response to handle exceptions
-			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
-			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			logger.debug("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			logger.debug("[01;03;31m" + e.getMessage() + "[00;00;00m");
 		}
 	}
 
@@ -151,13 +151,13 @@ public class FoodsResource {
 						currentDate("modifiedDate"))
 					);
 
-			logger.error("[01;34mLast inserted Dataset id: " + id + "[00;00m");
+			logger.debug("[01;34mLast inserted Dataset id: " + id + "[00;00m");
 
-			logger.error("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
+			logger.debug("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
 
 			map.put("id", id.toString());
 
-			logger.error("[01;34m" + Response.Status.CREATED.getStatusCode() + " " + Response.Status.CREATED.toString() + "[00;00m");
+			logger.debug("[01;34m" + Response.Status.CREATED.getStatusCode() + " " + Response.Status.CREATED.toString() + "[00;00m");
 
 			status   = Response.Status.CREATED;
 			response = Response.status(status);
@@ -173,8 +173,8 @@ public class FoodsResource {
 			map.put("description", Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!");
 			map.put("fields", StringUtils.join(list, ", "));
 
-			logger.error("[01;34m" + Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!" + "[00;00m");
-			logger.error("[01;34m" + Response.Status.BAD_REQUEST.getStatusCode() + " " + Response.Status.BAD_REQUEST.toString() + "[00;00m");
+			logger.debug("[01;34m" + Response.Status.BAD_REQUEST.toString() + " - Unable to insert Dataset!" + "[00;00m");
+			logger.debug("[01;34m" + Response.Status.BAD_REQUEST.getStatusCode() + " " + Response.Status.BAD_REQUEST.toString() + "[00;00m");
 
 			status   = Response.Status.BAD_REQUEST;
 			response = Response.status(status);
@@ -182,7 +182,7 @@ public class FoodsResource {
 
 		// mongoClient.close();
 
-		logger.error("[01;31m" + "response status: " + response.build().getStatusInfo() + "[00;00m");
+		logger.debug("[01;31m" + "response status: " + response.build().getStatusInfo() + "[00;00m");
 
 		return getResponse(POST, status, map);
 	}
@@ -206,7 +206,7 @@ public class FoodsResource {
 			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.get("modifiedDate").toString());
 
 			list.add(map);
-			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 		}
 
 		mongoClient.close();
@@ -242,7 +242,7 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist!");
 
-			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
 
 			mongoClient.close();
 
@@ -252,7 +252,7 @@ public class FoodsResource {
 		while (cursorDocMap.hasNext()) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
-			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 
 			if (doc != null) {
 				map.put("id",           id);
@@ -293,7 +293,7 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist!");
 
-			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
 
 			mongoClient.close();
 
@@ -302,7 +302,7 @@ public class FoodsResource {
 
 		while (cursorDocMap.hasNext()) {
 			Document doc = cursorDocMap.next();
-			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 
 			collection.deleteOne(doc);
 		}
@@ -363,7 +363,7 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist!");
 
-			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
 
 			mongoClient.close();
 
@@ -385,7 +385,7 @@ public class FoodsResource {
 				original_values_map.put((Integer)tmp.get("code"), tmp);
 			}
 
-			logger.error("[01;31mUpdate: " + "casting property 'data' seems to have passed!" + "[00;00m");
+			logger.debug("[01;31mUpdate: " + "casting property 'data' seems to have passed!" + "[00;00m");
 
 			if (!dataset.getName     ().equals(doc.get("name")    )) {
 				firstLevelSets.add(set("name", dataset.getName()));
@@ -413,8 +413,8 @@ public class FoodsResource {
 		for (Map<String, Object> map : updates) {
 			toupdate_values_map.put((Integer)map.get("code"), map);
 
-			logger.error("[01;34mDataset: " + toupdate_values_map.get(map.get("code"))             + "[00;00m");
-			logger.error("[01;31mname: "    + toupdate_values_map.get(map.get("code")).get("name") + "[00;00m");
+			logger.debug("[01;34mDataset: " + toupdate_values_map.get(map.get("code"))             + "[00;00m");
+			logger.debug("[01;31mname: "    + toupdate_values_map.get(map.get("code")).get("name") + "[00;00m");
 		}
 
 		Map<String, String> updateDatePair = new HashMap<String, String>();
@@ -446,23 +446,23 @@ public class FoodsResource {
 		updateDatePair.put("transfatAmountPer100g",       "transfatImputationDate"             );
 		updateDatePair.put("transfatImputationReference", "transfatImputationDate"             );
 
-		logger.error(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(updateDatePair));
+		logger.debug(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(updateDatePair));
 
 		for (Map<String, Object> map : updates) {
 			List<Bson> sets = new ArrayList<Bson>();
 
-			logger.error("[01;31msize: " + sets.size() + "[00;00m");
+			logger.debug("[01;31msize: " + sets.size() + "[00;00m");
 
 			if (toupdate_values_map.get(map.get("code")).get("name") != null && !toupdate_values_map .get (map .get ("code")) .get ("name") .equals (original_values_map .get (map .get ("code")) .get ("name"))) {
 				sets.add(set("data.$.name", map.get("name")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("name") + "[00;00m");
+				logger.debug("[01;31mvalue changed: " + map.get("name") + "[00;00m");
 			}
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode") != null && !toupdate_values_map .get (map .get ("code")) .get ("cnfGroupCode") .equals (original_values_map .get (map .get ("code")) .get ("cnfGroupCode"))) {
 				sets.add(set("data.$.cnfGroupCode", map.get("cnfGroupCode")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("cnfGroupCode") + "[00;00m");
+				logger.debug("[01;31mvalue changed: " + map.get("cnfGroupCode") + "[00;00m");
 			}
 
 			for (String key : updateDatePair.keySet()) {
@@ -475,15 +475,15 @@ public class FoodsResource {
 			if (toupdate_values_map .get (map .get ("code")) .get ("energyKcal") != null && !toupdate_values_map .get (map .get ("code")) .get ("energyKcal") .equals (original_values_map .get (map .get ("code")) .get ("energyKcal"))) {
 				sets.add(set("data.$.energyKcal", map.get("energyKcal")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("energyKcal") + "[00;00m");
+				logger.debug("[01;31mvalue changed: " + map.get("energyKcal") + "[00;00m");
 			}
 
-			logger.error("[01;03;31m" + "before: " + original_values_map .get (map .get ("code")) .get ("validated") + " - validated" + "[00;00m");
-			logger.error("[01;03;31m" + " after: " + toupdate_values_map .get (map .get ("code")) .get ("validated") + " - validated" + "[00;00m");
+			logger.debug("[01;03;31m" + "before: " + original_values_map .get (map .get ("code")) .get ("validated") + " - validated" + "[00;00m");
+			logger.debug("[01;03;31m" + " after: " + toupdate_values_map .get (map .get ("code")) .get ("validated") + " - validated" + "[00;00m");
 			if (toupdate_values_map .get (map .get ("code")) .get ("validated") != null && !toupdate_values_map .get (map .get ("code")) .get ("validated") .equals (original_values_map .get (map .get ("code")) .get ("validated"))) {
 				sets.add(set("data.$.validated", map.get("validated")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("validated") + "[00;00m");
+				logger.debug("[01;31mvalue changed: " + map.get("validated") + "[00;00m");
 			}
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("sodiumImputationDate") .equals (original_values_map .get (map .get ("code")) .get ("sodiumImputationDate"))) {
@@ -526,13 +526,13 @@ public class FoodsResource {
 				sets.add(set("data.$.referenceAmountG", map.get("referenceAmountG")));
 				sets.add(currentDate("data.$.referenceAmountUpdateDate"));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("referenceAmountG") + "[00;00m");
+				logger.debug("[01;31mvalue changed: " + map.get("referenceAmountG") + "[00;00m");
 			}
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure") != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountMeasure") .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountMeasure"))) {
 				sets.add(set("data.$.referenceAmountMeasure", map.get("referenceAmountMeasure")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("referenceAmountMeasure") + "[00;00m");
+				logger.debug("[01;31mvalue changed: " + map.get("referenceAmountMeasure") + "[00;00m");
 			}
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate") .equals (original_values_map .get (map .get ("code")) .get ("referenceAmountUpdateDate"))) {
@@ -550,21 +550,21 @@ public class FoodsResource {
 			// if (toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment")                                    .equals (original_values_map .get (map .get ("code")) .get ("overrideSmallRaAdjustment"))) {
 				// sets.add(set("data.$.overrideSmallRaAdjustment", map.get("overrideSmallRaAdjustment")));
 				// ++changes;
-				// logger.error("[01;31mvalue changed: " + map.get("overrideSmallRaAdjustment") + "[00;00m");
+				// logger.debug("[01;31mvalue changed: " + map.get("overrideSmallRaAdjustment") + "[00;00m");
 			// }
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount")                                                               != null && !toupdate_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount")                                    .equals (original_values_map .get (map .get ("code")) .get ("adjustedReferenceAmount"))) {
 				sets.add(set("data.$.adjustedReferenceAmount", map.get("adjustedReferenceAmount")));
 				++changes;
-				logger.error("[01;31mvalue changed: " + map.get("adjustedReferenceAmount") + "[00;00m");
+				logger.debug("[01;31mvalue changed: " + map.get("adjustedReferenceAmount") + "[00;00m");
 			}
 
 			if (toupdate_values_map .get (map .get ("code")) .get ("commitDate") != null && !toupdate_values_map .get (map .get ("code")) .get ("commitDate") .equals (original_values_map .get (map .get ("code")) .get ("commitDate"))) {
 			}
 
-			logger.error("[01;31msize: " + sets.size() + "[00;00m");
+			logger.debug("[01;31msize: " + sets.size() + "[00;00m");
 
-			logger.error("[01;35mcode: " + map.get("code") + "[00;00m");
+			logger.debug("[01;35mcode: " + map.get("code") + "[00;00m");
 
 			if (sets.size() > 0) {
 				collection.updateOne(and(eq("_id", new ObjectId(id)), eq("data.code", map.get("code"))), combine(sets));
@@ -597,6 +597,9 @@ public class FoodsResource {
 
 	@POST
 	@Path("/classify")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response classifyDataset(Dataset dataset) {
 		Response response = null;
 		Map<String, String> msg = new HashMap<String, String>();
@@ -662,7 +665,7 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist!");
 
-			logger.error("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
 
 			mongoClient.close();
 
@@ -724,7 +727,7 @@ public class FoodsResource {
 			}
 
 			// use validation rules on "data" property and return response if invalid
-			logger.error("[01;03;31m" + "only required fields:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dataToBeValidated) + "[00;00m");
+			logger.debug("[01;03;31m" + "only required fields:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dataToBeValidated) + "[00;00m");
 
 			if (isInvalid) {
 				Map<String, String> msg = new HashMap<String, String>();
@@ -785,7 +788,7 @@ public class FoodsResource {
 		while (cursorDocMap.hasNext()) {
 			Document doc = cursorDocMap.next();
 			map = new HashMap<String, Object>();
-			logger.error("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 
 			if (doc != null) {
 				list = castList(doc.get("data"), Object.class);
@@ -817,8 +820,8 @@ public class FoodsResource {
 			.request()
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
-		logger.error("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
-		logger.error("[01;31m" + "request URI: " + RequestURI.getUri() + "[00;00m");
+		logger.debug("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
+		logger.debug("[01;31m" + "request URI: " + RequestURI.getUri() + "[00;00m");
 
 		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
 		List<Object> dataArray = (List<Object>)(deserialized).get("data");
@@ -834,9 +837,9 @@ public class FoodsResource {
 
 		deserialized.put("id", id);
 
-		logger.error("[01;31m" + "response status: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
+		logger.debug("[01;31m" + "response status: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
 
-		logger.error("[01;03;31m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(deserialized) + "[00;00m");
+		logger.debug("[01;03;31m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(deserialized) + "[00;00m");
 
 		return getResponse(POST, Response.Status.OK, deserialized);
 	}
@@ -991,7 +994,7 @@ public class FoodsResource {
 			}
 		} catch(SQLException e) {
 			// TODO: proper response to handle exceptions
-			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			logger.debug("[01;03;31m" + e.getMessage() + "[00;00;00m");
 			for (Response.Status status : Response.Status.values()) {
 				list.put(new Integer(status.getStatusCode()), status.getReasonPhrase());
 			}
@@ -999,14 +1002,14 @@ public class FoodsResource {
 		}
 
 		try {
-			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getAddress() + "[00;00m");
-			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getConnectPoint() + "[00;00m");
-			logger.error("[01;03;31m" + "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version") + "[00;00m");
+			logger.debug("[01;03;31m" + "mongo connectivity test: " + mongoClient.getAddress() + "[00;00m");
+			logger.debug("[01;03;31m" + "mongo connectivity test: " + mongoClient.getConnectPoint() + "[00;00m");
+			logger.debug("[01;03;31m" + "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version") + "[00;00m");
 		} catch(Exception e) {
 			// TODO: proper response to handle exceptions
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", e.getMessage());
-			logger.error("[01;03;31m" + e.getMessage() + "[00;00;00m");
+			logger.debug("[01;03;31m" + e.getMessage() + "[00;00;00m");
 			mongoClient.close();
 			return getResponse(GET, Response.Status.GATEWAY_TIMEOUT, msg);
 		}
@@ -1022,32 +1025,32 @@ public class FoodsResource {
 		if (search != null) {
 			StringBuffer sb = new StringBuffer(search.getSql());
 
-			logger.error("[01;30m" + search.getDataSource() + "[00;00m");
+			logger.debug("[01;30m" + search.getDataSource() + "[00;00m");
 
 			sb.append(" WHERE length('this where-clause is an artifact') = 32").append("\n");
 			if (search.getDataSource() != null && search.getDataSource().matches("food|recipe")) {
 				sb.append("   AND type = ?").append("\n");
 			}
 
-			logger.error("[01;30m" + search.getFoodRecipeName() + "[00;00m");
+			logger.debug("[01;30m" + search.getFoodRecipeName() + "[00;00m");
 
 			if (search.getFoodRecipeName() != null && !search.getFoodRecipeName().isEmpty()) {
 				sb.append("   AND LOWER(name) LIKE ?").append("\n");
 			}
 
-			logger.error("[01;30m" + search.getFoodRecipeCode() + "[00;00m");
+			logger.debug("[01;30m" + search.getFoodRecipeCode() + "[00;00m");
 
 			if (search.getFoodRecipeCode() != null && !search.getFoodRecipeCode().isEmpty()) {
 				sb.append("   AND code = ? OR CAST(code AS text) LIKE ?").append("\n");
 			}
 
-			logger.error("[01;30m" + search.getCnfCode() + "[00;00m");
+			logger.debug("[01;30m" + search.getCnfCode() + "[00;00m");
 
 			if (search.getCnfCode() != null && !search.getCnfCode().isEmpty()) {
 				sb.append("   AND cnf_group_code = ?").append("\n");
 			}
 
-			logger.error("[01;30m" + search.getSubgroupCode() + "[00;00m");
+			logger.debug("[01;30m" + search.getSubgroupCode() + "[00;00m");
 
 			if (search.getSubgroupCode() != null && !search.getSubgroupCode().isEmpty()) {
 				sb.append("   AND CAST(cfg_code AS text) LIKE ?").append("\n");
@@ -1059,7 +1062,7 @@ public class FoodsResource {
 					case 2:
 					case 3:
 					case 4:
-						logger.error("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
+						logger.debug("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
 						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
 						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						break;
@@ -1069,7 +1072,7 @@ public class FoodsResource {
 					case 23:
 					case 24:
 					case 34:
-						logger.error("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
+						logger.debug("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
 						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
 						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
@@ -1078,14 +1081,14 @@ public class FoodsResource {
 					case 124:
 					case 134:
 					case 234:
-						logger.error("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
+						logger.debug("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
 						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
 						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						break;
 					case 1234:
-						logger.error("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
+						logger.debug("[01;31mCalling all codes with Tier " + search.getCfgTier() + "[00;00m");
 						sb.append("   AND LENGTH(CAST(cfg_code AS text)) = 4").append("\n");
 						sb.append("   AND CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
@@ -1093,14 +1096,14 @@ public class FoodsResource {
 						sb.append("    OR CAST(SUBSTR(CAST(cfg_code AS text), 4, 1) AS integer) = ?").append("\n");
 						break;
 					case 9:
-						logger.error("[01;31mCalling all codes with missing Tier![00;00m");
+						logger.debug("[01;31mCalling all codes with missing Tier![00;00m");
 						sb.append("   AND LENGTH(CAST(cfg_code AS text)) < 4").append("\n");
 						break;
 				}
 			}
 
 			if (search.getRecipe() != null && !search.getRecipe().equals(RecipeRolled.IGNORE.getCode())) {
-				logger.error("[01;32m" + search.getRecipe() + "[00;00m");
+				logger.debug("[01;32m" + search.getRecipe() + "[00;00m");
 				switch (search.getRecipe()) {
 					case 1:
 					case 2:
@@ -1117,7 +1120,7 @@ public class FoodsResource {
 				String[] arr = new String[search.getContainsAdded().size()];
 				arr = search.getContainsAdded().toArray(arr);
 				for (String i : arr) {
-					logger.error("[01;32m" + i + "[00;00m");
+					logger.debug("[01;32m" + i + "[00;00m");
 					if (!i.equals("0")) {
 						notIgnore = true;
 					}
@@ -1128,15 +1131,15 @@ public class FoodsResource {
 
 			if (search.getContainsAdded() != null && notIgnore) {
 				map = new HashMap<String, String>();
-				logger.error("[01;32m" + search.getContainsAdded() + "[00;00m");
+				logger.debug("[01;32m" + search.getContainsAdded() + "[00;00m");
 				String[] arr = new String[search.getContainsAdded().size()];
 				arr = search.getContainsAdded().toArray(arr);
 				for (String keyValue : arr) {
 					StringTokenizer tokenizer = new StringTokenizer(keyValue, "=");
 					map.put(tokenizer.nextToken(), tokenizer.nextToken());
-					logger.error("[01;32m" + keyValue + "[00;00m");
+					logger.debug("[01;32m" + keyValue + "[00;00m");
 				}
-				logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+				logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
 				Set<String> keys = map.keySet();
 				for (String key : keys) {
@@ -1167,8 +1170,8 @@ public class FoodsResource {
 			}
 
 			if (search.getMissingValues() != null) {
-				logger.error("[01;32m" + search.getMissingValues() + "[00;00m");
-				logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(search.getMissingValues()) + "[00;00m");
+				logger.debug("[01;32m" + search.getMissingValues() + "[00;00m");
+				logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(search.getMissingValues()) + "[00;00m");
 				for (String name : search.getMissingValues()) {
 					switch (Missing.valueOf(name)) {
 						case refAmount:
@@ -1231,7 +1234,7 @@ public class FoodsResource {
 
 			if (search.getLastUpdateDateFrom() != null && search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo() != null && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
 				if (search.getLastUpdatedFilter() != null) {
-					logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
+					logger.debug("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
 					for (String name : search.getLastUpdatedFilter()) {
 						switch (Missing.valueOf(name)) {
 							case refAmount:
@@ -1302,7 +1305,7 @@ public class FoodsResource {
 
 			try {
 				meta = conn.getMetaData(); // Create Oracle DatabaseMetaData object
-				logger.error("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
+				logger.debug("[01;34mJDBC driver version is " + meta.getDriverVersion() + "[00;00m"); // Retrieve driver information
 				PreparedStatement stmt = conn.prepareStatement(search.getSql(), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Create PreparedStatement
 
 				int i = 0; // keeps count of the number of placeholders
@@ -1362,7 +1365,7 @@ public class FoodsResource {
 
 					if (search.getLastUpdateDateFrom() != null && search.getLastUpdateDateFrom().matches("\\d{4}-\\d{2}-\\d{2}") && search.getLastUpdateDateTo() != null && search.getLastUpdateDateTo().matches("\\d{4}-\\d{2}-\\d{2}")) {
 						if (search.getLastUpdatedFilter() != null) {
-							logger.error("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
+							logger.debug("[01;32m" + search.getLastUpdatedFilter() + "[00;00m");
 							for (String name : search.getLastUpdatedFilter()) {
 								switch (Missing.valueOf(name)) {
 									case refAmount:
@@ -1405,12 +1408,12 @@ public class FoodsResource {
 					}
 				}
 
-				logger.error("[01;34mSQL query to follow:\n" + stmt.toString() + "[00;00m");
+				logger.debug("[01;34mSQL query to follow:\n" + stmt.toString() + "[00;00m");
 
 				ResultSet rs = stmt.executeQuery();
 
 				rs.last();
-				logger.error("[01;03;31m" + rs.getRow() + " row" + (rs.getRow() == 1 ? "" : "s") + "[00;00m");
+				logger.debug("[01;03;31m" + rs.getRow() + " row" + (rs.getRow() == 1 ? "" : "s") + "[00;00m");
 				rs.beforeFirst();
 
 				while (rs.next()) {
@@ -1552,7 +1555,7 @@ public class FoodsResource {
 				conn.close();
 			} catch(SQLException e) {
 				// TODO: proper response to handle exceptions
-				logger.error("[01;03;31m" + "" + e.getMessage() + "[00;00m");
+				logger.debug("[01;03;31m" + "" + e.getMessage() + "[00;00m");
 				Map<String, String> msg = new HashMap<String, String>();
 				msg.put("message", e.getMessage());
 				return getResponse(GET, Response.Status.SERVICE_UNAVAILABLE, msg);
@@ -1594,20 +1597,20 @@ public class FoodsResource {
 		requestHttpMethods.add(DELETE);
 		requestHttpMethods.add(POST);
 
-		logger.error("[01;03;31m" + StringUtils.join(allowedHttpOrigins.toArray(), ", ") + "[00;00m");
-		logger.error("[01;03;31m" + StringUtils.join(allowedHttpHeaders.toArray(), ", ") + "[00;00m");
-		logger.error("[01;03;31m" + StringUtils.join(allowedHttpMethods.toArray(), ", ") + "[00;00m");
+		logger.debug("[01;03;31m" + StringUtils.join(allowedHttpOrigins.toArray(), ", ") + "[00;00m");
+		logger.debug("[01;03;31m" + StringUtils.join(allowedHttpHeaders.toArray(), ", ") + "[00;00m");
+		logger.debug("[01;03;31m" + StringUtils.join(allowedHttpMethods.toArray(), ", ") + "[00;00m");
 
 		ResponseBuilder rb = Response.status(status);
 		rb.header(ACCESS_CONTROL_ALLOW_ORIGIN, StringUtils.join(allowedHttpOrigins.toArray(), ", "));
 		rb.header(ACCESS_CONTROL_ALLOW_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
 		rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "false");
 		rb.header(ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "));
-		if (method.equals(OPTIONS)) {
-			rb.header(ACCESS_CONTROL_REQUEST_METHOD, StringUtils.join(requestHttpMethods.toArray(), ", "));
-			rb.header(ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN);
-			rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
-		}
+		// if (method.equals(OPTIONS)) {
+			// rb.header(ACCESS_CONTROL_REQUEST_METHOD, StringUtils.join(requestHttpMethods.toArray(), ", "));
+			// rb.header(ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN);
+			// rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+		// }
 		rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
 
 		return rb.entity(obj).build();
@@ -1626,7 +1629,7 @@ public class FoodsResource {
 
 	@SuppressWarnings("unchecked")
 	private int updateIfModified(String key, String value, List<Bson> sets, int changes, Map<Integer, Map<String, Object>> original_values_map, Map<Integer, Map<String, Object>> toupdate_values_map, Map<String, Object> map) {
-		logger.error("[01;34m" + "key/value - " + key + ": " + ((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value") + "[00;00m");
+		logger.debug("[01;34m" + "key/value - " + key + ": " + ((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value") + "[00;00m");
 
 		if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value") != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("value").equals(((Map<String, Object>)original_values_map.get(map.get("code")).get(key)).get("value"))) {
 			sets.add(set("data.$." + key + ".value", ((Map<String, Object>)map.get(key)).get("value")));
@@ -1634,7 +1637,7 @@ public class FoodsResource {
 				sets.add(currentDate("data.$." + value));
 			}
 			++changes;
-			logger.error("[01;31mvalue changed: " + ((Map<String, Object>)map.get(key)).get("value") + "[00;00m");
+			logger.debug("[01;31mvalue changed: " + ((Map<String, Object>)map.get(key)).get("value") + "[00;00m");
 		}
 
 		if (((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("modified") != null && !((Map<String, Object>)toupdate_values_map.get(map.get("code")).get(key)).get("modified").equals(((Map<String, Object>)original_values_map.get(map.get("code")).get(key)).get("modified"))) {
