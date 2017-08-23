@@ -11,7 +11,7 @@ import java.sql.*;
 public class DBConnection {
 	private static final Logger logger = LogManager.getLogger(DBConnection.class);
 
-	public static Connection getConnections() throws SQLException, Exception, IOException {
+	public static Connection getConnection() throws SQLException, Exception, IOException {
 
 		Connection conn = null;
 

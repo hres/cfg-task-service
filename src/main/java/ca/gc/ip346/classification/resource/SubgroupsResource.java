@@ -40,7 +40,7 @@ public class SubgroupsResource {
 			// Context envCtx  = (Context)initCtx.lookup("java:comp/env");
 			// DataSource ds   = (DataSource)envCtx.lookup("jdbc/FoodDB");
 			// conn = ds.getConnection();
-			conn = DBConnection.getConnections();
+			conn = DBConnection.getConnection();
 		} catch(NamingException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {

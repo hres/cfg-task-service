@@ -87,7 +87,7 @@ public class FoodsResource {
 		collection  = mongoClient.getDatabase(MongoClientFactory.getDatabase()).getCollection(MongoClientFactory.getCollection());
 
 		try {
-			conn = DBConnection.getConnections();
+			conn = DBConnection.getConnection();
 		} catch(Exception e) {
 			// TODO: proper response to handle exceptions
 			logger.debug("[01;03;31m" + e.getMessage() + "[00;00;00m");

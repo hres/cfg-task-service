@@ -40,7 +40,7 @@ public class FlagsResource {
 
 	public FlagsResource() {
 		try {
-			conn = DBConnection.getConnections();
+			conn = DBConnection.getConnection();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} catch(IOException e) {
