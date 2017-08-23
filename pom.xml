@@ -16,7 +16,7 @@
 		<version.jersey>2.25.1</version.jersey>
 		<version.drools>6.5.0.Final</version.drools>
 		<version.junit>4.11</version.junit>
-		<version.log4j>2.8</version.log4j>
+		<version.log4j>2.8.2</version.log4j>
 	</properties>
 
 	<repositories>
