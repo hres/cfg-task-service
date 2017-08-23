@@ -46,7 +46,7 @@ public class RulesResource {
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getRules() {
 		map.put("message", "REST service to return rulesets");
-		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
 		Response response = ClientBuilder
 			.newClient()
@@ -67,7 +67,7 @@ public class RulesResource {
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response selectRules(@PathParam("id") String id) {
 		map.put("message", "REST service to return a particular ruleset");
-		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
 		Response response = ClientBuilder
 			.newClient()
@@ -85,7 +85,7 @@ public class RulesResource {
 	@POST
 	public Response createRules() {
 		map.put("message", "REST service to create new ruleset");
-		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 		return FoodsResource.getResponse(POST, Response.Status.OK, map);
 	}
 
@@ -96,7 +96,7 @@ public class RulesResource {
 	@Path("id")
 	public Response updateRules(@PathParam("id") String id) {
 		map.put("message", "REST service to update an existing ruleset");
-		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 		return FoodsResource.getResponse(PUT, Response.Status.OK, map);
 	}
 
@@ -109,7 +109,7 @@ public class RulesResource {
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteRules(@PathParam("id") String id) {
 		map.put("message", "REST service to delete an existing ruleset");
-		logger.error("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
 		Response response = ClientBuilder
 			.newClient()
