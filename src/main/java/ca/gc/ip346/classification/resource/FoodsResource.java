@@ -40,6 +40,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.StringUtils;
+import static org.apache.logging.log4j.Level.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -1597,20 +1598,20 @@ public class FoodsResource {
 		requestHttpMethods.add(DELETE);
 		requestHttpMethods.add(POST);
 
-		logger.debug("[01;03;31m" + StringUtils.join(allowedHttpOrigins.toArray(), ", ") + "[00;00m");
-		logger.debug("[01;03;31m" + StringUtils.join(allowedHttpHeaders.toArray(), ", ") + "[00;00m");
-		logger.debug("[01;03;31m" + StringUtils.join(allowedHttpMethods.toArray(), ", ") + "[00;00m");
+		logger.printf(DEBUG, "%s%-29s: %s%s", "[01;03;31m", ACCESS_CONTROL_ALLOW_ORIGIN,  StringUtils.join(allowedHttpOrigins.toArray(), ", "), "[00;00m");
+		logger.printf(DEBUG, "%s%-29s: %s%s", "[01;03;31m", ACCESS_CONTROL_ALLOW_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "), "[00;00m");
+		logger.printf(DEBUG, "%s%-29s: %s%s", "[01;03;31m", ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "), "[00;00m");
 
 		ResponseBuilder rb = Response.status(status);
-		rb.header(ACCESS_CONTROL_ALLOW_ORIGIN, StringUtils.join(allowedHttpOrigins.toArray(), ", "));
-		rb.header(ACCESS_CONTROL_ALLOW_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
-		rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "false");
-		rb.header(ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "));
-		// if (method.equals(OPTIONS)) {
-			// rb.header(ACCESS_CONTROL_REQUEST_METHOD, StringUtils.join(requestHttpMethods.toArray(), ", "));
-			// rb.header(ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN);
-			// rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
-		// }
+		rb.header(ACCESS_CONTROL_ALLOW_ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
+		rb.header(ACCESS_CONTROL_ALLOW_HEADERS,       StringUtils.join(allowedHttpHeaders.toArray(), ", "));
+		rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS,   "false");
+		rb.header(ACCESS_CONTROL_ALLOW_METHODS,       StringUtils.join(allowedHttpMethods.toArray(), ", "));
+		if (method.equals(OPTIONS)) {
+			rb.header(ACCESS_CONTROL_REQUEST_METHOD,  StringUtils.join(requestHttpMethods.toArray(), ", "));
+			rb.header(ACCESS_CONTROL_REQUEST_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
+			rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+		}
 		rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
 
 		return rb.entity(obj).build();
