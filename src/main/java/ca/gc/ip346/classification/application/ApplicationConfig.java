@@ -26,7 +26,7 @@ public class ApplicationConfig extends Application {
 
 		// or we can do it manually:
 		// resources.add(ca.gc.ip346.classification.provider.MyJacksonJsonProvider.class);
-		resources.add(ca.gc.ip346.classification.resource.CORSFilter.class);
+		resources.add(ca.gc.ip346.classification.cors.CORSFilter.class);
 		resources.add(ca.gc.ip346.classification.resource.FoodsResource.class);
 		resources.add(ca.gc.ip346.classification.resource.SubgroupsResource.class);
 		resources.add(ca.gc.ip346.classification.resource.GroupsResource.class);

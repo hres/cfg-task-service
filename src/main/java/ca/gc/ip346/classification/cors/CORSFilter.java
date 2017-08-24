@@ -1,4 +1,4 @@
-package ca.gc.ip346.classification.resource;
+package ca.gc.ip346.classification.cors;
 
 import static org.apache.logging.log4j.Level.DEBUG;
 
