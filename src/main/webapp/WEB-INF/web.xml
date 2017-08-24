@@ -6,12 +6,12 @@
 			<name>SESSIONID</name>
 		</cookie-config>
 	</session-config>
-	<resource-ref>
-		<description>Resource reference to a factory for java.sql.Connection instances that may be used for talking to a particular database that is configured in the &lt;Context&gt; configuration for the web application.</description>
-		<res-ref-name>jdbc/FoodDB</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-		<res-auth>Container</res-auth>
-	</resource-ref>
+	<!-- <resource-ref> -->
+		<!-- <description>Resource reference to a factory for java.sql.Connection instances that may be used for talking to a particular database that is configured in the &lt;Context&gt; configuration for the web application.</description> -->
+		<!-- <res-ref-name>jdbc/FoodDB</res-ref-name> -->
+		<!-- <res-type>javax.sql.DataSource</res-type> -->
+		<!-- <res-auth>Container</res-auth> -->
+	<!-- </resource-ref> -->
 
 	<!-- <security-constraint> -->
 		<!-- <web-resource-collection> -->
@@ -33,7 +33,7 @@
 
 	<!-- <filter> -->
 		<!-- <filter-name>CorsFilter</filter-name> -->
-		<!-- <filter-class>ca.gc.ip346.classification.resource.CORSFilter</filter-class> -->
+		<!-- <filter-class>ca.gc.ip346.classification.cors.CORSFilter</filter-class> -->
 	<!-- </filter> -->
 
 	<!-- <filter-mapping> -->

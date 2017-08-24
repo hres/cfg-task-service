@@ -590,7 +590,7 @@ public class FoodsResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response classifyDatasetPreflight(Dataset dataset) {
+	public Response classifyDatasetPreflightOne(Dataset dataset) {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
 		return getResponse(OPTIONS, Response.Status.OK, msg);
@@ -644,7 +644,7 @@ public class FoodsResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response classifyDatasetPreflight(String id) {
+	public Response classifyDatasetPreflightTwo(String id) {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
 		return getResponse(OPTIONS, Response.Status.OK, msg);
@@ -1573,46 +1573,49 @@ public class FoodsResource {
 		List<String> requestHttpMethods = null;
 
 		allowedHttpOrigins = new ArrayList<String>();
-		// allowedHttpOrigins.add("http://10.148.178.250");
 		allowedHttpOrigins.add("*");
+		// allowedHttpOrigins.add("http://10.148.178.250");
 
 		allowedHttpHeaders = new ArrayList<String>();
 		allowedHttpHeaders.add(ORIGIN);
-		allowedHttpHeaders.add(X_REQUESTED_WITH);
 		allowedHttpHeaders.add(CONTENT_TYPE);
-		allowedHttpHeaders.add(ACCEPT);
 		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_HEADERS);
 		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_METHODS);
 		allowedHttpHeaders.add(ACCESS_CONTROL_ALLOW_ORIGIN);
+		allowedHttpHeaders.add(X_REQUESTED_WITH);
+		allowedHttpHeaders.add(ACCEPT);
 		allowedHttpHeaders.add(AUTHORIZATION);
 
 		allowedHttpMethods = new ArrayList<String>();
 		allowedHttpMethods.add(GET);
 		allowedHttpMethods.add(POST);
-		allowedHttpMethods.add(PUT);
-		allowedHttpMethods.add(DELETE);
 		allowedHttpMethods.add(OPTIONS);
+		allowedHttpMethods.add(DELETE);
+		allowedHttpMethods.add(PUT);
 		allowedHttpMethods.add(HEAD);
 
 		requestHttpMethods = new ArrayList<String>();
-		requestHttpMethods.add(DELETE);
+		requestHttpMethods.add(GET);
 		requestHttpMethods.add(POST);
+		requestHttpMethods.add(OPTIONS);
+		requestHttpMethods.add(DELETE);
 
 		logger.printf(DEBUG, "%s%-29s: %s%s", "[01;03;31m", ACCESS_CONTROL_ALLOW_ORIGIN,  StringUtils.join(allowedHttpOrigins.toArray(), ", "), "[00;00m");
 		logger.printf(DEBUG, "%s%-29s: %s%s", "[01;03;31m", ACCESS_CONTROL_ALLOW_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "), "[00;00m");
 		logger.printf(DEBUG, "%s%-29s: %s%s", "[01;03;31m", ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "), "[00;00m");
 
 		ResponseBuilder rb = Response.status(status);
-		rb.header(ACCESS_CONTROL_ALLOW_ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
-		rb.header(ACCESS_CONTROL_ALLOW_HEADERS,       StringUtils.join(allowedHttpHeaders.toArray(), ", "));
-		rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS,   "false");
-		rb.header(ACCESS_CONTROL_ALLOW_METHODS,       StringUtils.join(allowedHttpMethods.toArray(), ", "));
-		if (method.equals(OPTIONS)) {
-			rb.header(ACCESS_CONTROL_REQUEST_METHOD,  StringUtils.join(requestHttpMethods.toArray(), ", "));
-			rb.header(ACCESS_CONTROL_REQUEST_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
-			rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
-		}
-		rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
+		// rb.header(                     ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
+		// rb.header(ACCESS_CONTROL_ALLOW_ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
+		// rb.header(ACCESS_CONTROL_ALLOW_HEADERS,       StringUtils.join(allowedHttpHeaders.toArray(), ", "));
+		// rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS,   "true");
+		// rb.header(ACCESS_CONTROL_ALLOW_METHODS,       StringUtils.join(allowedHttpMethods.toArray(), ", "));
+		// if (method.equals(OPTIONS)) {
+			// rb.header(ACCESS_CONTROL_REQUEST_METHOD,  StringUtils.join(requestHttpMethods.toArray(), ", "));
+			// rb.header(ACCESS_CONTROL_REQUEST_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
+			// rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+		// }
+		// rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
 
 		return rb.entity(obj).build();
 	}
