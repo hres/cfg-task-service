@@ -388,23 +388,23 @@ public class FoodsResource {
 
 			logger.debug("[01;31mUpdate: " + "casting property 'data' seems to have passed!" + "[00;00m");
 
-			if (!dataset.getName     ().equals(doc.get("name")    )) {
+			if (dataset.getName() != null && !dataset.getName().equals(doc.get("name"))) {
 				firstLevelSets.add(set("name", dataset.getName()));
 				++changes;
 			}
-			if (!dataset.getEnv      ().equals(doc.get("env")     )) {
+			if (dataset.getEnv() != null && !dataset.getEnv().equals(doc.get("env"))) {
 				firstLevelSets.add(set("env", dataset.getEnv()));
 				++changes;
 			}
-			if (!dataset.getOwner    ().equals(doc.get("owner")   )) {
+			if (dataset.getOwner() != null && !dataset.getOwner().equals(doc.get("owner"))) {
 				firstLevelSets.add(set("owner", dataset.getOwner()));
 				++changes;
 			}
-			if (!dataset.getStatus   ().equals(doc.get("status")  )) {
+			if (dataset.getStatus() != null && !dataset.getStatus().equals(doc.get("status"))) {
 				firstLevelSets.add(set("status", dataset.getStatus()));
 				++changes;
 			}
-			if (!dataset.getComments ().equals(doc.get("comments"))) {
+			if (dataset.getComments() != null && !dataset.getComments().equals(doc.get("comments"))) {
 				firstLevelSets.add(set("comments", dataset.getComments()));
 				++changes;
 			}
