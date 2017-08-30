@@ -193,6 +193,15 @@ public class FoodsResource {
 		return getResponse(POST, status, map);
 	}
 
+	@OPTIONS
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response getDatasetsPreflight() {
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "options-catch-all");
+		return getResponse(OPTIONS, Response.Status.OK, msg);
+	}
+
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
