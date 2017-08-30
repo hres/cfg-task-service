@@ -104,6 +104,7 @@ public class FoodsResource {
 	@OPTIONS
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getFoodListPreflight() {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
@@ -124,6 +125,7 @@ public class FoodsResource {
 	@OPTIONS
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response saveDatasetPreflight() {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
@@ -133,6 +135,7 @@ public class FoodsResource {
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* Map<String, Object> */ Response saveDataset(Dataset dataset) {
 		ResponseBuilder response = null;
 		Status status = null;
@@ -193,14 +196,14 @@ public class FoodsResource {
 		return getResponse(POST, status, map);
 	}
 
-	@OPTIONS
-	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Response getDatasetsPreflight() {
-		Map<String, String> msg = new HashMap<String, String>();
-		msg.put("message", "options-catch-all");
-		return getResponse(OPTIONS, Response.Status.OK, msg);
-	}
+	// @OPTIONS
+	// @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// public Response getDatasetsPreflight() {
+		// Map<String, String> msg = new HashMap<String, String>();
+		// msg.put("message", "options-catch-all");
+		// return getResponse(OPTIONS, Response.Status.OK, msg);
+	// }
 
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
