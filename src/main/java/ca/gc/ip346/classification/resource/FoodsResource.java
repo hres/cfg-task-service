@@ -838,7 +838,7 @@ public class FoodsResource {
 
 		// mongoClient.close();
 
-		String target = "http://" + request.getServerName() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
+		String target = "https://" + request.getServerName() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
 		Response response = ClientBuilder
 			.newClient()
 			.target(target)
