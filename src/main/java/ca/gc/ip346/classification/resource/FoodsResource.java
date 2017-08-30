@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -34,6 +35,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -82,6 +84,9 @@ public class FoodsResource {
 	private DatabaseMetaData meta                = null;
 	private MongoClient mongoClient              = null;
 	private MongoCollection<Document> collection = null;
+
+	@Context
+	private HttpServletRequest request;
 
 	public FoodsResource() {
 		mongoClient = MongoClientFactory.getMongoClient();
@@ -209,6 +214,13 @@ public class FoodsResource {
 			list.add(map);
 			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 		}
+
+		logger.debug("[01;31m" + "request URI: " + RequestURI.getUri() + "[00;00m");
+		logger.debug("[01;31m" + "request URI: " + request.getRequestURI() + "[00;00m");
+		logger.debug("[01;31m" + "request URL: " + request.getRequestURL() + "[00;00m");
+		logger.debug("[01;31m" + "request Name: " + request.getServerName() + "[00;00m");
+		logger.debug("[01;31m" + "request Port: " + request.getServerPort() + "[00;00m");
+		logger.debug("[01;31m" + "request Protocol: " + request.getProtocol() + "[00;00m");
 
 		mongoClient.close();
 
@@ -823,6 +835,11 @@ public class FoodsResource {
 
 		logger.debug("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
 		logger.debug("[01;31m" + "request URI: " + RequestURI.getUri() + "[00;00m");
+		logger.debug("[01;31m" + "request URI: " + request.getRequestURI() + "[00;00m");
+		logger.debug("[01;31m" + "request URL: " + request.getRequestURL() + "[00;00m");
+		logger.debug("[01;31m" + "request Name: " + request.getServerName() + "[00;00m");
+		logger.debug("[01;31m" + "request Port: " + request.getServerPort() + "[00;00m");
+		logger.debug("[01;31m" + "request Protocol: " + request.getProtocol() + "[00;00m");
 
 		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
 		List<Object> dataArray = (List<Object>)(deserialized).get("data");
@@ -987,7 +1004,7 @@ public class FoodsResource {
 				while (rs.next()) {
 					list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
 				}
-				list.put(666, "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version"));
+				list.put(666, "new mongo connectivity test: " + mongoClient.getDatabase(MongoClientFactory.getDatabase()).runCommand(new Document("buildInfo", 1)).getString("version"));
 				conn.close();
 			} else {
 				list.put(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(), "PostgreSQL database connectivity test: failed - service unavailable");
@@ -999,13 +1016,13 @@ public class FoodsResource {
 			for (Response.Status status : Response.Status.values()) {
 				list.put(new Integer(status.getStatusCode()), status.getReasonPhrase());
 			}
-			list.put(666, "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version"));
+			list.put(666, "new mongo connectivity test: " + mongoClient.getDatabase(MongoClientFactory.getDatabase()).runCommand(new Document("buildInfo", 1)).getString("version"));
 		}
 
 		try {
-			logger.debug("[01;03;31m" + "mongo connectivity test: " + mongoClient.getAddress() + "[00;00m");
-			logger.debug("[01;03;31m" + "mongo connectivity test: " + mongoClient.getConnectPoint() + "[00;00m");
-			logger.debug("[01;03;31m" + "mongo connectivity test: " + mongoClient.getDB(MongoClientFactory.getDatabase()).command("buildInfo").getString("version") + "[00;00m");
+			logger.debug("[01;03;31m" + "new mongo connectivity test: " + mongoClient.getAddress() + "[00;00m");
+			logger.debug("[01;03;31m" + "new mongo connectivity test: " + mongoClient.getConnectPoint() + "[00;00m");
+			logger.debug("[01;03;31m" + "new mongo connectivity test: " + mongoClient.getDatabase(MongoClientFactory.getDatabase()).runCommand(new Document("buildInfo", 1)).getString("version") + "[00;00m");
 		} catch(Exception e) {
 			// TODO: proper response to handle exceptions
 			Map<String, String> msg = new HashMap<String, String>();
