@@ -839,6 +839,15 @@ public class FoodsResource {
 		// mongoClient.close();
 
 		String target = "https://" + request.getServerName() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
+
+		logger.debug("[01;31m" + "request URI      : " + RequestURI.getUri()      + "[00;00m");
+		logger.debug("[01;31m" + "request URI      : " + request.getRequestURI()  + "[00;00m");
+		logger.debug("[01;31m" + "request URL      : " + request.getRequestURL()  + "[00;00m");
+		logger.debug("[01;31m" + "request Name     : " + request.getServerName()  + "[00;00m");
+		logger.debug("[01;31m" + "request Port     : " + request.getServerPort()  + "[00;00m");
+		logger.debug("[01;31m" + "request Protocol : " + request.getProtocol()    + "[00;00m");
+		logger.debug("[01;31m" + "request target   : " + target                   + "[00;00m");
+
 		Response response = ClientBuilder
 			.newClient()
 			.target(target)
@@ -847,13 +856,6 @@ public class FoodsResource {
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
 		logger.debug("[01;31m" + "response status  : " + response.getStatusInfo() + "[00;00m");
-		logger.debug("[01;31m" + "request URI      : " + RequestURI.getUri()      + "[00;00m");
-		logger.debug("[01;31m" + "request URI      : " + request.getRequestURI()  + "[00;00m");
-		logger.debug("[01;31m" + "request URL      : " + request.getRequestURL()  + "[00;00m");
-		logger.debug("[01;31m" + "request Name     : " + request.getServerName()  + "[00;00m");
-		logger.debug("[01;31m" + "request Port     : " + request.getServerPort()  + "[00;00m");
-		logger.debug("[01;31m" + "request Protocol : " + request.getProtocol()    + "[00;00m");
-		logger.debug("[01;31m" + "request target   : " + target                   + "[00;00m");
 
 		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
 		List<Object> dataArray = (List<Object>)(deserialized).get("data");
