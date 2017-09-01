@@ -1,0 +1,2 @@
+truncate canada_food_guide_food_item;
+drop table canada_food_guide_food_item;

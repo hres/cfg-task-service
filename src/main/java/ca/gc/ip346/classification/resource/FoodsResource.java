@@ -841,7 +841,7 @@ public class FoodsResource {
 		// String target = "http://" + request.getServerName() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
 		String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
 
-		logger.debug("[01;31m" + "request URI      : " + RequestURI.getUri()      + "[00;00m");
+		// logger.debug("[01;31m" + "request URI      : " + RequestURI.getUri()      + "[00;00m");
 		logger.debug("[01;31m" + "request URI      : " + request.getRequestURI()  + "[00;00m");
 		logger.debug("[01;31m" + "request URL      : " + request.getRequestURL()  + "[00;00m");
 		logger.debug("[01;31m" + "request target   : " + request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-") + "[00;00m");
