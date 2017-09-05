@@ -1,4 +1,4 @@
-\c cnfadm
-\i truncatedroptable.sql
-\i create_canada_food_guide_food_item.sql
-\i insertCFGDataFinal2015.sql
+/* \c cnfadm */
+/* \i truncatedroptable.sql */
+/* \i create_canada_food_guide_food_item.sql */
+/* \i insertCFGDataFinal2015.sql */
