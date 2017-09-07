@@ -28,5 +28,6 @@ public class CORSFilter implements ContainerResponseFilter {
 		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
 		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
 		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
 	}
 }
