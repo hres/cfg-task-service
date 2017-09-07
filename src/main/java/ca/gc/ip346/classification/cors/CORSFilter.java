@@ -22,8 +22,10 @@ public class CORSFilter implements ContainerResponseFilter {
 		responseContext.getHeaders().add("Access-Control-Allow-Headers",     "ORIGIN, CONTENT-TYPE, ACCEPT, AUTHORIZATION, ACCESS_CONTROL_ALLOW_ORIGIN, X-REQUESTED-WITH");
 		responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
 		responseContext.getHeaders().add("Access-Control-Allow-Methods",     "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-		responseContext.getHeaders().add("Access-Control-Max-Age",           "1209600");;
+		responseContext.getHeaders().add("Access-Control-Max-Age",           "1209600");
+		responseContext.getHeaders().add("Referrer-Policy",                  "no-referrer");
 
+		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
 		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
 		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
 	}
