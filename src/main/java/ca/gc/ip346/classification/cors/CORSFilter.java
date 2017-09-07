@@ -25,9 +25,9 @@ public class CORSFilter implements ContainerResponseFilter {
 		responseContext.getHeaders().add("Access-Control-Max-Age",           "1209600");
 		responseContext.getHeaders().add("Referrer-Policy",                  "no-referrer");
 
-		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
-		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
-		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
-		logger.printf(DEBUG, "%s%s%s\n", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
 	}
 }
