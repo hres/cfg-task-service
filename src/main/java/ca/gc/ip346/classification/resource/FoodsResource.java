@@ -1022,6 +1022,12 @@ public class FoodsResource {
 				while (rs.next()) {
 					list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
 				}
+				sql = ContentHandler.read("schema_test.sql", getClass());
+				stmt = conn.prepareStatement(sql); // Create PreparedStatement
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					list.put(rs.getInt("canada_food_guide_food_item_count"), rs.getString("canada_food_guide_food_item_desc"));
+				}
 				list.put(666, "new mongo connectivity test: " + mongoClient.getDatabase(MongoClientFactory.getDatabase()).runCommand(new Document("buildInfo", 1)).getString("version"));
 				conn.close();
 			} else {
