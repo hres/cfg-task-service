@@ -855,6 +855,7 @@ public class FoodsResource {
 			.target(target)
 			.path("/classify")
 			.request()
+			.accept(MediaType.APPLICATION_JSON)
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
 		logger.debug("[01;31m" + "response status  : " + response.getStatusInfo() + "[00;00m");
@@ -982,31 +983,7 @@ public class FoodsResource {
 			arr[0][j] = null;
 			arr[1][j] = null;
 		}
-//		 for (int l = 0; l < 18; ++l) {
-//			 for (int m = 2; m < 6; ++m) {
-//				 Integer key = arr[m][l];
-//				 if (key != null) {
-//					 System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 36 : 35, key, Response.Status.fromStatusCode(key).name());
-//				 } else {
-//					 System.out.printf(tamrof, "");
-//				 }
-//			 }
-//			 System.out.println();
-//		 }
-//		 System.out.println();
-//		 System.out.println();
-//		 for (int l = 0; l < 18; ++l) {
-//			 for (int m = 2; m < 6; ++m) {
-//				 Integer key = arr[m][l];
-//				 if (key != null) {
-//					 System.out.printf("[01;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
-//				 } else {
-//					 System.out.printf(tamrof, "");
-//				 }
-//			 }
-//			 System.out.println();
-//		 }
-//		 System.out.println();
+
 		for (int l = 0; l < 18; ++l) {
 			for (int m = 0; m < 2; ++m) {
 				Integer key = brr[m][l];
@@ -1022,12 +999,14 @@ public class FoodsResource {
 				while (rs.next()) {
 					list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
 				}
+
 				sql = ContentHandler.read("schema_test.sql", getClass());
 				stmt = conn.prepareStatement(sql); // Create PreparedStatement
 				rs = stmt.executeQuery();
 				while (rs.next()) {
 					list.put(rs.getInt("canada_food_guide_food_item_count"), rs.getString("canada_food_guide_food_item_desc"));
 				}
+
 				list.put(666, "new mongo connectivity test: " + mongoClient.getDatabase(MongoClientFactory.getDatabase()).runCommand(new Document("buildInfo", 1)).getString("version"));
 				conn.close();
 			} else {

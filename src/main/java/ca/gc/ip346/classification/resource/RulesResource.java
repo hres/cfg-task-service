@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
+// import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -27,8 +27,8 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 
 @Path("/rulesets")
-@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+// @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class RulesResource {
 	private static final Logger logger = LogManager.getLogger(RulesResource.class);
 	private Map<String, String> map = null;
@@ -44,7 +44,7 @@ public class RulesResource {
 	 * Sprint 5 - Build REST service to return rulesets
 	 */
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getRules() {
 		String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
@@ -57,6 +57,7 @@ public class RulesResource {
 			.target(target)
 			.path("/rulesets")
 			.request()
+			.accept(MediaType.APPLICATION_JSON)
 			.get();
 
 		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
@@ -67,7 +68,7 @@ public class RulesResource {
 	 */
 	@GET
 	@Path("/{id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response selectRules(@PathParam("id") String id) {
 		String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
@@ -110,7 +111,7 @@ public class RulesResource {
 	 */
 	@DELETE
 	@Path("/{id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteRules(@PathParam("id") String id) {
 		String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
