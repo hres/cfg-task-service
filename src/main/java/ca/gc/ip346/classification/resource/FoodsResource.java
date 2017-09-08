@@ -939,7 +939,7 @@ public class FoodsResource {
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getStatusCodes() {
 		Map<Integer, String> list = new HashMap<Integer, String>();
-		String sql = ContentHandler.read("connectivity_test.sql", getClass());
+		String sql = ContentHandler.read("schema_test.sql", getClass());
 
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		for (Response.Status obj : Response.Status.values()) {
@@ -997,14 +997,14 @@ public class FoodsResource {
 				PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
 				ResultSet rs = stmt.executeQuery();
 				while (rs.next()) {
-					list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
+					list.put(rs.getInt("canada_food_guide_food_item_count"), rs.getString("canada_food_guide_food_item_desc"));
 				}
 
-				sql = ContentHandler.read("schema_test.sql", getClass());
+				sql = ContentHandler.read("connectivity_test.sql", getClass());
 				stmt = conn.prepareStatement(sql); // Create PreparedStatement
 				rs = stmt.executeQuery();
 				while (rs.next()) {
-					list.put(rs.getInt("canada_food_guide_food_item_count"), rs.getString("canada_food_guide_food_item_desc"));
+					list.put(rs.getInt("canada_food_group_id"), rs.getString("canada_food_group_desc_e"));
 				}
 
 				list.put(666, "new mongo connectivity test: " + mongoClient.getDatabase(MongoClientFactory.getDatabase()).runCommand(new Document("buildInfo", 1)).getString("version"));
