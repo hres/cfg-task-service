@@ -48,6 +48,7 @@ import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.glassfish.jersey.client.ClientProperties;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
@@ -855,6 +856,7 @@ public class FoodsResource {
 			.target(target)
 			.path("/classify")
 			.request()
+			.property(ClientProperties.FOLLOW_REDIRECTS, Boolean.TRUE)
 			.accept(MediaType.APPLICATION_JSON)
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 

@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.glassfish.jersey.client.ClientProperties;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
@@ -57,6 +58,7 @@ public class RulesResource {
 			.target(target)
 			.path("/rulesets")
 			.request()
+			.property(ClientProperties.FOLLOW_REDIRECTS, Boolean.TRUE)
 			.accept(MediaType.APPLICATION_JSON)
 			.get();
 
