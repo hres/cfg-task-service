@@ -888,15 +888,14 @@ public class FoodsResource {
 		} catch(KeyManagementException kme) {
 		}
 
-		Response response =
-			ClientBuilder
+		Response response = ClientBuilder
 			.newBuilder()
 			.sslContext(sslcontext)
 			.build()
 			.target(target)
 			.path("/classify")
 			.request()
-			.property(ClientProperties.FOLLOW_REDIRECTS, Boolean.TRUE)
+			// .property(ClientProperties.FOLLOW_REDIRECTS, Boolean.TRUE)
 			.accept(MediaType.APPLICATION_JSON)
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
