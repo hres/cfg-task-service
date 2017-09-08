@@ -1,10 +1,27 @@
 package ca.gc.ip346.classification.resource;
 
+import static com.google.common.net.HttpHeaders.ACCEPT;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
+import static com.google.common.net.HttpHeaders.AUTHORIZATION;
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
+import static com.google.common.net.HttpHeaders.ORIGIN;
+import static com.google.common.net.HttpHeaders.X_REQUESTED_WITH;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.currentDate;
 import static com.mongodb.client.model.Updates.set;
+
+import static javax.ws.rs.HttpMethod.DELETE;
+import static javax.ws.rs.HttpMethod.GET;
+import static javax.ws.rs.HttpMethod.HEAD;
+import static javax.ws.rs.HttpMethod.OPTIONS;
+import static javax.ws.rs.HttpMethod.POST;
+import static javax.ws.rs.HttpMethod.PUT;
+
+import static org.apache.logging.log4j.Level.DEBUG;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -20,12 +37,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import static javax.ws.rs.HttpMethod.*;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -33,6 +57,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Context;
@@ -42,7 +67,6 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.StringUtils;
-import static org.apache.logging.log4j.Level.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -52,7 +76,6 @@ import org.glassfish.jersey.client.ClientProperties;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
-import static com.google.common.net.HttpHeaders.*;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -851,8 +874,25 @@ public class FoodsResource {
 		logger.debug("[01;31m" + "request Protocol : " + request.getProtocol()    + "[00;00m");
 		logger.debug("[01;31m" + "request target   : " + target                   + "[00;00m");
 
-		Response response = ClientBuilder
-			.newClient()
+		SSLContext sslcontext = null;
+		try {
+			sslcontext = SSLContext.getInstance("TLS");
+			sslcontext.init(null, new TrustManager[] {
+				new X509TrustManager() {
+					public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+					public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+					public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+				}
+			}, new java.security.SecureRandom());
+		} catch(NoSuchAlgorithmException nsae) {
+		} catch(KeyManagementException kme) {
+		}
+
+		Response response =
+			ClientBuilder
+			.newBuilder()
+			.sslContext(sslcontext)
+			.build()
 			.target(target)
 			.path("/classify")
 			.request()
@@ -1587,6 +1627,18 @@ public class FoodsResource {
 
 		return getResponse(GET, Response.Status.OK, list);
 	}
+
+	// public static Client IgnoreSSLClient() throws Exception {
+		// SSLContext sslcontext = SSLContext.getInstance("TLS");
+		// sslcontext.init(null, new TrustManager[] {
+			// new X509TrustManager() {
+				// public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+				// public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+				// public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+			// }
+		// }, new java.security.SecureRandom());
+		// return ClientBuilder.newBuilder().sslContext(sslcontext).hostnameVerifier((s1, s2) -> true).build();
+	// }
 
 	public static Response getResponse(String method, Response.Status status, Object obj) {
 		List<String> allowedHttpOrigins = null;
