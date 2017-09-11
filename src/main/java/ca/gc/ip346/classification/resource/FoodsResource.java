@@ -871,10 +871,11 @@ public class FoodsResource {
 		logger.debug("[01;31m" + "request Port     : " + request.getServerPort()  + "[00;00m");
 		logger.debug("[01;31m" + "request Protocol : " + request.getProtocol()    + "[00;00m");
 		logger.debug("[01;31m" + "request target   : " + target                   + "[00;00m");
+		logger.debug("[01;31m" + "adding SSL       : " + target                   + "[00;00m");
 
 		SSLContext sslContext = null;
 		try {
-			sslContext = SSLContext.getInstance("TLS");
+			sslContext = SSLContext.getInstance("SSL");
 			sslContext.init(null, new TrustManager[] {
 				new X509TrustManager() {
 					public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
@@ -1623,18 +1624,6 @@ public class FoodsResource {
 
 		return getResponse(GET, Response.Status.OK, list);
 	}
-
-	// public static Client IgnoreSSLClient() throws Exception {
-		// SSLContext sslcontext = SSLContext.getInstance("TLS");
-		// sslcontext.init(null, new TrustManager[] {
-			// new X509TrustManager() {
-				// public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
-				// public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
-				// public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
-			// }
-		// }, new java.security.SecureRandom());
-		// return ClientBuilder.newBuilder().sslContext(sslcontext).hostnameVerifier((s1, s2) -> true).build();
-	// }
 
 	public static Response getResponse(String method, Response.Status status, Object obj) {
 		List<String> allowedHttpOrigins = null;
