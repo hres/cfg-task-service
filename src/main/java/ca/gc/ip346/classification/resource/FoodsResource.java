@@ -57,7 +57,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Context;
@@ -72,7 +71,6 @@ import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import org.glassfish.jersey.client.ClientProperties;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
@@ -874,10 +872,10 @@ public class FoodsResource {
 		logger.debug("[01;31m" + "request Protocol : " + request.getProtocol()    + "[00;00m");
 		logger.debug("[01;31m" + "request target   : " + target                   + "[00;00m");
 
-		SSLContext sslcontext = null;
+		SSLContext sslContext = null;
 		try {
-			sslcontext = SSLContext.getInstance("TLS");
-			sslcontext.init(null, new TrustManager[] {
+			sslContext = SSLContext.getInstance("TLS");
+			sslContext.init(null, new TrustManager[] {
 				new X509TrustManager() {
 					public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
 					public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
@@ -890,12 +888,11 @@ public class FoodsResource {
 
 		Response response = ClientBuilder
 			.newBuilder()
-			.sslContext(sslcontext)
+			.sslContext(sslContext)
 			.build()
 			.target(target)
 			.path("/classify")
 			.request()
-			// .property(ClientProperties.FOLLOW_REDIRECTS, Boolean.TRUE)
 			.accept(MediaType.APPLICATION_JSON)
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
