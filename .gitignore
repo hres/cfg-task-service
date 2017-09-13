@@ -1,7 +1,11 @@
 /build 
 /target
+/.classpath
+/.project
 /.settings
+classes
+tags
 *.sw[a-z]
 .exrc
-db.properties
 mongodb.properties
+db.properties
