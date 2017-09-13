@@ -1664,17 +1664,17 @@ public class FoodsResource {
 		logger.printf(DEBUG, "%s%-29s: %s%s", "[01;03;31m", ACCESS_CONTROL_ALLOW_METHODS, StringUtils.join(allowedHttpMethods.toArray(), ", "), "[00;00m");
 
 		ResponseBuilder rb = Response.status(status);
-		// rb.header(                     ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
-		// rb.header(ACCESS_CONTROL_ALLOW_ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
-		// rb.header(ACCESS_CONTROL_ALLOW_HEADERS,       StringUtils.join(allowedHttpHeaders.toArray(), ", "));
-		// rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS,   "true");
-		// rb.header(ACCESS_CONTROL_ALLOW_METHODS,       StringUtils.join(allowedHttpMethods.toArray(), ", "));
-		// if (method.equals(OPTIONS)) {
-			// rb.header(ACCESS_CONTROL_REQUEST_METHOD,  StringUtils.join(requestHttpMethods.toArray(), ", "));
-			// rb.header(ACCESS_CONTROL_REQUEST_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
-			// rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
-		// }
-		// rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
+//		 rb.header(                     ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
+//		 rb.header(ACCESS_CONTROL_ALLOW_ORIGIN,        StringUtils.join(allowedHttpOrigins.toArray(), ", "));
+//		 rb.header(ACCESS_CONTROL_ALLOW_HEADERS,       StringUtils.join(allowedHttpHeaders.toArray(), ", "));
+//		 rb.header(ACCESS_CONTROL_ALLOW_CREDENTIALS,   "true");
+//		 rb.header(ACCESS_CONTROL_ALLOW_METHODS,       StringUtils.join(allowedHttpMethods.toArray(), ", "));
+//		 if (method.equals(OPTIONS)) {
+//			 rb.header(ACCESS_CONTROL_REQUEST_METHOD,  StringUtils.join(requestHttpMethods.toArray(), ", "));
+//			 rb.header(ACCESS_CONTROL_REQUEST_HEADERS, StringUtils.join(allowedHttpHeaders.toArray(), ", "));
+//			 rb.header(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+//		 }
+//		 rb.header(ACCESS_CONTROL_MAX_AGE, "1209600");
 
 		return rb.entity(obj).build();
 	}
