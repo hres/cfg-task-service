@@ -700,7 +700,7 @@ public class FoodsResource {
 	@Path("/{id}/classify")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	@SuppressWarnings("unchecked")
 	public Response classifyDataset(@PathParam("id") String id) {
 		Map<String, Object> map = null;
