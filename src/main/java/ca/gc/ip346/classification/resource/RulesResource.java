@@ -16,6 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -62,7 +63,8 @@ public class RulesResource {
 			.accept(MediaType.APPLICATION_JSON)
 			.get();
 
-		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
+		// return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
+		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(new GenericType<HashMap<String, Object>>() {}));
 	}
 
 	/**
