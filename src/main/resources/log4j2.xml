@@ -7,7 +7,7 @@
 		</Console>
 
 		<!--  OPTION#1: Use standard syslog and add fields with LoggerFields -->
-		<Syslog name="syslog" format="RFC5424" host="myhost" port="514"
+		<Syslog name="syslog" format="RFC5424" host="java-dev.hres.ca" port="514"
 				protocol="UDP" appName="testlog4j" includeMDC="false" mdcId="testlog4j"
 				facility="LOCAL0" enterpriseNumber="18060" newLine="false"
 				messageId="Audit">
@@ -21,7 +21,7 @@
 		</Syslog>
 
 		<!--  OPTION#2: Use socket with explicit pattern -->
-		<Socket name="syslogsocket" host="myhost" port="514" protocol="UDP">
+		<Socket name="syslogsocket" host="java-dev.hres.ca" port="514" protocol="UDP">
 			<PatternLayout
 					pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
 					&quot;thread&quot;:&quot;%t&quot;,
