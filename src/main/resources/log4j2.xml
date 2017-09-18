@@ -2,20 +2,20 @@
 <Configuration status="warn">
 
 	<Appenders>
-		<Console name="console" target="SYSTEM_OUT">
+		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="TOCONSOLE %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
 		</Console>
 
-		<!--  OPTION#1: Use standard syslog and add fields with LoggerFields -->
-		<Syslog name="syslog" format="RFC5424" host="localhost" port="514"
+		<!--  OPTION#1: Use standard Syslog and add fields with LoggerFields -->
+		<Syslog name="Syslog" format="RFC5424" host="localhost" port="514"
 				protocol="UDP" appName="testlog4j" includeMDC="false" mdcId="testlog4j"
 				facility="LOCAL0" enterpriseNumber="18060" newLine="false"
 				messageId="Audit">
 			<LoggerFields>
-				<KeyValuePair key="thread" value="%t"/>
-				<KeyValuePair key="priority" value="%p"/>
-				<KeyValuePair key="category" value="%c"/>
-				<KeyValuePair key="exception" value="%ex"/>
+				<KeyValuePair key="thread"    value="%t"  />
+				<KeyValuePair key="priority"  value="%p"  />
+				<KeyValuePair key="category"  value="%c"  />
+				<KeyValuePair key="exception" value="%ex" />
 			</LoggerFields>
 
 		</Syslog>
@@ -30,15 +30,15 @@
 					&quot;exception&quot;:&quot;%exception&quot;
 					}%n"
 				/>
-		</Socket>            
+		</Socket>
 
 	</Appenders>
 
 	<Loggers>
-		<Root level="warn">
-			<AppenderRef ref="console"/>
-			<AppenderRef ref="syslog"/>
+		<Root level="TRACE">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="Syslog"/>
 		</Root>
-	</Loggers>    
+	</Loggers>
 
 </Configuration>
