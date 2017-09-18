@@ -95,7 +95,7 @@ import ca.gc.ip346.classification.model.RecipeRolled;
 import ca.gc.ip346.util.ClassificationProperties;
 import ca.gc.ip346.util.DBConnection;
 import ca.gc.ip346.util.MongoClientFactory;
-import ca.gc.ip346.util.RequestURI;
+import ca.gc.ip346.util.RequestURL;
 
 @Path("/datasets")
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -250,9 +250,9 @@ public class FoodsResource {
 			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 		}
 
-		logger.debug("[01;31m" + "request URI      : " + RequestURI.getUri()     + "[00;00m");
 		logger.debug("[01;31m" + "request URI      : " + request.getRequestURI() + "[00;00m");
 		logger.debug("[01;31m" + "request URL      : " + request.getRequestURL() + "[00;00m");
+		logger.debug("[01;31m" + "request -> URL   : " + RequestURL.getAddr()    + ClassificationProperties.getEndPoint() + "[00;00m");
 		logger.debug("[01;31m" + "request Name     : " + request.getServerName() + "[00;00m");
 		logger.debug("[01;31m" + "request Port     : " + request.getServerPort() + "[00;00m");
 		logger.debug("[01;31m" + "request Protocol : " + request.getProtocol()   + "[00;00m");
@@ -862,11 +862,12 @@ public class FoodsResource {
 		// mongoClient.close();
 
 		// String target = "http://" + request.getServerName() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
-		String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
+		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
+		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 
-		// logger.debug("[01;31m" + "request URI      : " + RequestURI.getUri()      + "[00;00m");
 		logger.debug("[01;31m" + "request URI      : " + request.getRequestURI()  + "[00;00m");
 		logger.debug("[01;31m" + "request URL      : " + request.getRequestURL()  + "[00;00m");
+		logger.debug("[01;31m" + "request -> URL   : " + RequestURL.getAddr()     + ClassificationProperties.getEndPoint() + "[00;00m");
 		logger.debug("[01;31m" + "request target   : " + request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-") + "[00;00m");
 		logger.debug("[01;31m" + "request Name     : " + request.getServerName()  + "[00;00m");
 		logger.debug("[01;31m" + "request Port     : " + request.getServerPort()  + "[00;00m");
@@ -930,7 +931,7 @@ public class FoodsResource {
 	public Response flagsDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
+			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint())
 			.path("/flags")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -945,7 +946,7 @@ public class FoodsResource {
 	public Response initDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
+			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint())
 			.path("/init")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -960,7 +961,7 @@ public class FoodsResource {
 	public Response adjustmentDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURI.getUri() + ClassificationProperties.getEndPoint())
+			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint())
 			.path("/adjustment")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -1076,6 +1077,8 @@ public class FoodsResource {
 			return getResponse(GET, Response.Status.GATEWAY_TIMEOUT, msg);
 		}
 		mongoClient.close();
+
+		logger.debug("[01;03;31m" + "END TEST" + "[00;00;00m");
 
 		// return getResponse(GET, Response.Status.OK, Response.Status.values());
 		return getResponse(GET, Response.Status.OK, list);
