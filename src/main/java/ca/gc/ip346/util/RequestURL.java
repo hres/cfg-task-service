@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class RequestURI {
+public class RequestURL {
 	private static Properties getProps() throws IOException {
 		Properties props = new Properties();
-		InputStream in   = RequestURI.class.getClassLoader().getResourceAsStream("ca/gc/ip346/util/requestUri.properties");
+		InputStream in   = RequestURL.class.getClassLoader().getResourceAsStream("ca/gc/ip346/util/requestUri.properties");
 		props.load(in);
 		in.close();
 		return props;
@@ -33,7 +33,7 @@ public class RequestURI {
 		return port;
 	}
 
-	public static String getUri() {
+	public static String getAddr() {
 		return getHost() + ":" + getPort();
 	}
 }
