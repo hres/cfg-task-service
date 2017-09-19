@@ -900,8 +900,8 @@ public class FoodsResource {
 
 		logger.debug("[01;31m" + "response status  : " + response.getStatusInfo() + "[00;00m");
 
-		// Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
-		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(new GenericType<HashMap<String, Object>>() {});
+		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
+		// Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(new GenericType<HashMap<String, Object>>() {});
 		List<Object> dataArray = (List<Object>)(deserialized).get("data");
 		for (Object obj : dataArray) {
 			for (String key : updateDatePair.keySet()) {
