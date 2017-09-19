@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+
 @ApplicationPath("/service")
 public class ApplicationConfig extends Application {
 
@@ -17,21 +18,28 @@ public class ApplicationConfig extends Application {
 
 		Set<Class<?>> resources = new HashSet<>();
 
-		System.out.println("[01;34mREST configuration starting: getClasses()[00;00m");
+		System.out.println("[01;34mFood Classification REST configuration starting: getClasses()[00;00m");
 
 		// features
 		// this will register Jackson JSON providers
 		resources.add(org.glassfish.jersey.jackson.JacksonFeature.class);
 		resources.add(com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider.class);
-
 		// or we can do it manually:
 		// resources.add(ca.gc.ip346.classification.provider.MyJacksonJsonProvider.class);
+
+		/**
+		 * Before you can use capabilities of the jersey-media-multipart module
+		 * in your client/server code, you need to register MultiPartFeature.
+		 */
+		resources.add(org.glassfish.jersey.media.multipart.MultiPartFeature.class);
+		resources.add(ca.gc.ip346.classification.resource.RestUploadService.class);
+
 		resources.add(ca.gc.ip346.classification.cors.CORSFilter.class);
 		resources.add(ca.gc.ip346.classification.resource.FoodsResource.class);
-		resources.add(ca.gc.ip346.classification.resource.SubgroupsResource.class);
-		resources.add(ca.gc.ip346.classification.resource.GroupsResource.class);
-		resources.add(ca.gc.ip346.classification.resource.FlagsResource.class);
-		resources.add(ca.gc.ip346.classification.resource.TierAdjustmentsResource.class);
+		// resources.add(ca.gc.ip346.classification.resource.SubgroupsResource.class);
+		// resources.add(ca.gc.ip346.classification.resource.GroupsResource.class);
+		// resources.add(ca.gc.ip346.classification.resource.FlagsResource.class);
+		// resources.add(ca.gc.ip346.classification.resource.TierAdjustmentsResource.class);
 		resources.add(ca.gc.ip346.classification.resource.RulesResource.class);
 
 		// ==> we could also choose packages, see below getProperties()
