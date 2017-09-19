@@ -859,7 +859,7 @@ public class FoodsResource {
 			}
 		}
 
-		// mongoClient.close();
+		mongoClient.close();
 
 		// String target = "http://" + request.getServerName() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
 		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
