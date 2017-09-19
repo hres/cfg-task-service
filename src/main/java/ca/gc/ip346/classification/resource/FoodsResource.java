@@ -873,7 +873,6 @@ public class FoodsResource {
 		logger.debug("[01;31m" + "request Port     : " + request.getServerPort()  + "[00;00m");
 		logger.debug("[01;31m" + "request Protocol : " + request.getProtocol()    + "[00;00m");
 		logger.debug("[01;31m" + "request target   : " + target                   + "[00;00m");
-		logger.debug("[01;31m" + "adding SSL       : " + target                   + "[00;00m");
 
 		SSLContext sslContext = null;
 		try {
