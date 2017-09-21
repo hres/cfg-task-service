@@ -1,5 +1,5 @@
 # PostgreSQL DB properties
 jdbc.driver=org.postgresql.Driver
-jdbc.url=jdbc:postgresql://localhost:5432/cnfadm?sslmode=require
+jdbc.url=jdbc:postgresql://localhost:5432/cfg_db_qa?sslmode=require
 jdbc.username=root
 jdbc.password=password
