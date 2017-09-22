@@ -1,9 +1,0 @@
-\c cnfadm
-\i truncatedroptable.sql
-\i create_canada_food_guide_food_item.sql
-\i insertCFGDataFinal2015.sql
-\i create_qa_db.sql
-\c cnfadm-qa
-\i truncatedroptable.sql
-\i create_canada_food_guide_food_item.sql
-\i insertCFGDataFinal2015.sql
