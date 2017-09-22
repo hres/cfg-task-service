@@ -322,6 +322,7 @@ public class FoodsResource {
 
 	@OPTIONS
 	@Path("/{id}")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteDatasetPreflight() {
