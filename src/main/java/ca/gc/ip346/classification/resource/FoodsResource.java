@@ -223,9 +223,9 @@ public class FoodsResource {
 	// @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	// public Response getDatasetsPreflight() {
-		// Map<String, String> msg = new HashMap<String, String>();
-		// msg.put("message", "options-catch-all");
-		// return getResponse(OPTIONS, Response.Status.OK, msg);
+	//     Map<String, String> msg = new HashMap<String, String>();
+	//     msg.put("message", "options-catch-all");
+	//     return getResponse(OPTIONS, Response.Status.OK, msg);
 	// }
 
 	@GET
