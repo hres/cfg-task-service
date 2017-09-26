@@ -1079,6 +1079,10 @@ public class FoodsResource {
 		mongoClient.close();
 
 		logger.debug("[01;03;31m" + "END TEST" + "[00;00;00m");
+		list.put(777, System.getProperty("java.version"));
+		list.put(778, System.getProperty("os.name"));
+		list.put(779, System.getProperty("os.version"));
+		list.put(780, System.getProperty("os.arch"));
 
 		// return getResponse(GET, Response.Status.OK, Response.Status.values());
 		return getResponse(GET, Response.Status.OK, list);
