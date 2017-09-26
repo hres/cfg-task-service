@@ -1079,6 +1079,7 @@ public class FoodsResource {
 		mongoClient.close();
 
 		logger.debug("[01;03;31m" + "END TEST" + "[00;00;00m");
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(System.getProperties()));
 		list.put(777, System.getProperty("java.version"));
 		list.put(778, System.getProperty("os.name"));
 		list.put(779, System.getProperty("os.version"));
