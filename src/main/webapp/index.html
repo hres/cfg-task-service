@@ -291,9 +291,27 @@
 			.padding {
 				padding-left:20pt;
 			}
+			div.ruleset {
+				background-color:blue;
+				padding:50pt;
+			}
 		</style>
 	</head>
 	<body>
+		<div class="ruleset">
+			<h1>Upload File</h1>
+			<form action="http://localhost:8080/cfg-task-service/service/upload" method="post" enctype="multipart/form-data">
+				<p>
+					Select a file:
+					<input type="file" name="file"/>
+				</p>
+				<input type="submit" value="Upload File"/>
+			</form>
+		</div>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
 		<form method="get" action="service/datasets/search">
 			<div style="width:85%">
 				<div style="">
