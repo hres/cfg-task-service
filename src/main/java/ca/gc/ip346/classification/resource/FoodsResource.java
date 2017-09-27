@@ -1078,7 +1078,7 @@ public class FoodsResource {
 		}
 		mongoClient.close();
 
-		logger.debug("[01;03;31m" + "END TEST" + "[00;00;00m");
+		logger.debug("[01;03;31m" + "END QA TEST" + "[00;00;00m");
 
 		// return getResponse(GET, Response.Status.OK, Response.Status.values());
 		return getResponse(GET, Response.Status.OK, list);
