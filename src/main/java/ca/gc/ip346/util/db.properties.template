@@ -3,3 +3,4 @@ jdbc.driver=org.postgresql.Driver
 jdbc.url=jdbc:postgresql://localhost:5432/cfg_db_dev?sslmode=require
 jdbc.username=root
 jdbc.password=password
+dropdb=false
