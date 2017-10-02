@@ -1,3 +1,4 @@
 \i truncatedroptable.sql
 \i create_canada_food_guide_food_item.sql
 \i insertCFGDataFinal2015.sql
+\i update_override_small_ra_adjustment.sql
