@@ -9,6 +9,7 @@
 
 	<security-constraint> 
 		<web-resource-collection> 
+			<web-resource-name>foo</web-resource-name> 
 			<url-pattern>/service/*</url-pattern> 
 		</web-resource-collection> 
 		<auth-constraint> 

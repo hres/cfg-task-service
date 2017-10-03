@@ -13,11 +13,9 @@ public class DBConnection {
 
 	public static Connection getConnection() throws SQLException, Exception, IOException {
 
-		Connection conn = null;
-
-		Properties props   = new Properties();
-		// FileInputStream in = new FileInputStream("db.properties");
-		InputStream in = DBConnection.class.getClassLoader().getResourceAsStream("ca/gc/ip346/util/db.properties");
+		Connection conn  = null;
+		Properties props = new Properties();
+		InputStream in   = DBConnection.class.getClassLoader().getResourceAsStream("ca/gc/ip346/util/db.properties");
 		props.load(in);
 		in.close();
 
