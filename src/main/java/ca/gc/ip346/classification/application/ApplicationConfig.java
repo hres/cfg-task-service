@@ -18,7 +18,7 @@ public class ApplicationConfig extends Application {
 
 		Set<Class<?>> resources = new HashSet<>();
 
-		System.out.println("[01;34mFood Classification REST services configuration starting: getClasses()[00;00m");
+		System.out.println("[01;34mFood Classification REST services (cfg-task-service) configuration starting: getClasses()[00;00m");
 
 		// features
 		// this will register Jackson JSON providers
@@ -43,7 +43,7 @@ public class ApplicationConfig extends Application {
 		resources.add(ca.gc.ip346.classification.resource.RulesResource.class);
 
 		// ==> we could also choose packages, see below getProperties()
-		System.out.println("[01;34mFood Classification REST services configuration ended successfully.[00;00m");
+		System.out.println("[01;34mFood Classification REST services (cfg-task-service) configuration ended successfully.[00;00m");
 
 		return resources;
 	}
