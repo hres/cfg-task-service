@@ -999,11 +999,6 @@ public class FoodsResource {
 			.append(len)
 			.append("s")
 			.toString();
-//		 String tamrof = new StringBuffer()
-//			 .append("%-")
-//			 .append(len + 6)
-//			 .append("s")
-//			 .toString();
 		Integer[][] arr = new Integer[6][18];
 		Integer[][] brr = new Integer[2][18];
 		Integer series = 0;
