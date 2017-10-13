@@ -10,7 +10,7 @@
 	"enable-basic-auth" : false,
 	"expose-token" : false,
 	"allow-any-hostname" : false,
-	"truststore": "/opt/tomcat/conf/ssl/tomcat.keystore",
+	"truststore": "/etc/tomcat8/ssl/tomcat.keystore",
 	"truststore-password": "password",
 	"token-minimum-time-to-live" : 10,
 	"min-time-between-jwks-requests" : 10,
