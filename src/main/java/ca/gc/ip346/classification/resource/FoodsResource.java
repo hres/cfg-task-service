@@ -1076,8 +1076,8 @@ public class FoodsResource {
 		logger.debug("[01;03;31m" + "END TEST" + "[00;00;00m");
 		// logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(System.getProperties()));
 		list.put(777, System.getProperty("java.runtime.name"));
-		list.put(778, System.getProperty("java.runtime.version"));
-		list.put(779, System.getProperty("java.version"));
+		list.put(778, System.getProperty("java.version"));
+		list.put(779, System.getProperty("catalina.home"));
 		list.put(780, System.getProperty("os.name"));
 		list.put(781, System.getProperty("os.version"));
 		list.put(782, System.getProperty("os.arch"));
