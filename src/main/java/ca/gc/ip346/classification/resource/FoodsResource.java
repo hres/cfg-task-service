@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
@@ -60,7 +61,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericType;
+// import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -645,11 +646,11 @@ public class FoodsResource {
 	}
 
 	@POST
-	@Path("/classify")
+	@Path("/classify/{rulesetId:.*}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response classifyDataset(Dataset dataset) {
+	public Response classifyDataset(@DefaultValue("0") @PathParam("rulesetId") Integer rulesetId, Dataset dataset) {
 		Response response = null;
 		Map<String, String> msg = new HashMap<String, String>();
 
@@ -671,7 +672,7 @@ public class FoodsResource {
 			 * second, with newly created ID, classify dataset
 			 *
 			 */
-			response = classifyDataset(id);
+			response = classifyDataset(id, rulesetId);
 
 			/**
 			 *
@@ -698,13 +699,16 @@ public class FoodsResource {
 		return getResponse(OPTIONS, Response.Status.OK, msg);
 	}
 
+	/**
+	 * TODO: ruleset ID
+	 */
 	@POST
-	@Path("/{id}/classify")
+	@Path("/{id}/classify{noop: (/)?}{rulesetId: ((?<=/)\\d+)?}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	@SuppressWarnings("unchecked")
-	public Response classifyDataset(@PathParam("id") String id) {
+	public Response classifyDataset(@PathParam("id") String id, @DefaultValue("0") @PathParam("rulesetId") Integer rulesetId) {
 		Map<String, Object> map = null;
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
 		List<Object> list = null;
@@ -894,7 +898,7 @@ public class FoodsResource {
 			.sslContext(sslContext)
 			.build()
 			.target(target)
-			.path("/classify")
+			.path("/classify/" + rulesetId)
 			.request()
 			.accept(MediaType.APPLICATION_JSON)
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
@@ -1081,6 +1085,7 @@ public class FoodsResource {
 		list.put(780, System.getProperty("os.name"));
 		list.put(781, System.getProperty("os.version"));
 		list.put(782, System.getProperty("os.arch"));
+		list.put(783, System.getProperty("RULESETS_HOME"));
 
 		// return getResponse(GET, Response.Status.OK, Response.Status.values());
 		return getResponse(GET, Response.Status.OK, list);

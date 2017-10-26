@@ -14,29 +14,43 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import ca.gc.ip346.util.ClassificationProperties;
+import ca.gc.ip346.util.RequestURL;
+
 @Path("")
 public class RestUploadService {
+	// import static org.apache.logging.log4j.Level.*;
+	private static final Logger logger = LogManager.getLogger(RestUploadService.class);
+	private String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 
-	/**
-	 * TODO: Inject FOLDER_PATH value from a properties file
-	 */
-	private static final String FOLDER_PATH = "/var/tmp/rulesets/";
+	private static final String RULESETS_ROOT = "dtables";
+	private static final String SLASH         = "/";
 
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response uploadFile(@FormDataParam("file") InputStream fis, @FormDataParam("file") FormDataContentDisposition fdcd) {
+	public Response uploadFile(@FormDataParam("file") InputStream fis, @FormDataParam("file") FormDataContentDisposition fdcd, @FormDataParam("rule") String rule) {
 		OutputStream outpuStream = null;
 		String fileName          = fdcd.getFileName();
-		String filePath          = FOLDER_PATH + fileName;
-		System.out.println("[01;03;31m" + "File Name: " + fdcd.getFileName() + "[00;00;00m");
+		Map<?, ?> externalPath   = (Map<?, ?>)getRulesetsHome().getEntity();
+		Map<?, ?> availableSlot  = (Map<?, ?>)getAvailableSlot().getEntity();
+		String home              = externalPath.get("rulesetshome").toString().replaceAll("^\\/", "").replaceAll("\\/$", "");
+		String slot              = availableSlot.get("slot").toString();
+		String filePath          = SLASH + home + SLASH + RULESETS_ROOT + SLASH + rule + SLASH + slot + SLASH + fileName;
+
+		logger.debug("[01;03;31m" + "File Name: " + fdcd.getFileName()   + "[00;00;00m");
+		logger.debug("[01;03;34m" + "File Path: " + filePath             + "[00;00;00m");
 
 		try {
 			int read     = 0;
@@ -57,8 +71,41 @@ public class RestUploadService {
 				}
 			}
 		}
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("message", "File Upload Successfully!!");
-		return FoodsResource.getResponse(POST, Response.Status.OK, map);
+
+		Map<String, Object> ruleset = new HashMap<String, Object>();
+		ruleset.put("active", true);
+		ruleset.put("isProd", false);
+		ruleset.put("name", "Ruleset " + slot);
+		ruleset.put("rulesetId", Integer.valueOf(slot));
+		Response response = ClientBuilder
+			.newClient()
+			.target(target)
+			.path("/rulesets")
+			.request()
+			.post(Entity.entity(ruleset, MediaType.APPLICATION_JSON));
+
+		return FoodsResource.getResponse(POST, Response.Status.OK, response.readEntity(Object.class));
+	}
+
+	public Response getRulesetsHome() {
+		Response response = ClientBuilder
+			.newClient()
+			.target(target)
+			.path("/rulesetshome")
+			.request()
+			.get();
+
+		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
+	}
+
+	public Response getAvailableSlot() {
+		Response response = ClientBuilder
+			.newClient()
+			.target(target)
+			.path("/slot")
+			.request()
+			.get();
+
+		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
 	}
 }

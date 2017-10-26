@@ -302,6 +302,10 @@
 			<h1>Upload File</h1>
 			<form action="http://localhost:8080/cfg-task-service/service/upload" method="post" enctype="multipart/form-data">
 				<p>
+					Ruleset name:
+					<input name="name" type="text"/>
+				</p>
+				<p>
 					Select a file:
 					<input name="file" type="file"/>
 					<input name="rule" type="hidden" value="tier"/>

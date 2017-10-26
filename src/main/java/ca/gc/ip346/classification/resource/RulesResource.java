@@ -51,7 +51,7 @@ public class RulesResource {
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response getRules() {
+	public Response getRulesets() {
 		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
 		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map.put("message", "REST service to return rulesets");
@@ -78,7 +78,7 @@ public class RulesResource {
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response selectRules(@PathParam("id") String id) {
+	public Response selectRuleset(@PathParam("id") String id) {
 		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
 		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map.put("message", "REST service to return a particular ruleset");
@@ -98,18 +98,18 @@ public class RulesResource {
 	 * Sprint 5 - Build REST service to create new ruleset
 	 */
 	@POST
-	public Response createRules() {
+	public Response createRuleset() {
 		map.put("message", "REST service to create new ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 		return FoodsResource.getResponse(POST, Response.Status.OK, map);
 	}
 
 	/**
-	 * Sprint 5 - Build REST service to update an existing ruleset
+	 * Sprint 10 - Build REST service to update an existing ruleset
 	 */
 	@PUT
 	@Path("id")
-	public Response updateRules(@PathParam("id") String id) {
+	public Response updateRuleset(@PathParam("id") String id) {
 		map.put("message", "REST service to update an existing ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 		return FoodsResource.getResponse(PUT, Response.Status.OK, map);
@@ -122,7 +122,7 @@ public class RulesResource {
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response deleteRules(@PathParam("id") String id) {
+	public Response deleteRuleset(@PathParam("id") String id) {
 		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
 		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map.put("message", "REST service to delete an existing ruleset");
@@ -136,5 +136,26 @@ public class RulesResource {
 			.delete();
 
 		return FoodsResource.getResponse(DELETE, Response.Status.OK, response.readEntity(Object.class));
+	}
+
+	/**
+	 * Sprint 10 - Build REST service to return the next available ruleset slot or null
+	 */
+	@GET
+	@Path("/slot")
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response getAvailableSlot() {
+		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
+		map.put("message", "REST service to return the next available ruleset slot or null");
+
+		Response response = ClientBuilder
+			.newClient()
+			.target(target)
+			.path("/slot")
+			.request()
+			.get();
+
+		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
 	}
 }
