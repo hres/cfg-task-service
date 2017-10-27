@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 // import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -36,12 +38,14 @@ import ca.gc.ip346.util.RequestURL;
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class RulesResource {
 	private static final Logger logger = LogManager.getLogger(RulesResource.class);
+	private String target = null;
 	private Map<String, String> map = null;
 
 	@Context
 	private HttpServletRequest request;
 
 	public RulesResource() {
+		target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map = new HashMap<String, String>();
 	}
 
@@ -52,8 +56,6 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getRulesets() {
-		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
-		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map.put("message", "REST service to return rulesets");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(target) + "[00;00m");
@@ -79,8 +81,6 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response selectRuleset(@PathParam("id") String id) {
-		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
-		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map.put("message", "REST service to return a particular ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
@@ -98,6 +98,9 @@ public class RulesResource {
 	 * Sprint 5 - Build REST service to create new ruleset
 	 */
 	@POST
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response createRuleset() {
 		map.put("message", "REST service to create new ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
@@ -108,11 +111,29 @@ public class RulesResource {
 	 * Sprint 10 - Build REST service to update an existing ruleset
 	 */
 	@PUT
-	@Path("id")
-	public Response updateRuleset(@PathParam("id") String id) {
-		map.put("message", "REST service to update an existing ruleset");
-		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
-		return FoodsResource.getResponse(PUT, Response.Status.OK, map);
+	@Path("/{id}")
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	public Response updateRuleset(@PathParam("id") String id, Map<String, Object> changes) {
+		if (changes != null) {
+			Response response = ClientBuilder
+				.newClient()
+				.target(target)
+				.path("/rulesets/" + id)
+				.request()
+				.put(Entity.entity(changes, MediaType.APPLICATION_JSON));
+
+			map.put("message", "REST service to update an existing ruleset");
+			logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+
+			return FoodsResource.getResponse(PUT, Response.Status.OK, response.readEntity(Object.class));
+			// return FoodsResource.getResponse(PUT, Response.Status.OK, response.readEntity(new GenericType<HashMap<String, Object>>() {}));
+		} else {
+			map.put("message", "Nothing to update");
+			return FoodsResource.getResponse(PUT, Response.Status.OK, map);
+		}
+
 	}
 
 	/**
@@ -123,8 +144,6 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteRuleset(@PathParam("id") String id) {
-		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
-		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map.put("message", "REST service to delete an existing ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
@@ -146,7 +165,6 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getAvailableSlot() {
-		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map.put("message", "REST service to return the next available ruleset slot or null");
 
 		Response response = ClientBuilder
