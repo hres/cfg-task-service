@@ -32,7 +32,7 @@ public class ApplicationConfig extends Application {
 		 * in your client/server code, you need to register MultiPartFeature.
 		 */
 		resources.add(org.glassfish.jersey.media.multipart.MultiPartFeature.class);
-		resources.add(ca.gc.ip346.classification.resource.RestUploadService.class);
+		resources.add(ca.gc.ip346.classification.resource.UploadRESTService.class);
 
 		resources.add(ca.gc.ip346.classification.cors.CORSFilter.class);
 		resources.add(ca.gc.ip346.classification.resource.FoodsResource.class);

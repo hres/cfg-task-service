@@ -295,6 +295,9 @@
 				background-color:blue;
 				padding:50pt;
 			}
+			table.rules tr td {
+				text-align:right;
+			}
 		</style>
 	</head>
 	<body>
@@ -303,14 +306,20 @@
 			<form action="http://localhost:8080/cfg-task-service/service/upload" method="post" enctype="multipart/form-data">
 				<p>
 					Ruleset name:
-					<input name="name" type="text"/>
+					<input name="rulesetname" type="text"/>
 				</p>
 				<p>
 					Select a file:
-					<input name="file" type="file"/>
-					<input name="rule" type="hidden" value="tier"/>
 				</p>
-				<input type="submit" value="Upload File"/>
+				<table class="rules">
+					<tr> <td> <label for="fop"       >fop        rules:&nbsp;</label> </td> <td> <input name="fop"        type="file"/> </td> </tr>
+					<tr> <td> <label for="init"      >init       rules:&nbsp;</label> </td> <td> <input name="init"       type="file"/> </td> </tr>
+					<tr> <td> <label for="refamt"    >refamt     rules:&nbsp;</label> </td> <td> <input name="refamt"     type="file"/> </td> </tr>
+					<tr> <td> <label for="shortcut"  >shortcut   rules:&nbsp;</label> </td> <td> <input name="shortcut"   type="file"/> </td> </tr>
+					<tr> <td> <label for="thresholds">thresholds rules:&nbsp;</label> </td> <td> <input name="thresholds" type="file"/> </td> </tr>
+					<tr> <td> <label for="tier"      >tier       rules:&nbsp;</label> </td> <td> <input name="tier"       type="file"/> </td> </tr>
+				</table>
+				<input type="submit" value="Upload Files"/>
 			</form>
 		</div>
 		<br/>
@@ -469,83 +478,83 @@
 						</div>
 						<div style="width:8cm" class="keepaligned">
 							<div style="">
-								<input type="checkbox" name="missing" value="refAmount"                 id ="reference-amount-missing"/>
+								<input type="checkbox" name="missing" value="refAmount"                id="reference-amount-missing"/>
 								<label for="reference-amount-missing">Reference Amount</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="cfgServing"                id ="cfg-serving-missing"/>
+								<input type="checkbox" name="missing" value="cfgServing"               id="cfg-serving-missing"/>
 								<label for="cfg-serving-missing">CFG Serving</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="tier4Serving"             id ="tier-4-serving-missing"/>
+								<input type="checkbox" name="missing" value="tier4Serving"             id="tier-4-serving-missing"/>
 								<label for="tier-4-serving-missing">Tier 4 Serving</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="energy"                     id ="energy-value-missing"/>
+								<input type="checkbox" name="missing" value="energy"                   id="energy-value-missing"/>
 								<label for="energy-value-missing">Energy Value</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="cnfCode"                   id ="cnf-code-missing"/>
+								<input type="checkbox" name="missing" value="cnfCode"                  id="cnf-code-missing"/>
 								<label for="cnf-code-missing">CNF Code</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="rollUp"                    id ="recipe-rolled-up-down-missing"/>
+								<input type="checkbox" name="missing" value="rollUp"                   id="recipe-rolled-up-down-missing"/>
 								<label for="recipe-rolled-up-down-missing">Recipe Rolled Up/Down</label>
 							</div>
 						</div>
 						<div style="width:6.5cm" class="keepaligned">
 							<div style="">
-								<input type="checkbox" name="missing" value="sodiumPer100g"              id ="sodium-value-missing"/>
+								<input type="checkbox" name="missing" value="sodiumPer100g"            id="sodium-value-missing"/>
 								<label for="sodium-value-missing">Sodium per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="sugarPer100g"               id ="sugar-value-missing"/>
+								<input type="checkbox" name="missing" value="sugarPer100g"             id="sugar-value-missing"/>
 								<label for="sugar-value-missing">Sugar per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="fatPer100g"                 id ="fat-value-missing"/>
+								<input type="checkbox" name="missing" value="fatPer100g"               id="fat-value-missing"/>
 								<label for="fat-value-missing">Fat per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="transfatPer100g"            id ="transfat-value-missing"/>
+								<input type="checkbox" name="missing" value="transfatPer100g"          id="transfat-value-missing"/>
 								<label for="transfat-value-missing">Transfat per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="satFatPer100g"              id ="satfat-value-missing"/>
+								<input type="checkbox" name="missing" value="satFatPer100g"            id="satfat-value-missing"/>
 								<label for="satfat-value-missing">Satfat per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox"                                                   id ="select-all-missing"/>
+								<input type="checkbox"                                                 id="select-all-missing"/>
 								<label for="select-all-missing">Select All</label>
 							</div>
 						</div>
 						<div style="width:9cm" class="keepaligned">
 							<div style="">
-								<input type="checkbox" name="missing" value="addedSodium"               id ="added-sodium-missing"/>
+								<input type="checkbox" name="missing" value="addedSodium"              id="added-sodium-missing"/>
 								<label for="added-sodium-missing">Contains Added Sodium</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="addedSugar"                id ="added-sugar-missing"/>
+								<input type="checkbox" name="missing" value="addedSugar"               id="added-sugar-missing"/>
 								<label for="added-sugar-missing">Contains Added Sugar</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="addedFat"                  id ="added-fat-missing"/>
+								<input type="checkbox" name="missing" value="addedFat"                 id="added-fat-missing"/>
 								<label for="added-fat-missing">Contains Added Fat</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="addedTransfat"             id ="added-transfat-missing"/>
+								<input type="checkbox" name="missing" value="addedTransfat"            id="added-transfat-missing"/>
 								<label for="added-transfat-missing">Contains Added Transfat</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="caffeine"                   id ="added-caffeine-missing"/>
+								<input type="checkbox" name="missing" value="caffeine"                 id="added-caffeine-missing"/>
 								<label for="added-caffeine-missing">Contains Caffeine</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="freeSugars"                id ="added-free-sugars-missing"/>
+								<input type="checkbox" name="missing" value="freeSugars"               id="added-free-sugars-missing"/>
 								<label for="added-free-sugars-missing">Contains Free Sugars</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="missing" value="sugarSubstitute"           id ="added-sugar-substitutes-missing"/>
+								<input type="checkbox" name="missing" value="sugarSubstitute"          id="added-sugar-substitutes-missing"/>
 								<label for="added-sugar-substitutes-missing">Contains Sugar Substitutes</label>
 							</div>
 						</div>
@@ -576,83 +585,83 @@
 						</div>
 						<div style="width:8cm" class="keepaligned">
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="refAmount"                    id ="reference-amount-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="refAmount"       id="reference-amount-last-updated"/>
 								<label for="reference-amount-last-updated">Reference Amount</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="cfgServing"                   id ="cfg-serving-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="cfgServing"      id="cfg-serving-last-updated"/>
 								<label for="cfg-serving-last-updated">CFG Serving</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="tier4Serving"                id ="tier-4-serving-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="tier4Serving"    id="tier-4-serving-last-updated"/>
 								<label for="tier-4-serving-last-updated">Tier 4 Serving</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="energy"                        id ="energy-value-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="energy"          id="energy-value-last-updated"/>
 								<label for="energy-value-last-updated">Energy Value</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="cnfCode"                      id ="cnf-code-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="cnfCode"         id="cnf-code-last-updated"/>
 								<label for="cnf-code-last-updated">CNF Code</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="rollUp"                       id ="recipe-rolled-up-down-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="rollUp"          id="recipe-rolled-up-down-last-updated"/>
 								<label for="recipe-rolled-up-down-last-updated">Recipe Rolled Up/Down</label>
 							</div>
 						</div>
 						<div style="width:6.5cm" class="keepaligned">
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="sodiumPer100g"                 id ="sodium-value-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="sodiumPer100g"   id="sodium-value-last-updated"/>
 								<label for="sodium-value-last-updated">Sodium per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="sugarPer100g"                  id ="sugar-value-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="sugarPer100g"    id="sugar-value-last-updated"/>
 								<label for="sugar-value-last-updated">Sugar per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="fatPer100g"                    id ="fat-value-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="fatPer100g"      id="fat-value-last-updated"/>
 								<label for="fat-value-last-updated">Fat per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="transfatPer100g"               id ="transfat-value-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="transfatPer100g" id="transfat-value-last-updated"/>
 								<label for="transfat-value-last-updated">Transfat per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="satFatPer100g"                 id ="satfat-value-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="satFatPer100g"   id="satfat-value-last-updated"/>
 								<label for="satfat-value-last-updated">Satfat per 100g</label>
 							</div>
 							<div style="">
-								<input type="checkbox"                                                               id ="select-all-last-updated"/>
+								<input type="checkbox"                                                 id="select-all-last-updated"/>
 								<label for="select-all-last-updated">Select All</label>
 							</div>
 						</div>
 						<div style="width:9cm" class="keepaligned">
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="addedSodium"                  id ="added-sodium-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="addedSodium"     id="added-sodium-last-updated"/>
 								<label for="added-sodium-last-updated">Contains Added Sodium</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="addedSugar"                   id ="added-sugar-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="addedSugar"      id="added-sugar-last-updated"/>
 								<label for="added-sugar-last-updated">Contains Added Sugar</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="addedFat"                     id ="added-fat-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="addedFat"        id="added-fat-last-updated"/>
 								<label for="added-fat-last-updated">Contains Added Fat</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="addedTransfat"                id ="added-transfat-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="addedTransfat"   id="added-transfat-last-updated"/>
 								<label for="added-transfat-last-updated">Contains Added Transfat</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="caffeine"                      id ="added-caffeine-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="caffeine"        id="added-caffeine-last-updated"/>
 								<label for="added-caffeine-last-updated">Contains Caffeine</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="freeSugars"                   id ="added-free-sugars-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="freeSugars"      id="added-free-sugars-last-updated"/>
 								<label for="added-free-sugars-last-updated">Contains Free Sugars</label>
 							</div>
 							<div style="">
-								<input type="checkbox" name="lastUpdateFilter" value="sugarSubstitute"              id ="added-sugar-substitutes-last-updated"/>
+								<input type="checkbox" name="lastUpdateFilter" value="sugarSubstitute" id="added-sugar-substitutes-last-updated"/>
 								<label for="added-sugar-substitutes-last-updated">Contains Sugar Substitutes</label>
 							</div>
 						</div>
