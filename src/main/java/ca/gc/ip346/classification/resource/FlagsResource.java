@@ -27,7 +27,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
+// import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 
 @Path("/flags")
@@ -52,7 +52,7 @@ public class FlagsResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<TieredFood> getFoodListForTest() {
 
 		TieredFood food1 = new TieredFood();
@@ -122,7 +122,7 @@ public class FlagsResource {
 	@GET
 	@Path("{foodId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<TieredFood> getFoodListFoodItem(@PathParam("foodId") Integer foodId) {
 		List<TieredFood> list = new ArrayList<TieredFood>();
 		// connect to oracle database
@@ -160,7 +160,7 @@ public class FlagsResource {
 	@GET
 	@Path("/group/{groupId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<TieredFood> getFoodListForGroup(@PathParam("groupId") Integer groupId) {
 		List<TieredFood> list = new ArrayList<TieredFood>();
 		// connect to oracle database

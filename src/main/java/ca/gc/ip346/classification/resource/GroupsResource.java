@@ -22,7 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
+// import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import ca.gc.ip346.classification.model.CanadaFoodGroup;
 import ca.gc.ip346.util.DBConnection;
@@ -55,7 +55,7 @@ public class GroupsResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable={SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable={SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodGroup> doGetCanadaFoodGroup() {
 		List<CanadaFoodGroup> groups = new ArrayList<CanadaFoodGroup>();
 		String sql = ContentHandler.read("canada_food_groups.sql", getClass());
@@ -88,7 +88,7 @@ public class GroupsResource {
 	@GET
 	@Path("{groupId: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable={SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable={SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodGroup> doGetCanadaFoodGroup(@PathParam("groupId") Integer groupId) {
 		List<CanadaFoodGroup> groups = new ArrayList<CanadaFoodGroup>();
 		String sql = ContentHandler.read("canada_food_group.sql", getClass());

@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.client.ClientProperties;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
+// import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 
 import ca.gc.ip346.util.ClassificationProperties;
@@ -54,7 +54,7 @@ public class RulesResource {
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getRulesets() {
 		map.put("message", "REST service to return rulesets");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
@@ -79,7 +79,7 @@ public class RulesResource {
 	@GET
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response selectRuleset(@PathParam("id") String id) {
 		map.put("message", "REST service to return a particular ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
@@ -100,7 +100,7 @@ public class RulesResource {
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response createRuleset() {
 		map.put("message", "REST service to create new ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
@@ -114,7 +114,7 @@ public class RulesResource {
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response updateRuleset(@PathParam("id") String id, Map<String, Object> changes) {
 		if (changes != null) {
 			Response response = ClientBuilder
@@ -142,7 +142,7 @@ public class RulesResource {
 	@DELETE
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteRuleset(@PathParam("id") String id) {
 		map.put("message", "REST service to delete an existing ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
@@ -163,7 +163,7 @@ public class RulesResource {
 	@GET
 	@Path("/slot")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getAvailableSlot() {
 		map.put("message", "REST service to return the next available ruleset slot or null");
 

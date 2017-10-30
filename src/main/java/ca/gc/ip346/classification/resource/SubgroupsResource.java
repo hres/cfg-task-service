@@ -22,7 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
+// import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import ca.gc.ip346.classification.model.CanadaFoodSubgroup;
 import ca.gc.ip346.util.DBConnection;
@@ -54,7 +54,7 @@ public class SubgroupsResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodSubgroup> doGetCanadaFoodSubgroup() {
 		List<CanadaFoodSubgroup> subgroups = new ArrayList<CanadaFoodSubgroup>();
 		String sql = ContentHandler.read("canada_food_subgroups.sql", getClass());
@@ -89,7 +89,7 @@ public class SubgroupsResource {
 	@GET
 	@Path("{subgroupId: \\d+?}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public List<CanadaFoodSubgroup> doGetCanadaFoodSubgroup(@PathParam("subgroupId") Integer subgroupId) {
 		List<CanadaFoodSubgroup> subgroups = new ArrayList<CanadaFoodSubgroup>();
 		String sql = ContentHandler.read("canada_food_subgroup.sql", getClass());

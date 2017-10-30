@@ -74,8 +74,8 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
+// import com.fasterxml.jackson.databind.SerializationFeature;
+// import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -128,7 +128,7 @@ public class FoodsResource {
 	@OPTIONS
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getFoodListPreflight() {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
@@ -138,7 +138,7 @@ public class FoodsResource {
 	@GET
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<CanadaFoodGuideFoodItem> */ Response getFoodList(@BeanParam CfgFilter search) {
 		String sql = ContentHandler.read("canada_food_guide_food_item.sql", getClass());
 		search.setSql(sql);
@@ -149,7 +149,7 @@ public class FoodsResource {
 	@OPTIONS
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response saveDatasetPreflight() {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
@@ -159,7 +159,7 @@ public class FoodsResource {
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* Map<String, Object> */ Response saveDataset(Dataset dataset) {
 		ResponseBuilder response = null;
 		Status status = null;
@@ -231,7 +231,7 @@ public class FoodsResource {
 
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, String>> */ Response getDatasets(@QueryParam("env") String env) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		MongoCursor<Document> cursorDocMap = collection.find(eq("env", env)).iterator();
@@ -266,7 +266,7 @@ public class FoodsResource {
 	@GET
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, Object>> */ Response getDataset(@PathParam("id") String id) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
@@ -325,7 +325,7 @@ public class FoodsResource {
 	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteDatasetPreflight() {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
@@ -335,7 +335,7 @@ public class FoodsResource {
 	@DELETE
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteDataset(@PathParam("id") String id) {
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
 
@@ -367,7 +367,7 @@ public class FoodsResource {
 
 	@DELETE
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteAllDatasets() {
 		collection.deleteMany(new Document());
 
@@ -383,7 +383,7 @@ public class FoodsResource {
 	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response updateDataset(@PathParam("id") String id, Dataset dataset) {
 		Map<Integer, Map<String, Object>> original_values_map = new HashMap<Integer, Map<String, Object>>();
 		Map<Integer, Map<String, Object>> toupdate_values_map = new HashMap<Integer, Map<String, Object>>();
@@ -638,7 +638,7 @@ public class FoodsResource {
 	@Path("/classify")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response classifyDatasetPreflightOne(Dataset dataset) {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
@@ -649,7 +649,7 @@ public class FoodsResource {
 	@Path("/classify/{rulesetId:.*}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response classifyDataset(@DefaultValue("0") @PathParam("rulesetId") Integer rulesetId, Dataset dataset) {
 		Response response = null;
 		Map<String, String> msg = new HashMap<String, String>();
@@ -692,7 +692,7 @@ public class FoodsResource {
 	@Path("/{id}/classify")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response classifyDatasetPreflightTwo(String id) {
 		Map<String, String> msg = new HashMap<String, String>();
 		msg.put("message", "options-catch-all");
@@ -931,7 +931,7 @@ public class FoodsResource {
 	@Path("/{id}/flags")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response flagsDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
@@ -946,7 +946,7 @@ public class FoodsResource {
 	@Path("/{id}/init")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response initDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
@@ -961,7 +961,7 @@ public class FoodsResource {
 	@Path("/{id}/adjustment")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response adjustmentDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
@@ -975,14 +975,14 @@ public class FoodsResource {
 	@POST
 	@Path("/{id}/commit")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public void commitDataset() {
 	}
 
 	@GET
 	@Path("/status")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getStatusCodes() {
 		Map<Integer, String> list = new HashMap<Integer, String>();
 		String sql = ContentHandler.read("schema_test.sql", getClass());
