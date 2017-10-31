@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -45,6 +46,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
@@ -988,11 +990,16 @@ public class FoodsResource {
 		String sql = ContentHandler.read("schema_test.sql", getClass());
 
 		Map<Integer, String> map = new HashMap<Integer, String>();
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(Response.Status.values()));
 		for (Response.Status obj : Response.Status.values()) {
 			map.put(obj.getStatusCode(), obj.name());
 		}
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map));
 		int len = 0;
-		for (Integer key : map.keySet()) {
+		Object[] keys = map.keySet().toArray();
+		Arrays.sort(keys);
+		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(keys));
+		for (Object key : keys) {
 			String value = map.get(key);
 			if (value.length() > len) {
 				len = value.length();
@@ -1003,29 +1010,29 @@ public class FoodsResource {
 			.append(len)
 			.append("s")
 			.toString();
-		Integer[][] arr = new Integer[6][18];
-		Integer[][] brr = new Integer[2][18];
+		Integer[][] arr = new Integer[11][30];
+		Integer[][] brr = new Integer[2][30];
 		Integer series = 0;
 		int i = 0;
 		int k = 0;
-		for (Integer key : map.keySet()) {
-			if (key / 100 != series) {
-				series = key / 100;
+		for (Object key : keys) {
+			if ((Integer)key / 100 != series) {
+				series = (Integer)key / 100;
 				i = 0;
 			}
 			if (series == 4) {
-				brr[0][i] = key;
+				brr[0][i] = (Integer)key;
 			} else {
-				brr[1][k++] = key;
+				brr[1][k++] = (Integer)key;
 			}
-			arr[series][i++] = key;
+			arr[series][i++] = (Integer)key;
 		}
-		for (int j = 0; j < 18; ++j) {
+		for (int j = 0; j < 20; ++j) {
 			arr[0][j] = null;
 			arr[1][j] = null;
 		}
 
-		for (int l = 0; l < 18; ++l) {
+		for (int l = 0; l < 19; ++l) {
 			for (int m = 0; m < 2; ++m) {
 				Integer key = brr[m][l];
 				System.out.printf("[01;03;%dm" + format + "[00;00m", l % 2 == 0 ? 34 : 31, key, Response.Status.fromStatusCode(key));
