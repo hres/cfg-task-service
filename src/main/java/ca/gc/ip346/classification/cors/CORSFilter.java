@@ -31,7 +31,7 @@ public class CORSFilter implements ContainerResponseFilter {
 		in.close();
 
 		if (in != null) {
-			asterisk = props.getProperty("protocol") + "://" + props.getProperty("host") + ":" + props.getProperty("port");
+			asterisk = props.getProperty("protocol") + "://" + props.getProperty("host"); // + ":" + props.getProperty("port");
 		}
 
 		response.getHeaders().add("Access-Control-Allow-Origin",      asterisk);
