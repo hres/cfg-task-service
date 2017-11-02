@@ -24,14 +24,23 @@ public class CORSFilter implements ContainerResponseFilter {
 
 	@Override
 	public void filter(final ContainerRequestContext request, final ContainerResponseContext response) throws IOException {
-		String asterisk  = "*";
+		StringBuffer asterisk  = new StringBuffer("*");
 		Properties props = new Properties();
 		InputStream in   = CORSFilter.class.getClassLoader().getResourceAsStream("ca/gc/ip346/classification/cors/cors.properties");
 		props.load(in);
 		in.close();
 
 		if (in != null) {
-			asterisk = props.getProperty("protocol") + "://" + props.getProperty("host"); // + ":" + props.getProperty("port");
+			asterisk
+				.delete(0, asterisk.length())
+				.append(props.getProperty("protocol"))
+				.append("://")
+				.append(props.getProperty("host"));
+			if (!props.getProperty("port").equals("80")) {
+				asterisk
+					.append(":")
+					.append(props.getProperty("port"));
+			}
 		}
 
 		response.getHeaders().add("Access-Control-Allow-Origin",      asterisk);

@@ -3,6 +3,7 @@ package ca.gc.ip346.classification.resource;
 import static javax.ws.rs.HttpMethod.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,6 +107,10 @@ public class UploadRESTService {
 				}
 				outputStream.flush();
 				outputStream.close();
+			} catch(FileNotFoundException e) {
+				Map<String, String> msg = new HashMap<String, String>();
+				msg.put("message", "Tomcat account needs permissions to write to filesystem");
+				return FoodsResource.getResponse(POST, Response.Status.UNAUTHORIZED, msg);
 			} catch(IOException e) {
 				e.printStackTrace();
 			} finally {
