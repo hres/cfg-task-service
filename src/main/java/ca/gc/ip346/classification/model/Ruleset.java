@@ -128,26 +128,26 @@ public class Ruleset {
 	}
 
 	public Boolean isFopEmpty() {
-		return fopZ.getFileName().isEmpty();
+		return fopZ        .getFileName().isEmpty();
 	}
 
 	public Boolean isInitEmpty() {
-		return initZ.getFileName().isEmpty();
+		return initZ       .getFileName().isEmpty();
 	}
 
 	public Boolean isRefamtEmpty() {
-		return refamtZ.getFileName().isEmpty();
+		return refamtZ     .getFileName().isEmpty();
 	}
 
 	public Boolean isShortcutEmpty() {
-		return shortcutZ.getFileName().isEmpty();
+		return shortcutZ   .getFileName().isEmpty();
 	}
 
 	public Boolean isThresholdsEmpty() {
-		return thresholdsZ.getFileName().isEmpty();
+		return thresholdsZ .getFileName().isEmpty();
 	}
 
 	public Boolean isTierEmpty() {
-		return tierZ.getFileName().isEmpty();
+		return tierZ       .getFileName().isEmpty();
 	}
 }
