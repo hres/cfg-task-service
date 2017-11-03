@@ -42,6 +42,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+/* GRIDFS */ // import java.io.ByteArrayInputStream;
+/* GRIDFS */ // import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -79,9 +81,14 @@ import org.bson.types.ObjectId;
 // import com.fasterxml.jackson.databind.SerializationFeature;
 // import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
+/* GRIDFS */ // import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+/* GRIDFS */ // import com.mongodb.client.gridfs.GridFSBucket;
+/* GRIDFS */ // import com.mongodb.client.gridfs.GridFSBuckets;
+/* GRIDFS */ // import com.mongodb.client.gridfs.model.GridFSFile;
+/* GRIDFS */ // import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 
 // import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideFoodItem;
@@ -110,6 +117,8 @@ public class FoodsResource {
 	private DatabaseMetaData meta                = null;
 	private MongoClient mongoClient              = null;
 	private MongoCollection<Document> collection = null;
+/* GRIDFS */ // 	private GridFSBucket bucket                  = null;
+/* GRIDFS */ // 	private GridFSUploadOptions options          = null;
 
 	@Context
 	private HttpServletRequest request;
@@ -117,6 +126,9 @@ public class FoodsResource {
 	public FoodsResource() {
 		mongoClient = MongoClientFactory.getMongoClient();
 		collection  = mongoClient.getDatabase(MongoClientFactory.getDatabase()).getCollection(MongoClientFactory.getCollection());
+/* GRIDFS */ // 		bucket = GridFSBuckets.create(mongoClient.getDatabase(MongoClientFactory.getDatabase()));
+/* GRIDFS */ // 		options = new GridFSUploadOptions().chunkSizeBytes(65536);
+/* GRIDFS */ // 		logger.debug("[01;03;31m" + "chunk: " + options.getChunkSizeBytes() + "[00;00m");
 
 		try {
 			conn = DBConnection.getConnection();
@@ -176,6 +188,9 @@ public class FoodsResource {
 				.append("owner",    dataset.getOwner())
 				.append("status",   dataset.getStatus())
 				.append("comments", dataset.getComments());
+/* GRIDFS */ // 			InputStream is = new ByteArrayInputStream(doc.toJson().getBytes());
+/* GRIDFS */ // 			ObjectId anotherId = bucket.uploadFromStream("experiment", is);
+/* GRIDFS */ // 			logger.debug("[01;03;31m" + "GridFS ID: " + anotherId + "[00;00m");
 			collection.insertOne(doc);
 			ObjectId id = (ObjectId)doc.get("_id");
 			collection.updateOne(
@@ -1082,7 +1097,6 @@ public class FoodsResource {
 			mongoClient.close();
 			return getResponse(GET, Response.Status.GATEWAY_TIMEOUT, msg);
 		}
-		mongoClient.close();
 
 		logger.debug("[01;03;31m" + "END TEST" + "[00;00;00m");
 		// logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(System.getProperties()));
@@ -1093,6 +1107,19 @@ public class FoodsResource {
 		list.put(781, System.getProperty("os.version"));
 		list.put(782, System.getProperty("os.arch"));
 		list.put(783, System.getProperty("RULESETS_HOME"));
+
+/* GRIDFS */ // 		bucket.find().forEach(
+/* GRIDFS */ // 				new Block<GridFSFile>() {
+/* GRIDFS */ // 					public void apply(final GridFSFile gridFSFile) {
+/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getObjectId() + "[00;00;00m");
+/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getFilename() + "[00;00;00m");
+/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getLength() + "[00;00;00m");
+/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getMetadata() + "[00;00;00m");
+/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.toString() + "[00;00;00m");
+/* GRIDFS */ // 					}
+/* GRIDFS */ // 				});
+
+		mongoClient.close();
 
 		// return getResponse(GET, Response.Status.OK, Response.Status.values());
 		return getResponse(GET, Response.Status.OK, list);
