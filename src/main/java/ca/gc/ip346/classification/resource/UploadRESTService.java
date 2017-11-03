@@ -110,6 +110,7 @@ public class UploadRESTService {
 			} catch(FileNotFoundException e) {
 				Map<String, String> msg = new HashMap<String, String>();
 				msg.put("message", "Tomcat account needs permissions to write to filesystem");
+				logger.debug("[01;03;35m" + msg.get("message") + "[00;00;00m");
 				return FoodsResource.getResponse(POST, Response.Status.UNAUTHORIZED, msg);
 			} catch(IOException e) {
 				e.printStackTrace();
