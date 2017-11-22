@@ -1,7 +1,7 @@
 {
 	"realm" : "cfg-classification",
 	"resource" : "cfg-task-service",
-	"auth-server-url" : "https://10.148.179.229:8443/auth",
+	"auth-server-url" : "https://keycloak.canadaeast.cloudapp.azure.com/auth",
 	"ssl-required" : "all",
 	"use-resource-role-mappings" : false,
 	"enable-cors" : true,
