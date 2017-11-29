@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 // import javax.ws.rs.OPTIONS;
@@ -20,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -35,11 +37,13 @@ import ca.gc.ip346.util.RequestURL;
 public class UploadRESTService {
 	// import static org.apache.logging.log4j.Level.*;
 	private static final Logger logger = LogManager.getLogger(UploadRESTService.class);
-	private String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 
 	private static final String RULESETS_ROOT = "dtables";
 	private static final String SLASH         = "/";
 	private static final String EXTENSION     = ".xls";
+
+	@Context
+	private HttpServletRequest request;
 
 	// @OPTIONS
 	// @Path("/upload")
@@ -56,6 +60,7 @@ public class UploadRESTService {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response uploadFile(@BeanParam Ruleset bean, @FormDataParam("rulesetname") String rulesetname) {
+		String target = buildTarget();
 		Map<?, ?> externalPath = (Map<?, ?>)getRulesetsHome().getEntity();
 		String home = externalPath.get("rulesetshome").toString().replaceAll("^\\/", "").replaceAll("\\/$", "");
 		Map<?, ?> availableSlot = (Map<?, ?>)getAvailableSlot().getEntity();
@@ -145,6 +150,7 @@ public class UploadRESTService {
 	}
 
 	public Response getRulesetsHome() {
+		String target = buildTarget();
 		Response response = ClientBuilder
 			.newClient()
 			.target(target)
@@ -156,6 +162,7 @@ public class UploadRESTService {
 	}
 
 	public Response getAvailableSlot() {
+		String target = buildTarget();
 		Response response = ClientBuilder
 			.newClient()
 			.target(target)
@@ -164,5 +171,14 @@ public class UploadRESTService {
 			.get();
 
 		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
+	}
+
+	private String buildTarget() {
+		if ((request.getServerPort() == 80) || (request.getServerPort() == 443)) {
+			return RequestURL.getHost() + ClassificationProperties.getEndPoint();
+		} else if ((request.getServerPort() == 8080) || (request.getServerPort() == 8443)) {
+			return RequestURL.getHost() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
+		}
+		return RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 	}
 }
