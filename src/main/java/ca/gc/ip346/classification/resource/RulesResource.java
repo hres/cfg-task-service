@@ -26,7 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.client.ClientProperties;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
+// import com.fasterxml.jackson.databind.SerializationFeature;
 // import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
 
@@ -38,14 +38,12 @@ import ca.gc.ip346.util.RequestURL;
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class RulesResource {
 	private static final Logger logger = LogManager.getLogger(RulesResource.class);
-	private String target = null;
 	private Map<String, String> map = null;
 
 	@Context
 	private HttpServletRequest request;
 
 	public RulesResource() {
-		target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 		map = new HashMap<String, String>();
 	}
 
@@ -56,6 +54,7 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getRulesets() {
+		String target = buildTarget();
 		map.put("message", "REST service to return rulesets");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(target) + "[00;00m");
@@ -81,6 +80,7 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response selectRuleset(@PathParam("id") String id) {
+		String target = buildTarget();
 		map.put("message", "REST service to return a particular ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
@@ -116,6 +116,7 @@ public class RulesResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response updateRuleset(@PathParam("id") String id, Map<String, Object> changes) {
+		String target = buildTarget();
 		if (changes != null) {
 			Response response = ClientBuilder
 				.newClient()
@@ -144,6 +145,7 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteRuleset(@PathParam("id") String id) {
+		String target = buildTarget();
 		map.put("message", "REST service to delete an existing ruleset");
 		logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
@@ -165,6 +167,7 @@ public class RulesResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response getAvailableSlot() {
+		String target = buildTarget();
 		map.put("message", "REST service to return the next available ruleset slot or null");
 
 		Response response = ClientBuilder
@@ -175,5 +178,14 @@ public class RulesResource {
 			.get();
 
 		return FoodsResource.getResponse(GET, Response.Status.OK, response.readEntity(Object.class));
+	}
+
+	private String buildTarget() {
+		if ((request.getServerPort() == 80) || (request.getServerPort() == 443)) {
+			return RequestURL.getHost() + ClassificationProperties.getEndPoint();
+		} else if ((request.getServerPort() == 8080) || (request.getServerPort() == 8443)) {
+			return RequestURL.getHost() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
+		}
+		return RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 	}
 }
