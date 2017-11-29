@@ -51,11 +51,15 @@ public class CORSFilter implements ContainerResponseFilter {
 		asterisk.delete(0, asterisk.length()).append("http");
 		if (httpServletRequest.getServerPort() == 443) {
 			asterisk.append("s");
-		}    if (httpServletRequest.getServerName().equals("52.235.40.44"))   asterisk.append("://lam-dev.canadaeast.cloudapp.azure.com");
-		else if (httpServletRequest.getServerName().equals("localhost"))      asterisk.append("://localhost");
-		else if (httpServletRequest.getServerName().equals("10.148.180.111")) asterisk.append("://10.148.180.111");
-		else if (httpServletRequest.getServerName().equals("10.148.180.231")) asterisk.append("://10.148.180.231");
-		else if (httpServletRequest.getServerName().equals("10.148.181.159")) asterisk.append("://10.148.181.159");
+		}    if (httpServletRequest.getServerName().equals("localhost"))                              asterisk.append("://never.gonna.happen");
+		else if (httpServletRequest.getServerName().equals("52.235.40.44"))                           asterisk.append("://lam-dev.canadaeast.cloudapp.azure.com");
+		else if (httpServletRequest.getServerName().equals("java-dev.canadaeast.cloudapp.azure.com")) asterisk.append("://lam-dev.canadaeast.cloudapp.azure.com");
+		else if (httpServletRequest.getServerName().equals("52.235.42.198"))                          asterisk.append("://lam-qa.canadaeast.cloudapp.azure.com");
+		else if (httpServletRequest.getServerName().equals("java-qa.canadaeast.cloudapp.azure.com"))  asterisk.append("://lam-qa.canadaeast.cloudapp.azure.com");
+		else if (httpServletRequest.getServerName().equals("10.148.180.111"))                         asterisk.append("://10.148.180.111");
+		else if (httpServletRequest.getServerName().equals("10.148.180.111"))                         asterisk.append("://localhost:4200");
+		else if (httpServletRequest.getServerName().equals("10.148.180.231"))                         asterisk.append("://10.148.180.231");
+		else if (httpServletRequest.getServerName().equals("10.148.181.159"))                         asterisk.append("://10.148.181.159");
 
 		response.getHeaders().add("Access-Control-Allow-Origin",      asterisk);
 		response.getHeaders().add("Access-Control-Allow-Headers",     "ORIGIN, CONTENT-TYPE, ACCEPT, AUTHORIZATION, ACCESS_CONTROL_ALLOW_ORIGIN, X-REQUESTED-WITH");
