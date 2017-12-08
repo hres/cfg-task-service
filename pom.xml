@@ -10,8 +10,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
 		<version.jdk>1.8</version.jdk>
-		<version.mvn.compiler>3.7.0</version.mvn.compiler>
+		<version.mvn.compiler.plugin>3.7.0</version.mvn.compiler.plugin>
 		<version.mvn.war.plugin>3.2.0</version.mvn.war.plugin>
+		<version.mvn.assembly.plugin>3.1.0</version.mvn.assembly.plugin>
+		<version.mvn.dependency.plugin>3.0.2</version.mvn.dependency.plugin>
+		<version.jackson>2.9.2</version.jackson>
 		<version.jersey>2.26</version.jersey>
 		<version.servlet.api>3.1.0</version.servlet.api>
 		<version.drools>6.5.0.Final</version.drools>
@@ -58,7 +61,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.mvn.compiler}</version>
+				<version>${version.mvn.compiler.plugin}</version>
 				<configuration>
 					<source>${version.jdk}</source>
 					<target>${version.jdk}</target>
@@ -144,8 +147,26 @@
 		<!-- <dependency> -->
 			<!-- <groupId>com.fasterxml.jackson.dataformat</groupId> -->
 			<!-- <artifactId>jackson-dataformat-xml</artifactId> -->
-			<!-- <version>2.9.2</version> -->
+			<!-- <version>${version.jackson}</version> -->
 		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
 
 		<!-- drools -->
 		<dependency>
@@ -197,8 +218,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver</artifactId>
-			<version>3.4.2</version>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.4.3</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
@@ -218,5 +239,17 @@
 			<!-- <artifactId>spring-web</artifactId> -->
 			<!-- <version>4.3.7.RELEASE</version> -->
 		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<version>${version.mvn.assembly.plugin}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>${version.mvn.dependency.plugin}</version>
+		</dependency>
 	</dependencies>
 </project>
