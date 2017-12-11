@@ -42,8 +42,13 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-/* GRIDFS */ // import java.io.ByteArrayInputStream;
-/* GRIDFS */ // import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -78,17 +83,22 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-// import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 // import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.google.gson.GsonBuilder;
-/* GRIDFS */ // import com.mongodb.Block;
+/* GRIDFS */ import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-/* GRIDFS */ // import com.mongodb.client.gridfs.GridFSBucket;
-/* GRIDFS */ // import com.mongodb.client.gridfs.GridFSBuckets;
-/* GRIDFS */ // import com.mongodb.client.gridfs.model.GridFSFile;
-/* GRIDFS */ // import com.mongodb.client.gridfs.model.GridFSUploadOptions;
+/* GRIDFS */ import com.mongodb.client.gridfs.GridFSBucket;
+/* GRIDFS */ import com.mongodb.client.gridfs.GridFSBuckets;
+import com.mongodb.client.gridfs.GridFSDownloadStream;
+import com.mongodb.client.gridfs.GridFSUploadStream;
+// import com.mongodb.client.gridfs.model.GridFSDownloadOptions;
+/* GRIDFS */ import com.mongodb.client.gridfs.model.GridFSFile;
+/* GRIDFS */ import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 
 // import ca.gc.ip346.classification.model.Added;
 import ca.gc.ip346.classification.model.CanadaFoodGuideFoodItem;
@@ -113,12 +123,13 @@ import ca.gc.ip346.util.RequestURL;
 public class FoodsResource {
 	private static final Logger logger = LogManager.getLogger(FoodsResource.class);
 
-	private Connection conn                      = null;
-	private DatabaseMetaData meta                = null;
-	private MongoClient mongoClient              = null;
-	private MongoCollection<Document> collection = null;
-/* GRIDFS */ // 	private GridFSBucket bucket                  = null;
-/* GRIDFS */ // 	private GridFSUploadOptions options          = null;
+	private Connection                conn        = null;
+	private DatabaseMetaData          meta        = null;
+	private MongoClient               mongoClient = null;
+	private MongoCollection<Document> collection  = null;
+	private GridFSBucket              bucket      = null;
+	private GridFSUploadOptions       uOptions    = null;
+	// private GridFSDownloadOptions     dOptions    = null;
 
 	@Context
 	private HttpServletRequest request;
@@ -126,9 +137,10 @@ public class FoodsResource {
 	public FoodsResource() {
 		mongoClient = MongoClientFactory.getMongoClient();
 		collection  = mongoClient.getDatabase(MongoClientFactory.getDatabase()).getCollection(MongoClientFactory.getCollection());
-/* GRIDFS */ // 		bucket = GridFSBuckets.create(mongoClient.getDatabase(MongoClientFactory.getDatabase()));
-/* GRIDFS */ // 		options = new GridFSUploadOptions().chunkSizeBytes(65536);
-/* GRIDFS */ // 		logger.debug("[01;03;31m" + "chunk: " + options.getChunkSizeBytes() + "[00;00m");
+		/* GRIDFS */ bucket = GridFSBuckets.create(mongoClient.getDatabase(MongoClientFactory.getDatabase()));
+		/* GRIDFS */ uOptions = new GridFSUploadOptions() /* .chunkSizeBytes(64512) */ .metadata(new Document("type", "presentation"));
+		/* GRIDFS */ // logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Current Chunk Size: ", uOptions.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
+		/* GRIDFS */ logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Using Default Size: ", bucket.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
 
 		try {
 			conn = DBConnection.getConnection();
@@ -188,9 +200,18 @@ public class FoodsResource {
 				.append("owner",    dataset.getOwner())
 				.append("status",   dataset.getStatus())
 				.append("comments", dataset.getComments());
-/* GRIDFS */ // 			InputStream is = new ByteArrayInputStream(doc.toJson().getBytes());
-/* GRIDFS */ // 			ObjectId anotherId = bucket.uploadFromStream("experiment", is);
-/* GRIDFS */ // 			logger.debug("[01;03;31m" + "GridFS ID: " + anotherId + "[00;00m");
+
+			/* GRIDFS */ InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes(StandardCharsets.UTF_8));
+			/* GRIDFS */ ObjectId anotherId = bucket /* .withChunkSizeBytes(64512) */ .uploadFromStream(dataset.getName() + " (" + dataset.getData().size() + ")", streamToUploadFrom, uOptions);
+			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + anotherId + "[00;00m");
+			/* GRIDFS */ logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Using Default Size: ", bucket.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
+
+			/* GRIDFS */ GridFSUploadStream uploadStream = bucket.openUploadStream(dataset.getName() + " {" + dataset.getData().size() + "}", uOptions);
+			/* GRIDFS */ uploadStream.write(doc.toJson().getBytes(StandardCharsets.UTF_8));
+			/* GRIDFS */ uploadStream.close();
+			/* GRIDFS */ ObjectId yetAnotherId = uploadStream.getObjectId();
+			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + yetAnotherId + "[00;00m");
+
 			collection.insertOne(doc);
 			ObjectId id = (ObjectId)doc.get("_id");
 			collection.updateOne(
@@ -306,9 +327,77 @@ public class FoodsResource {
 
 		if (!cursorDocMap.hasNext()) {
 			Map<String, String> msg = new HashMap<String, String>();
-			msg.put("message", "Dataset with ID " + id + " does not exist!");
+			msg.put("message", "Dataset with ID " + id + " does not exist in Non-GridFS!");
 
-			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist in Non-GridFS!" + "[00;00m");
+
+			/* GRIDFS */ // GridFSFile gridFSFile = bucket.find(new Document("_id", new ObjectId(id))).first();
+			/* GRIDFS */ // logger.debug(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(gridFSFile.getId()));
+
+			/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSMap = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+
+			/* GRIDFS */ ObjectMapper objectMapper = new ObjectMapper();
+			/* GRIDFS */ objectMapper
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_COMMENTS,                         true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_MISSING_VALUES,                   true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_NON_NUMERIC_NUMBERS,              true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_SINGLE_QUOTES,                    true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_TRAILING_COMMA,                   true)
+			/* GRIDFS */ 	.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS,           true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES,             true)
+			/* GRIDFS */ 	// .configure(Feature.AUTO_CLOSE_SOURCE,                      true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_YAML_COMMENTS,                    true)
+			/* GRIDFS */ 	// .enable(SerializationFeature.INDENT_OUTPUT)
+			/* GRIDFS */ ;
+			/* GRIDFS */ Dataset foo = null;
+			/* GRIDFS */ byte[] bytesToWriteTo = null;
+
+			/* GRIDFS */ if (cursorGridFSMap.hasNext()) {
+			/* GRIDFS */ 	logger.debug("[01;31m" + "Dataset with ID " + id + " does exist in GridFS!" + "[00;00m");
+			/* GRIDFS */ 	GridFSDownloadStream downloadStream = bucket /* .withChunkSizeBytes(64512) */ .openDownloadStream(new ObjectId(id));
+			/* GRIDFS */ 	int fileLength = (int)downloadStream.getGridFSFile().getLength();
+			/* GRIDFS */ 	logger.debug("[01;31m" + "with length: " + fileLength + "[00;00m");
+			/* GRIDFS */ 	bytesToWriteTo = new byte[fileLength];
+			/* GRIDFS */ 	downloadStream.read(bytesToWriteTo);
+			/* GRIDFS */ 	downloadStream.close();
+			if (downloadStream instanceof InputStream) logger.debug("Hello");
+			/* GRIDFS */ 	// try {
+			/* GRIDFS */ 		// foo = objectMapper
+			/* GRIDFS */ 			// .readValue(downloadStream, Dataset.class);
+			/* GRIDFS */ 	// } catch(IOException e) {
+			/* GRIDFS */ 		// e.printStackTrace();
+			/* GRIDFS */ 	// }
+
+			/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
+			/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .downloadToStream(new ObjectId(id), os);
+			// if (downloadStream instanceof InputStream) logger.debug("Hello " + os.toString());
+
+			/* GRIDFS */ 	try {
+			/* GRIDFS */ 		foo = objectMapper
+			/* GRIDFS */ 			// .enable(SerializationFeature.INDENT_OUTPUT)
+			/* GRIDFS */ 			.readValue(os.toString(), Dataset.class);
+			/* GRIDFS */ 			// .readValue(new String(bytesToWriteTo, StandardCharsets.UTF_8), Dataset.class);
+			/* GRIDFS */ 			// .readValue(new String(bytesToWriteTo, StandardCharsets.ISO_8859_1), Dataset.class);
+			/* GRIDFS */ 			// .readValue(new StringReader(new String(bytesToWriteTo, StandardCharsets.UTF_8)), Dataset.class);
+			/* GRIDFS */ 			// .readValue(new StringReader(new String(bytesToWriteTo, StandardCharsets.ISO_8859_1)), Dataset.class);
+			/* GRIDFS */ 	} catch(IOException e) {
+			/* GRIDFS */ 		e.printStackTrace();
+			/* GRIDFS */ 	}
+
+			/* GRIDFS */ 	return getResponse(GET, Response.Status.OK, foo);
+			/* GRIDFS */ }
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
 
 			mongoClient.close();
 
@@ -881,11 +970,12 @@ public class FoodsResource {
 			}
 		}
 
-		mongoClient.close();
+		// mongoClient.close();
 
 		// String target = "http://" + request.getServerName() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
 		// String target = request.getRequestURL().toString().replaceAll("(\\w+:\\/\\/[^/]+(:\\d+)?/[^/]+).*", "$1").replaceAll("-task-", "-classification-");
-		String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
+		// String target = RequestURL.getAddr() + ClassificationProperties.getEndPoint();
+		String target = buildTarget();
 
 		logger.debug("[01;31m" + "request URI      : " + request.getRequestURI()  + "[00;00m");
 		logger.debug("[01;31m" + "request URL      : " + request.getRequestURL()  + "[00;00m");
@@ -910,14 +1000,15 @@ public class FoodsResource {
 		} catch(KeyManagementException kme) {
 		}
 
+			// .sslContext(sslContext)
+			// .newBuilder()
+			// .build()
+			// .accept(MediaType.APPLICATION_JSON)
 		Response response = ClientBuilder
-			.newBuilder()
-			.sslContext(sslContext)
-			.build()
+			.newClient()
 			.target(target)
 			.path("/classify/" + rulesetId)
 			.request()
-			.accept(MediaType.APPLICATION_JSON)
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
 		logger.debug("[01;31m" + "response status  : " + response.getStatusInfo() + "[00;00m");
@@ -952,7 +1043,7 @@ public class FoodsResource {
 	public Response flagsDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint())
+			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint()) // .target(buildTarget());
 			.path("/flags")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -967,7 +1058,7 @@ public class FoodsResource {
 	public Response initDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint())
+			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint()) // .target(buildTarget());
 			.path("/init")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -982,7 +1073,7 @@ public class FoodsResource {
 	public Response adjustmentDataset(@PathParam("id") String id, Dataset dataset) {
 		Response response = ClientBuilder
 			.newClient()
-			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint())
+			.target(RequestURL.getAddr() + ClassificationProperties.getEndPoint()) // .target(buildTarget());
 			.path("/adjustment")
 			.request()
 			.post(Entity.entity(dataset, MediaType.APPLICATION_JSON));
@@ -1108,16 +1199,16 @@ public class FoodsResource {
 		list.put(782, System.getProperty("os.arch"));
 		list.put(783, System.getProperty("RULESETS_HOME"));
 
-/* GRIDFS */ // 		bucket.find().forEach(
-/* GRIDFS */ // 				new Block<GridFSFile>() {
-/* GRIDFS */ // 					public void apply(final GridFSFile gridFSFile) {
-/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getObjectId() + "[00;00;00m");
-/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getFilename() + "[00;00;00m");
-/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getLength() + "[00;00;00m");
-/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.getMetadata() + "[00;00;00m");
-/* GRIDFS */ // 						logger.debug("[01;03;35m" + gridFSFile.toString() + "[00;00;00m");
-/* GRIDFS */ // 					}
-/* GRIDFS */ // 				});
+		/* GRIDFS */ bucket.find().forEach(
+		/* GRIDFS */ 		new Block<GridFSFile>() {
+		/* GRIDFS */ 			public void apply(final GridFSFile gridFSFile) {
+		/* GRIDFS */ 				logger.debug("[01;03;35m1. " + gridFSFile.getObjectId() + "[00;00;00m");
+		/* GRIDFS */ 				logger.debug("[01;03;35m2. " + gridFSFile.getFilename() + "[00;00;00m");
+		/* GRIDFS */ 				logger.debug("[01;03;35m3. " + gridFSFile.getLength()   + "[00;00;00m");
+		/* GRIDFS */ 				logger.debug("[01;03;35m4. " + gridFSFile.getMetadata() + "[00;00;00m");
+		/* GRIDFS */ 				logger.debug("[01;03;35m5. " + gridFSFile.toString()    + "[00;00;00m");
+		/* GRIDFS */ 			}
+		/* GRIDFS */ 		});
 
 		mongoClient.close();
 
@@ -1754,5 +1845,14 @@ public class FoodsResource {
 		}
 
 		return changes;
+	}
+
+	private String buildTarget() {
+		if ((request.getServerPort() == 80) || (request.getServerPort() == 443)) {
+			return RequestURL.getHost() + ClassificationProperties.getEndPoint();
+		} else if ((request.getServerPort() == 8080) || (request.getServerPort() == 8443)) {
+			return RequestURL.getHost() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
+		}
+		return RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 	}
 }
