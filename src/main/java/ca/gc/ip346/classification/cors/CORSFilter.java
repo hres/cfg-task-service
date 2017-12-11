@@ -48,8 +48,8 @@ public class CORSFilter implements ContainerResponseFilter {
 			}
 		}
 
-		asterisk.delete(0, asterisk.length()).append("http");
-		if (httpServletRequest.getServerPort() == 443) {
+		asterisk.delete(0, asterisk.length()).append("http"); // asterisk.append("://localhost:4200");
+		if (httpServletRequest.getServerPort() == 443) { // what about 8443?
 			asterisk.append("s");
 		}    if (httpServletRequest.getServerName().equals("localhost"))                              asterisk.append("://never.gonna.happen");
 		else if (httpServletRequest.getServerName().equals("52.235.40.44"))                           asterisk.append("://lam-dev.canadaeast.cloudapp.azure.com");
@@ -57,7 +57,6 @@ public class CORSFilter implements ContainerResponseFilter {
 		else if (httpServletRequest.getServerName().equals("52.235.42.198"))                          asterisk.append("://lam-qa.canadaeast.cloudapp.azure.com");
 		else if (httpServletRequest.getServerName().equals("java-qa.canadaeast.cloudapp.azure.com"))  asterisk.append("://lam-qa.canadaeast.cloudapp.azure.com");
 		else if (httpServletRequest.getServerName().equals("10.148.180.111"))                         asterisk.append("://10.148.180.111");
-		else if (httpServletRequest.getServerName().equals("10.148.180.111"))                         asterisk.append("://localhost:4200");
 		else if (httpServletRequest.getServerName().equals("10.148.180.231"))                         asterisk.append("://10.148.180.231");
 		else if (httpServletRequest.getServerName().equals("10.148.181.159"))                         asterisk.append("://10.148.181.159");
 
@@ -68,11 +67,11 @@ public class CORSFilter implements ContainerResponseFilter {
 		response.getHeaders().add("Access-Control-Max-Age",           "1209600");
 		response.getHeaders().add("Referrer-Policy",                  "no-referrer");
 
-		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *",       "[00;00;00m");
-		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *",       "[00;00;00m");
-		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *",       "[00;00;00m");
-		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *",       "[00;00;00m");
-		logger.printf(DEBUG, "%s%s%s", "[01;03;33m", asterisk,                           "[00;00;00m");
-		logger.printf(DEBUG, "%s%s%s", "[01;03;33m", httpServletRequest.getServerName(), "[00;00;00m");
+		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		// logger.printf(DEBUG, "%s%s%s", "[01;03;33m", "Romario's CORS Magic!! - *", "[00;00;00m");
+		logger.printf(DEBUG, "%s%s%s%s", "[01;03;33m", "request: ", httpServletRequest.getServerName(), "[00;00;00m");
+		logger.printf(DEBUG, "%s%s%s%s", "[01;03;33m", "origin: ", asterisk,                            "[00;00;00m");
 	}
 }
