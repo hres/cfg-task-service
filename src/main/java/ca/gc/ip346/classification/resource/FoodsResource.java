@@ -94,9 +94,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 /* GRIDFS */ import com.mongodb.client.gridfs.GridFSBucket;
 /* GRIDFS */ import com.mongodb.client.gridfs.GridFSBuckets;
-import com.mongodb.client.gridfs.GridFSDownloadStream;
-import com.mongodb.client.gridfs.GridFSUploadStream;
-// import com.mongodb.client.gridfs.model.GridFSDownloadOptions;
+/* GRIDFS */ // import com.mongodb.client.gridfs.GridFSDownloadStream;
+/* GRIDFS */ import com.mongodb.client.gridfs.GridFSUploadStream;
+/* GRIDFS */ // import com.mongodb.client.gridfs.model.GridFSDownloadOptions;
 /* GRIDFS */ import com.mongodb.client.gridfs.model.GridFSFile;
 /* GRIDFS */ import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 
@@ -201,13 +201,13 @@ public class FoodsResource {
 				.append("status",   dataset.getStatus())
 				.append("comments", dataset.getComments());
 
-			/* GRIDFS */ InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes(StandardCharsets.UTF_8));
+			/* GRIDFS */ InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
 			/* GRIDFS */ ObjectId anotherId = bucket /* .withChunkSizeBytes(64512) */ .uploadFromStream(dataset.getName() + " (" + dataset.getData().size() + ")", streamToUploadFrom, uOptions);
 			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + anotherId + "[00;00m");
 			/* GRIDFS */ logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Using Default Size: ", bucket.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
 
 			/* GRIDFS */ GridFSUploadStream uploadStream = bucket.openUploadStream(dataset.getName() + " {" + dataset.getData().size() + "}", uOptions);
-			/* GRIDFS */ uploadStream.write(doc.toJson().getBytes(StandardCharsets.UTF_8));
+			/* GRIDFS */ uploadStream.write(doc.toJson().getBytes());
 			/* GRIDFS */ uploadStream.close();
 			/* GRIDFS */ ObjectId yetAnotherId = uploadStream.getObjectId();
 			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + yetAnotherId + "[00;00m");
@@ -272,6 +272,8 @@ public class FoodsResource {
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, String>> */ Response getDatasets(@QueryParam("env") String env) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(eq("env", env)).iterator(); // remove!!! 'eq("env", env)'
+
 		MongoCursor<Document> cursorDocMap = collection.find(eq("env", env)).iterator();
 		while (cursorDocMap.hasNext()) {
 			Map<String, String> map = new HashMap<String, String>();
@@ -288,6 +290,34 @@ public class FoodsResource {
 			list.add(map);
 			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 		}
+
+		logger.debug("[01;35mNumber of elements prior to .clear() call: " + list.size() + "[00;00m");
+		/* GRIDFS */ // list.clear(); // removes Non-GridFS store!!!
+		logger.debug("[01;35mNumber of elements after running .clear(): " + list.size() + "[00;00m");
+
+		/* GRIDFS */ while (cursorGridFSFile.hasNext()) {
+		/* GRIDFS */ 	GridFSFile file = cursorGridFSFile.next();
+		/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
+		/* GRIDFS */ 	ObjectMapper om = new ObjectMapper();
+		/* GRIDFS */ 	bucket.downloadToStream(file.getObjectId(), os);
+		/* GRIDFS */ 	Dataset ds = null;
+		/* GRIDFS */ 	Map<String, String> map = new HashMap<String, String>();
+		/* GRIDFS */ 	try {
+		/* GRIDFS */ 		ds = om.readValue(os.toString(), Dataset.class);
+		/* GRIDFS */ 		if (ds.getEnv().equals("prod")) {
+		/* GRIDFS */ 			logger.debug("[01;34mDataset ID: " + file.getObjectId() + " - " + file.getFilename() + "[00;00m");
+		/* GRIDFS */ 			map.put("id", file.getObjectId().toString());
+		/* GRIDFS */ 			if (ds.getName()         != null) map.put("name",         ds.getName()        .toString());
+		/* GRIDFS */ 			if (ds.getEnv()          != null) map.put("env",          ds.getEnv()         .toString());
+		/* GRIDFS */ 			if (ds.getOwner()        != null) map.put("owner",        ds.getOwner()       .toString());
+		/* GRIDFS */ 			if (ds.getStatus()       != null) map.put("status",       ds.getStatus()      .toString());
+		/* GRIDFS */ 			if (ds.getComments()     != null) map.put("comments",     ds.getComments()    .toString());
+		/* GRIDFS */ 			if (ds.getModifiedDate() != null) map.put("modifiedDate", ds.getModifiedDate().toString());
+		/* GRIDFS */ 			list.add(map);
+		/* GRIDFS */ 		}
+		/* GRIDFS */ 	} catch(IOException e) {
+		/* GRIDFS */ 	}
+		/* GRIDFS */ }
 
 		logger.debug("[01;31m" + "request URI      : " + request.getRequestURI() + "[00;00m");
 		logger.debug("[01;31m" + "request URL      : " + request.getRequestURL() + "[00;00m");
@@ -331,10 +361,7 @@ public class FoodsResource {
 
 			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist in Non-GridFS!" + "[00;00m");
 
-			/* GRIDFS */ // GridFSFile gridFSFile = bucket.find(new Document("_id", new ObjectId(id))).first();
-			/* GRIDFS */ // logger.debug(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(gridFSFile.getId()));
-
-			/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSMap = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+			/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
 
 			/* GRIDFS */ ObjectMapper objectMapper = new ObjectMapper();
 			/* GRIDFS */ objectMapper
@@ -351,17 +378,17 @@ public class FoodsResource {
 			/* GRIDFS */ 	// .enable(SerializationFeature.INDENT_OUTPUT)
 			/* GRIDFS */ ;
 			/* GRIDFS */ Dataset foo = null;
-			/* GRIDFS */ byte[] bytesToWriteTo = null;
+			/* GRIDFS */ // byte[] bytesToWriteTo = null;
 
-			/* GRIDFS */ if (cursorGridFSMap.hasNext()) {
+			/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
 			/* GRIDFS */ 	logger.debug("[01;31m" + "Dataset with ID " + id + " does exist in GridFS!" + "[00;00m");
-			/* GRIDFS */ 	GridFSDownloadStream downloadStream = bucket /* .withChunkSizeBytes(64512) */ .openDownloadStream(new ObjectId(id));
-			/* GRIDFS */ 	int fileLength = (int)downloadStream.getGridFSFile().getLength();
-			/* GRIDFS */ 	logger.debug("[01;31m" + "with length: " + fileLength + "[00;00m");
-			/* GRIDFS */ 	bytesToWriteTo = new byte[fileLength];
-			/* GRIDFS */ 	downloadStream.read(bytesToWriteTo);
-			/* GRIDFS */ 	downloadStream.close();
-			if (downloadStream instanceof InputStream) logger.debug("Hello");
+			/* GRIDFS */ 	// GridFSDownloadStream downloadStream = bucket /* .withChunkSizeBytes(64512) */ .openDownloadStream(new ObjectId(id));
+			/* GRIDFS */ 	// int fileLength = (int)downloadStream.getGridFSFile().getLength();
+			/* GRIDFS */ 	// logger.debug("[01;31m" + "with length: " + fileLength + "[00;00m");
+			/* GRIDFS */ 	// bytesToWriteTo = new byte[fileLength];
+			/* GRIDFS */ 	// downloadStream.read(bytesToWriteTo);
+			/* GRIDFS */ 	// downloadStream.close();
+			/* GRIDFS */ 	// if (downloadStream instanceof InputStream) logger.debug("Hello");
 			/* GRIDFS */ 	// try {
 			/* GRIDFS */ 		// foo = objectMapper
 			/* GRIDFS */ 			// .readValue(downloadStream, Dataset.class);
@@ -371,16 +398,11 @@ public class FoodsResource {
 
 			/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
 			/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .downloadToStream(new ObjectId(id), os);
-			// if (downloadStream instanceof InputStream) logger.debug("Hello " + os.toString());
 
 			/* GRIDFS */ 	try {
 			/* GRIDFS */ 		foo = objectMapper
-			/* GRIDFS */ 			// .enable(SerializationFeature.INDENT_OUTPUT)
+			/* GRIDFS */ 			.enable(SerializationFeature.INDENT_OUTPUT)
 			/* GRIDFS */ 			.readValue(os.toString(), Dataset.class);
-			/* GRIDFS */ 			// .readValue(new String(bytesToWriteTo, StandardCharsets.UTF_8), Dataset.class);
-			/* GRIDFS */ 			// .readValue(new String(bytesToWriteTo, StandardCharsets.ISO_8859_1), Dataset.class);
-			/* GRIDFS */ 			// .readValue(new StringReader(new String(bytesToWriteTo, StandardCharsets.UTF_8)), Dataset.class);
-			/* GRIDFS */ 			// .readValue(new StringReader(new String(bytesToWriteTo, StandardCharsets.ISO_8859_1)), Dataset.class);
 			/* GRIDFS */ 	} catch(IOException e) {
 			/* GRIDFS */ 		e.printStackTrace();
 			/* GRIDFS */ 	}
@@ -408,6 +430,7 @@ public class FoodsResource {
 			Map<String, Object> map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
 			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
+			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist in Non-GridFS!" + "[00;00m");
 
 			if (doc != null) {
 				map.put("id",           id);
@@ -1082,9 +1105,63 @@ public class FoodsResource {
 
 	@POST
 	@Path("/{id}/commit")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public void commitDataset() {
+	public Response commitDataset(@PathParam("id") String id, List<Map<String, Integer>> data) {
+		Response.Status status = Response.Status.OK;
+		Map<Integer, String> msg = new HashMap<Integer, String>();
+		if (conn != null) {
+			String sql = ContentHandler.read("commit.sql", getClass());
+			try {
+				conn.setAutoCommit(false);
+				PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
+				for (Map<String, Integer> item : data) {
+					Iterator<Map.Entry<String, Integer>> iterator = item.entrySet().iterator();
+					while (iterator.hasNext()) {
+						Map.Entry<String, Integer> entry = iterator.next();
+						if (entry.getKey().equals("cfgCode")) {
+							stmt.setInt(1, entry.getValue());
+							logger.debug("[01;03;31m" + "cfgCode: " + entry.getValue() + "[00;00m");
+						}
+						if (entry.getKey().equals("code")) {
+							stmt.setInt(2, entry.getValue());
+							logger.debug("[01;03;31m" + "code: "    + entry.getValue() + "[00;00m");
+						}
+					}
+					if (stmt.executeUpdate() > 0) {
+						msg.put(Response.Status.OK.getStatusCode(), "Successfully committed to PostgreSQL database");
+					} else {
+						msg.remove(Response.Status.OK.getStatusCode());
+						msg.put(Response.Status.NOT_MODIFIED.getStatusCode(), "Failed to commit to PostgreSQL database");
+						status = Response.Status.NOT_MODIFIED;
+						conn.rollback();
+						break;
+					}
+				}
+				stmt.close();
+				if (msg.containsKey(Response.Status.OK.getStatusCode()) && msg.size() == 1) {
+					conn.commit();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+				try {
+					conn.rollback();
+				} catch(SQLException f) {
+					f.printStackTrace();
+				}
+			} finally {
+				try {
+					conn.close();
+				} catch(SQLException g) {
+					g.printStackTrace();
+				}
+			}
+		} else {
+			msg.put(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(), "PostgreSQL database connectivity test: failed - service unavailable");
+			status = Response.Status.SERVICE_UNAVAILABLE;
+		}
+		return getResponse(GET, status, msg);
 	}
 
 	@GET
