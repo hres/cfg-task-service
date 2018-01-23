@@ -14,7 +14,7 @@
 		<version.mvn.war.plugin>3.2.0</version.mvn.war.plugin>
 		<version.mvn.assembly.plugin>3.1.0</version.mvn.assembly.plugin>
 		<version.mvn.dependency.plugin>3.0.2</version.mvn.dependency.plugin>
-		<version.jackson>2.9.2</version.jackson>
+		<version.jackson>2.9.3</version.jackson>
 		<version.jersey>2.26</version.jersey>
 		<version.servlet.api>3.1.0</version.servlet.api>
 		<version.drools>6.5.0.Final</version.drools>

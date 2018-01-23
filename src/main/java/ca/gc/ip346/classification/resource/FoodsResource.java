@@ -13,6 +13,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.currentDate;
 import static com.mongodb.client.model.Updates.set;
+import static com.mongodb.util.JSON.serialize;
 
 import static javax.ws.rs.HttpMethod.DELETE;
 import static javax.ws.rs.HttpMethod.GET;
@@ -75,10 +76,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.ws.soap.AddressingFeature.Responses;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bson.BsonObjectId;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -137,7 +141,7 @@ public class FoodsResource {
 	public FoodsResource() {
 		mongoClient = MongoClientFactory.getMongoClient();
 		collection  = mongoClient.getDatabase(MongoClientFactory.getDatabase()).getCollection(MongoClientFactory.getCollection());
-		/* GRIDFS */ bucket = GridFSBuckets.create(mongoClient.getDatabase(MongoClientFactory.getDatabase()));
+		/* GRIDFS */ bucket   = GridFSBuckets.create(mongoClient.getDatabase(MongoClientFactory.getDatabase()));
 		/* GRIDFS */ uOptions = new GridFSUploadOptions() /* .chunkSizeBytes(64512) */ .metadata(new Document("type", "presentation"));
 		/* GRIDFS */ // logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Current Chunk Size: ", uOptions.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
 		/* GRIDFS */ logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Using Default Size: ", bucket.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
@@ -194,33 +198,37 @@ public class FoodsResource {
 
 		if (dataset.getData() != null && dataset.getName() != null && dataset.getName() != null) {
 			Document doc = new Document()
-				.append("data",     dataset.getData())
-				.append("name",     dataset.getName())
-				.append("env",      dataset.getEnv())
-				.append("owner",    dataset.getOwner())
-				.append("status",   dataset.getStatus())
-				.append("comments", dataset.getComments());
+				.append("data",         dataset.getData())
+				.append("name",         dataset.getName())
+				.append("env",          dataset.getEnv())
+				.append("owner",        dataset.getOwner())
+				.append("status",       dataset.getStatus())
+				.append("comments",     dataset.getComments());
 
-			/* GRIDFS */ InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
+			/* GRIDFS */ // InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
+			/* GRIDFS */ InputStream streamToUploadFrom = new ByteArrayInputStream(serialize(doc).getBytes());
+			/* GRIDFS */ // InputStream streamToUploadFrom = new ByteArrayInputStream(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc).getBytes());
+			/* GRIDFS */ // logger.debug(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc));
 			/* GRIDFS */ ObjectId anotherId = bucket /* .withChunkSizeBytes(64512) */ .uploadFromStream(dataset.getName() + " (" + dataset.getData().size() + ")", streamToUploadFrom, uOptions);
 			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + anotherId + "[00;00m");
 			/* GRIDFS */ logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Using Default Size: ", bucket.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
 
 			/* GRIDFS */ GridFSUploadStream uploadStream = bucket.openUploadStream(dataset.getName() + " {" + dataset.getData().size() + "}", uOptions);
-			/* GRIDFS */ uploadStream.write(doc.toJson().getBytes());
+			/* GRIDFS */ // uploadStream.write(doc.toJson().getBytes());
+			/* GRIDFS */ uploadStream.write(serialize(doc).getBytes());
 			/* GRIDFS */ uploadStream.close();
 			/* GRIDFS */ ObjectId yetAnotherId = uploadStream.getObjectId();
 			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + yetAnotherId + "[00;00m");
 
 			collection.insertOne(doc);
 			ObjectId id = (ObjectId)doc.get("_id");
-			collection.updateOne(
-					eq("_id", id),
-					combine(
-						set("name", dataset.getName()),
-						set("comments", dataset.getComments()),
-						currentDate("modifiedDate"))
-					);
+			// collection.updateOne(
+					// eq("_id", id),
+					// combine(
+						// set("name", dataset.getName()),
+						// set("comments", dataset.getComments()),
+						// currentDate("modifiedDate"))
+					// );
 
 			logger.debug("[01;34mLast inserted Dataset id: " + id + "[00;00m");
 
@@ -272,7 +280,7 @@ public class FoodsResource {
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, String>> */ Response getDatasets(@QueryParam("env") String env) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(eq("env", env)).iterator(); // remove!!! 'eq("env", env)'
+		/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find().iterator(); // remove!!! 'eq("env", env)'
 
 		MongoCursor<Document> cursorDocMap = collection.find(eq("env", env)).iterator();
 		while (cursorDocMap.hasNext()) {
@@ -285,15 +293,17 @@ public class FoodsResource {
 			if (doc.get("owner"       ) != null) map.put("owner",        doc.get("owner"       ).toString());
 			if (doc.get("status"      ) != null) map.put("status",       doc.get("status"      ).toString());
 			if (doc.get("comments"    ) != null) map.put("comments",     doc.get("comments"    ).toString());
-			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.get("modifiedDate").toString());
+			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.getDate("modifiedDate").toString());
+
+			logger.debug("[01;34mModified Date: " + doc.getDate("modifiedDate") + "[00;00m");
 
 			list.add(map);
 			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 		}
 
-		logger.debug("[01;35mNumber of elements prior to .clear() call: " + list.size() + "[00;00m");
+		logger.debug("[01;35mNumber of elements prior to running .clear() call: " + list.size() + "[00;00m");
 		/* GRIDFS */ // list.clear(); // removes Non-GridFS store!!!
-		logger.debug("[01;35mNumber of elements after running .clear(): " + list.size() + "[00;00m");
+		logger.debug("[01;35mNumber of elements after    running .clear() call: " + list.size() + "[00;00m");
 
 		/* GRIDFS */ while (cursorGridFSFile.hasNext()) {
 		/* GRIDFS */ 	GridFSFile file = cursorGridFSFile.next();
@@ -305,14 +315,14 @@ public class FoodsResource {
 		/* GRIDFS */ 	try {
 		/* GRIDFS */ 		ds = om.readValue(os.toString(), Dataset.class);
 		/* GRIDFS */ 		if (ds.getEnv().equals("prod")) {
-		/* GRIDFS */ 			logger.debug("[01;34mDataset ID: " + file.getObjectId() + " - " + file.getFilename() + "[00;00m");
+		/* GRIDFS */ 			logger.debug("[01;34mDataset ID: " + file.getObjectId() + " -- " + file.getFilename() + "[00;00m");
 		/* GRIDFS */ 			map.put("id", file.getObjectId().toString());
-		/* GRIDFS */ 			if (ds.getName()         != null) map.put("name",         ds.getName()        .toString());
-		/* GRIDFS */ 			if (ds.getEnv()          != null) map.put("env",          ds.getEnv()         .toString());
-		/* GRIDFS */ 			if (ds.getOwner()        != null) map.put("owner",        ds.getOwner()       .toString());
-		/* GRIDFS */ 			if (ds.getStatus()       != null) map.put("status",       ds.getStatus()      .toString());
-		/* GRIDFS */ 			if (ds.getComments()     != null) map.put("comments",     ds.getComments()    .toString());
-		/* GRIDFS */ 			if (ds.getModifiedDate() != null) map.put("modifiedDate", ds.getModifiedDate().toString());
+		/* GRIDFS */ 			if (ds.getName        () != null) map.put("name"         , ds.getName        () .toString());
+		/* GRIDFS */ 			if (ds.getEnv         () != null) map.put("env"          , ds.getEnv         () .toString());
+		/* GRIDFS */ 			if (ds.getOwner       () != null) map.put("owner"        , ds.getOwner       () .toString());
+		/* GRIDFS */ 			if (ds.getStatus      () != null) map.put("status"       , ds.getStatus      () .toString());
+		/* GRIDFS */ 			if (ds.getComments    () != null) map.put("comments"     , ds.getComments    () .toString());
+		/* GRIDFS */ 			if (ds.getModifiedDate() != null) map.put("modifiedDate" , ds.getModifiedDate() .toString());
 		/* GRIDFS */ 			list.add(map);
 		/* GRIDFS */ 		}
 		/* GRIDFS */ 	} catch(IOException e) {
@@ -348,7 +358,7 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Invalid hexadecimal representation of ObjectId " + id + "");
 
-			System.out.println("[01;31m" + "Invalid hexadecimal representation of ObjectId " + id + "[00;00m");
+			System.out.println("[01;31m" + msg.get("message") + "[00;00m");
 
 			mongoClient.close();
 
@@ -359,7 +369,7 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist in Non-GridFS!");
 
-			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist in Non-GridFS!" + "[00;00m");
+			logger.debug("[01;31m" + "Dataset with ID " + id + " does not exist in Non-GridFS!" + "[00;00m");
 
 			/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
 
@@ -368,10 +378,10 @@ public class FoodsResource {
 			/* GRIDFS */ 	// .configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true)
 			/* GRIDFS */ 	// .configure(Feature.ALLOW_COMMENTS,                         true)
 			/* GRIDFS */ 	// .configure(Feature.ALLOW_MISSING_VALUES,                   true)
-			/* GRIDFS */ 	// .configure(Feature.ALLOW_NON_NUMERIC_NUMBERS,              true)
+			/* GRIDFS */ 	.configure(Feature.ALLOW_NON_NUMERIC_NUMBERS,              true)
 			/* GRIDFS */ 	// .configure(Feature.ALLOW_SINGLE_QUOTES,                    true)
 			/* GRIDFS */ 	// .configure(Feature.ALLOW_TRAILING_COMMA,                   true)
-			/* GRIDFS */ 	.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS,           true)
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS,           true)
 			/* GRIDFS */ 	// .configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES,             true)
 			/* GRIDFS */ 	// .configure(Feature.AUTO_CLOSE_SOURCE,                      true)
 			/* GRIDFS */ 	// .configure(Feature.ALLOW_YAML_COMMENTS,                    true)
@@ -381,7 +391,7 @@ public class FoodsResource {
 			/* GRIDFS */ // byte[] bytesToWriteTo = null;
 
 			/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
-			/* GRIDFS */ 	logger.debug("[01;31m" + "Dataset with ID " + id + " does exist in GridFS!" + "[00;00m");
+			/* GRIDFS */ 	logger.debug("[01;34m" + "Dataset with ID " + id + " does exist in GridFS!" + "[00;00m");
 			/* GRIDFS */ 	// GridFSDownloadStream downloadStream = bucket /* .withChunkSizeBytes(64512) */ .openDownloadStream(new ObjectId(id));
 			/* GRIDFS */ 	// int fileLength = (int)downloadStream.getGridFSFile().getLength();
 			/* GRIDFS */ 	// logger.debug("[01;31m" + "with length: " + fileLength + "[00;00m");
@@ -407,6 +417,7 @@ public class FoodsResource {
 			/* GRIDFS */ 		e.printStackTrace();
 			/* GRIDFS */ 	}
 
+			/* GRIDFS */ 	foo.setId(id);
 			/* GRIDFS */ 	return getResponse(GET, Response.Status.OK, foo);
 			/* GRIDFS */ }
 			/* GRIDFS */ 
@@ -430,7 +441,7 @@ public class FoodsResource {
 			Map<String, Object> map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
 			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
-			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist in Non-GridFS!" + "[00;00m");
+			logger.debug("[01;31m" + "Dataset with ID " + id + " does not exist in Non-GridFS!" + "[00;00m");
 
 			if (doc != null) {
 				map.put("id",           id);
@@ -472,7 +483,7 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist!");
 
-			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;34m" + msg.get("message") + "[00;00m");
 
 			mongoClient.close();
 
@@ -519,6 +530,7 @@ public class FoodsResource {
 		List<Object> list = null;
 		List<Bson> firstLevelSets = new ArrayList<Bson>();
 		int changes = 0;
+		Response.Status status = null;
 
 		// retrive the corresponding dataset with the given id
 		MongoCursor<Document> cursorDocMap = null;
@@ -531,22 +543,60 @@ public class FoodsResource {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Invalid hexadecimal representation of ObjectId " + id + "");
 
-			System.out.println("[01;31m" + "Invalid hexadecimal representation of ObjectId " + id + "[00;00m");
+			System.out.println("[01;31m" + msg.get("message") + "[00;00m");
 
 			mongoClient.close();
 
-			return getResponse(PUT, Response.Status.BAD_REQUEST, msg);
+			status = Response.Status.BAD_REQUEST;
+			return getResponse(PUT, status, msg);
 		}
 
 		if (!cursorDocMap.hasNext()) {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist!");
 
-			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;31m" + msg.get("message") + "[00;00m");
+			status = Response.Status.NOT_FOUND;
+
+			/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+			/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
+			/* GRIDFS */ 	logger.debug("[01;34m" + "Dataset with ID " + id + " does exist in GridFS!" + "[00;00m");
+			/* GRIDFS */ 
+			/* GRIDFS */ 	// TODO: Here is where you grab the provided payload and use the existing ID to replace the old dataset with the one being uploaded.
+			/* GRIDFS */ 	Document doc = new Document()
+			/* GRIDFS */ 		.append("data",         dataset.getData()     )
+			/* GRIDFS */ 		.append("name",         dataset.getName()     )
+			/* GRIDFS */ 		.append("env",          dataset.getEnv()      )
+			/* GRIDFS */ 		.append("owner",        dataset.getOwner()    )
+			/* GRIDFS */ 		.append("status",       dataset.getStatus()   )
+			/* GRIDFS */ 		.append("comments",     dataset.getComments() );
+			/* GRIDFS */ 
+			/* GRIDFS */ 	logger.debug("[01;34m" + "Dataset replacement:\n" + serialize(doc) + "[00;00m");
+			/* GRIDFS */ 	// InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
+			/* GRIDFS */ 	InputStream streamToUploadFrom = new ByteArrayInputStream(serialize(doc).getBytes());
+			/* GRIDFS */ 	BsonObjectId bson = new BsonObjectId(new ObjectId(id));
+			/* GRIDFS */ 	bucket.delete(bson);
+			/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .uploadFromStream(bson, dataset.getName() + " (" + dataset.getData().size() + ")", streamToUploadFrom, uOptions);
+			/* GRIDFS */ 
+			/* GRIDFS */ 	msg.put("message", "Successfully updated GridFS dataset"); // even if nothing got updated!
+			/* GRIDFS */ 	status = Response.Status.OK;
+			/* GRIDFS */ } else {
+			/* GRIDFS */ 	msg.put("message", "Dataset with ID " + id + " does not exist in GridFS!");
+			/* GRIDFS */ 	logger.debug("[01;31m" + msg.get("message") + "[00;00m");
+			/* GRIDFS */ }
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
 
 			mongoClient.close();
 
-			return getResponse(PUT, Response.Status.NOT_FOUND, msg);
+			return getResponse(PUT, status, msg);
 		}
 
 		while (cursorDocMap.hasNext()) {
@@ -758,7 +808,7 @@ public class FoodsResource {
 		mongoClient.close();
 
 		Map<String, String> msg = new HashMap<String, String>();
-		msg.put("message", "Successfully updated dataset");
+		msg.put("message", "Successfully updated dataset"); // even if nothing got updated!
 
 		return getResponse(PUT, Response.Status.OK, msg);
 	}
@@ -840,18 +890,50 @@ public class FoodsResource {
 	public Response classifyDataset(@PathParam("id") String id, @DefaultValue("0") @PathParam("rulesetId") Integer rulesetId) {
 		Map<String, Object> map = null;
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+
 		List<Object> list = null;
+		List<Map<String, Object>> list2 = null;
 		List<Document> dox = new ArrayList<Document>();
+		List<Map<String, Object>> doxx = new ArrayList<Map<String, Object>>();
 
-		if (!cursorDocMap.hasNext()) {
+		/* GRIDFS */ Dataset foo = null;
+		/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+
+		if (!cursorDocMap.hasNext() && !cursorGridFSFile.hasNext()) {
 			Map<String, String> msg = new HashMap<String, String>();
-			msg.put("message", "Dataset with ID " + id + " does not exist!");
+			msg.put("message", "Cannot classify dataset with ID " + id + ": does not exist!");
+			Response.Status status = Response.Status.NOT_FOUND;
 
-			logger.debug("[01;34m" + "Dataset with ID " + id + " does not exist!" + "[00;00m");
+			logger.debug("[01;31m" + msg.get("message") + "[00;00m");
+
+			/* GRIDFS */ // ObjectMapper objectMapper = new ObjectMapper();
+			/* GRIDFS */ if (!cursorGridFSFile.hasNext()) {
+			/* GRIDFS */ 	msg.put("message", "Dataset with ID " + id + " does not exist in GridFS either!");
+			/* GRIDFS */ 	logger.debug("[01;31m" + msg.get("message") + "[00;00m");
+			/* GRIDFS */ }
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
 
 			mongoClient.close();
 
-			return getResponse(POST, Response.Status.NOT_FOUND, msg);
+			return getResponse(POST, status, msg);
 		}
 
 		/**
@@ -862,14 +944,14 @@ public class FoodsResource {
 
 		List<Map<String, Object>> dataToBeValidated   = new ArrayList<Map<String, Object>>();
 		Map<String, String> requiredForClassification = new HashMap<String, String>();
-		requiredForClassification.put("type",                      "Scalar"); // Type                         Y                            CFG        Indicates if the item is a Food or Recipe                                                                                             --
-		requiredForClassification.put("code",                      "Scalar"); // Code                         Y                            CNF/NSS    CNF Food Code or NSS Recipe Code                                                                                                      --
-		requiredForClassification.put("name",                      "Scalar"); // Name                         Y                            CNF/NSS    Food or Recipe Name                                                                                                                   --
+		// requiredForClassification.put("type",                      "Scalar"); // Type                         Y                            CFG        Indicates if the item is a Food or Recipe                                                                                             --
+		// requiredForClassification.put("code",                      "Scalar"); // Code                         Y                            CNF/NSS    CNF Food Code or NSS Recipe Code                                                                                                      --
+		// requiredForClassification.put("name",                      "Scalar"); // Name                         Y                            CNF/NSS    Food or Recipe Name                                                                                                                   --
 		requiredForClassification.put("cfgCode",                   "Object"); // CFG Code                     Y (at least three digits)    CFG        Up to four digit CFG Code (includes tier, if available)                                                                               --
-		requiredForClassification.put("sodiumAmountPer100g",       "Object"); // Sodium    Amount (per 100g)  Y                            CNF/NSS    Amount of Sodium per 100 g                                                                                                            --
-		requiredForClassification.put("sugarAmountPer100g",        "Object"); // Sugar     Amount (per 100g)  Y                            CNF/NSS    Amount of Sugar per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.         --
-		requiredForClassification.put("satfatAmountPer100g",       "Object"); // SatFat    Amount (per 100g)  Y                            CNF/NSS    Amount of Saturated Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification. --
-		requiredForClassification.put("totalFatAmountPer100g",     "Object"); // TotalFat  Amount (per 100g)  Y                            CNF/NSS    Amount of Total Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.     --
+		// requiredForClassification.put("sodiumAmountPer100g",       "Object"); // Sodium    Amount (per 100g)  Y                            CNF/NSS    Amount of Sodium per 100 g                                                                                                            --
+		// requiredForClassification.put("sugarAmountPer100g",        "Object"); // Sugar     Amount (per 100g)  Y                            CNF/NSS    Amount of Sugar per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.         --
+		// requiredForClassification.put("satfatAmountPer100g",       "Object"); // SatFat    Amount (per 100g)  Y                            CNF/NSS    Amount of Saturated Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification. --
+		// requiredForClassification.put("totalFatAmountPer100g",     "Object"); // TotalFat  Amount (per 100g)  Y                            CNF/NSS    Amount of Total Fat per 100g - Provided by source database, unless blank in which case it can be filled in by CFG Classification.     --
 		// requiredForClassification.put("containsAddedSodium",       "Object"); // Contains  Added  Sodium      Y                            CFG        Indicates if the item contains added sodium                                                                                           --
 		// requiredForClassification.put("containsAddedSugar",        "Object"); // Contains  Added  Sugar       Y                            CFG        Indicates if the item contains added sugar                                                                                            --
 		// requiredForClassification.put("containsAddedFat",          "Object"); // Contains  Added  Fat         Y                            CFG        Indicates if the item contains added fat                                                                                              --
@@ -880,8 +962,12 @@ public class FoodsResource {
 		while (cursorDocMap.hasNext()) {
 			Boolean isInvalid = false;
 			Document doc = cursorDocMap.next();
+
+			logger.debug("[01;03;35m" + "all Non-GridFS food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc) + "[00;00m");
+
 			if (doc != null) {
 				list = castList(doc.get("data"), Object.class);
+				logger.debug("[01;03;35m" + "all Non-GridFS food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list) + "[00;00m");
 				for (Object obj : list) {
 					Map<String, Object> requiredOnly = new HashMap<String, Object>();
 					for (String key : requiredForClassification.keySet()) {
@@ -896,6 +982,7 @@ public class FoodsResource {
 								isInvalid = true;
 							}
 						}
+
 						if (requiredForClassification.get(key).equals("Scalar")) {
 							if (((Document)obj).get(key + "") != null) {
 								requiredOnly.put(key, ((Document)obj).get(key + ""));
@@ -917,6 +1004,78 @@ public class FoodsResource {
 				return getResponse(POST, Response.Status.EXPECTATION_FAILED, msg);
 			}
 		}
+
+		dataToBeValidated = new ArrayList<Map<String, Object>>();
+
+		/* GRIDFS */ cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+		/* GRIDFS */ while (cursorGridFSFile.hasNext()) {
+		/* GRIDFS */ 	cursorGridFSFile.next(); // prevents an infinite loop
+		/* GRIDFS */ 	Map<String, String> msg = new HashMap<String, String>();
+		/* GRIDFS */ 	msg.put("message", "Dataset with ID " + id + " does exist in GridFS!");
+		/* GRIDFS */ 	logger.debug("[01;34m" + msg.get("message") + "[00;00m");
+		/* GRIDFS */ }
+		/* GRIDFS */ 
+		/* GRIDFS */ cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+		/* GRIDFS */ 
+		/* GRIDFS */ ObjectMapper objectMapper = new ObjectMapper();
+		/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
+		/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
+		/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .downloadToStream(new ObjectId(id), os);
+		/* GRIDFS */ 
+		/* GRIDFS */ 	try {
+		/* GRIDFS */ 		foo = objectMapper
+		/* GRIDFS */ 			.enable(SerializationFeature.INDENT_OUTPUT)
+		/* GRIDFS */ 			.readValue(os.toString(), Dataset.class);
+		/* GRIDFS */ 	} catch(IOException e) {
+		/* GRIDFS */ 		e.printStackTrace();
+		/* GRIDFS */ 	}
+		/* GRIDFS */ 	logger.debug("[01;03;35m" + "all food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(foo.getData()) + "[00;00m");
+		/* GRIDFS */ }
+
+		/* GRIDFS */ cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+		/* GRIDFS */ while (cursorGridFSFile.hasNext()) {
+		/* GRIDFS */ 	cursorGridFSFile.next(); // prevents an infinite loop
+		/* GRIDFS */ 	Boolean isInvalid = false;
+		/* GRIDFS */ 	if (foo != null) {
+		/* GRIDFS */ 		list2 = foo.getData(); // castList(foo.getData(), Object.class);
+		/* GRIDFS */ 		logger.debug("[01;03;35m" + "all food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list2.toArray()) + "[00;00m");
+		/* GRIDFS */ 		for (Map<String, Object> obj : list2) {
+		/* GRIDFS */ 			Map<String, Object> requiredOnly = new HashMap<String, Object>();
+		/* GRIDFS */ 			for (String key : requiredForClassification.keySet()) {
+		/* GRIDFS */ 				if (requiredForClassification.get(key).equals("Object")) {
+		/* GRIDFS */ 					Map<String, Object> objectifiedValue = (Map<String, Object>)obj.get(key + ""); // (Document)((Document)obj).get(key + "");
+		/* GRIDFS */ 					if (objectifiedValue.get("value") != null) {
+		/* GRIDFS */ 						requiredOnly.put(key, objectifiedValue.get("value"));
+		/* GRIDFS */ 						if (key.equals("cfgCode") && ((Integer)requiredOnly.get(key)).toString().length() != 3 && ((Integer)requiredOnly.get(key)).toString().length() != 4) {
+		/* GRIDFS */ 							isInvalid = true;
+		/* GRIDFS */ 						}
+		/* GRIDFS */ 					} else {
+		/* GRIDFS */ 						isInvalid = true;
+		/* GRIDFS */ 					}
+		/* GRIDFS */ 				}
+
+		/* GRIDFS */ 				if (requiredForClassification.get(key).equals("Scalar")) {
+		/* GRIDFS */ 					if (((Document)obj).get(key + "") != null) {
+		/* GRIDFS */ 						requiredOnly.put(key, obj.get(key + ""));
+		/* GRIDFS */ 					} else {
+		/* GRIDFS */ 						isInvalid = true;
+		/* GRIDFS */ 					}
+		/* GRIDFS */ 				}
+		/* GRIDFS */ 			}
+		/* GRIDFS */ 			dataToBeValidated.add(requiredOnly);
+		/* GRIDFS */ 		}
+		/* GRIDFS */ 	}
+		/* GRIDFS */ 
+
+		/* GRIDFS */ 	// use validation rules on "data" property and return response if invalid
+		/* GRIDFS */ 	logger.debug("[01;03;31m" + "only required fields:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dataToBeValidated) + "[00;00m");
+
+		/* GRIDFS */ 	if (isInvalid) {
+		/* GRIDFS */ 		Map<String, String> msg = new HashMap<String, String>();
+		/* GRIDFS */ 		msg.put("message", "Expected required field(s) failed to pass validation in preparation for classification.");
+		/* GRIDFS */ 		return getResponse(POST, Response.Status.EXPECTATION_FAILED, msg);
+		/* GRIDFS */ 	}
+		/* GRIDFS */ }
 
 		/**
 		 *
@@ -973,6 +1132,7 @@ public class FoodsResource {
 			logger.debug("[01;34mDataset ID: " + doc.get("_id") + "[00;00m");
 
 			if (doc != null) {
+				logger.debug("[01;35m" + "inside Non-GridFS condition" + "[00;00m");
 				list = castList(doc.get("data"), Object.class);
 				for (Object obj : list) {
 					for (String key : updateDatePair.keySet()) {
@@ -992,6 +1152,49 @@ public class FoodsResource {
 				map.put("modifiedDate", doc.get("modifiedDate"));
 			}
 		}
+
+		/* GRIDFS */ cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+		/* GRIDFS */ objectMapper = new ObjectMapper();
+		/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
+		/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
+		/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .downloadToStream(new ObjectId(id), os);
+		/* GRIDFS */ 
+		/* GRIDFS */ 	try {
+		/* GRIDFS */ 		foo = objectMapper
+		/* GRIDFS */ 			.enable(SerializationFeature.INDENT_OUTPUT)
+		/* GRIDFS */ 			.readValue(os.toString(), Dataset.class);
+		/* GRIDFS */ 	} catch(IOException e) {
+		/* GRIDFS */ 		e.printStackTrace();
+		/* GRIDFS */ 	}
+		/* GRIDFS */ 
+		/* GRIDFS */ 	logger.debug("[01;34mproper JSON:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(foo) + "[00;00m");
+
+		/* GRIDFS */ 	map = new HashMap<String, Object>();
+        /* GRIDFS */ 
+		/* GRIDFS */ 	if (foo != null) {
+		/* GRIDFS */ 		logger.debug("[01;35m" + "inside condition" + "[00;00m");
+		/* GRIDFS */ 		list2 = foo.getData(); // castList(doc.get("data"), Object.class);
+		/* GRIDFS */ 		for (Map<String, Object> obj : list2) {
+		/* GRIDFS */ 			for (String key : updateDatePair.keySet()) {
+		/* GRIDFS */ 				Map<String, Object> objectifiedValue = (Map<String, Object>)obj.get(key + "");
+		/* GRIDFS */ 				obj.put(key, objectifiedValue.get("value"));
+		/* GRIDFS */ 			}
+		/* GRIDFS */ 			doxx.add(obj);
+		/* GRIDFS */ 		}
+        /* GRIDFS */ 
+		/* GRIDFS */ 		map.put("data",         doxx);
+
+		/* GRIDFS */ 		map.put("name",         foo.getName());
+		/* GRIDFS */ 		map.put("env",          foo.getEnv());
+		/* GRIDFS */ 		map.put("owner",        foo.getOwner());
+		/* GRIDFS */ 		map.put("status",       foo.getStatus());
+		/* GRIDFS */ 		map.put("comments",     foo.getComments());
+		/* GRIDFS */ 		map.put("modifiedDate", foo.getModifiedDate());
+		/* GRIDFS */ 	}
+		/* GRIDFS */ }
+
+		/* GRIDFS */ 		logger.debug("[01;34mPre-classification Dataset:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+
 
 		// mongoClient.close();
 
@@ -1034,7 +1237,9 @@ public class FoodsResource {
 			.request()
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
-		logger.debug("[01;31m" + "response status  : " + response.getStatusInfo() + "[00;00m");
+		logger.debug("[01;35m" + "request entity: " + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+
+		logger.debug("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
 
 		Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(Object.class);
 		// Map<String, Object> deserialized = (Map<String, Object>)response.readEntity(new GenericType<HashMap<String, Object>>() {});

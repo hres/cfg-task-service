@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class Dataset {
 	private List<Map<String, Object>> data = Collections.<Map<String, Object>>emptyList();
+	private String id;
 	private String name;
 	private String env;
 	private String owner;
@@ -26,6 +27,20 @@ public class Dataset {
 	 */
 	public void setData(List<Map<String, Object>> data) {
 		this.data = data;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
