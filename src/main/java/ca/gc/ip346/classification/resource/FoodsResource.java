@@ -205,23 +205,23 @@ public class FoodsResource {
 				.append("status",       dataset.getStatus())
 				.append("comments",     dataset.getComments());
 
-			/* GRIDFS */ // InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
+			/* GRIDFS */ /* COMMENT */ // InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
 			/* GRIDFS */ InputStream streamToUploadFrom = new ByteArrayInputStream(serialize(doc).getBytes());
-			/* GRIDFS */ // InputStream streamToUploadFrom = new ByteArrayInputStream(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc).getBytes());
-			/* GRIDFS */ // logger.debug(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc));
+			/* GRIDFS */ /* COMMENT */ // InputStream streamToUploadFrom = new ByteArrayInputStream(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc).getBytes());
+			/* GRIDFS */ /* COMMENT */ // logger.debug(new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(doc));
 			/* GRIDFS */ ObjectId anotherId = bucket /* .withChunkSizeBytes(64512) */ .uploadFromStream(dataset.getName() + " (" + dataset.getData().size() + ")", streamToUploadFrom, uOptions);
 			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + anotherId + "[00;00m");
 			/* GRIDFS */ logger.printf(DEBUG, "%s%s%5d %s", "[01;03;36m", "Using Default Size: ", bucket.getChunkSizeBytes() / 1024, "[00;00m[01;03;35mkB[00;00m");
 
-			/* GRIDFS */ GridFSUploadStream uploadStream = bucket.openUploadStream(dataset.getName() + " {" + dataset.getData().size() + "}", uOptions);
-			/* GRIDFS */ // uploadStream.write(doc.toJson().getBytes());
-			/* GRIDFS */ uploadStream.write(serialize(doc).getBytes());
-			/* GRIDFS */ uploadStream.close();
-			/* GRIDFS */ ObjectId yetAnotherId = uploadStream.getObjectId();
-			/* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + yetAnotherId + "[00;00m");
+			// /* GRIDFS */ GridFSUploadStream uploadStream = bucket.openUploadStream(dataset.getName() + " {" + dataset.getData().size() + "}", uOptions);
+			// /* GRIDFS */ /* COMMENT */ // uploadStream.write(doc.toJson().getBytes());
+			// /* GRIDFS */ uploadStream.write(serialize(doc).getBytes());
+			// /* GRIDFS */ uploadStream.close();
+			// /* GRIDFS */ ObjectId yetAnotherId = uploadStream.getObjectId();
+			// /* GRIDFS */ logger.debug("[01;03;31m" + "GridFS ID: " + yetAnotherId + "[00;00m");
 
-			collection.insertOne(doc);
-			ObjectId id = (ObjectId)doc.get("_id");
+			// collection.insertOne(doc);
+			// ObjectId id = (ObjectId)doc.get("_id");
 			// collection.updateOne(
 					// eq("_id", id),
 					// combine(
@@ -230,11 +230,13 @@ public class FoodsResource {
 						// currentDate("modifiedDate"))
 					// );
 
-			logger.debug("[01;34mLast inserted Dataset id: " + id + "[00;00m");
+			// logger.debug("[01;34mLast inserted Dataset id: " + id + "[00;00m");
 
-			logger.debug("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
+			// logger.debug("[01;34mCurrent number of Datasets: " + collection.count() + "[00;00m");
 
-			map.put("id", id.toString());
+			// map.put("id", id.toString());
+			map.put("id", anotherId.toString());
+			// map.put("id", yetAnotherId.toString());
 
 			logger.debug("[01;34m" + Response.Status.CREATED.getStatusCode() + " " + Response.Status.CREATED.toString() + "[00;00m");
 
@@ -1018,6 +1020,9 @@ public class FoodsResource {
 		/* GRIDFS */ cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
 		/* GRIDFS */ 
 		/* GRIDFS */ ObjectMapper objectMapper = new ObjectMapper();
+		/* GRIDFS */ objectMapper
+		/* GRIDFS */ 	.configure(Feature.ALLOW_NON_NUMERIC_NUMBERS,              true)
+		/* GRIDFS */ ;
 		/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
 		/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
 		/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .downloadToStream(new ObjectId(id), os);
@@ -1155,6 +1160,9 @@ public class FoodsResource {
 
 		/* GRIDFS */ cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
 		/* GRIDFS */ objectMapper = new ObjectMapper();
+		/* GRIDFS */ objectMapper
+		/* GRIDFS */ 	.configure(Feature.ALLOW_NON_NUMERIC_NUMBERS,              true)
+		/* GRIDFS */ ;
 		/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
 		/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
 		/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .downloadToStream(new ObjectId(id), os);
