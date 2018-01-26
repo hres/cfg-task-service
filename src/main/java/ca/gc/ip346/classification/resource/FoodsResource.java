@@ -480,8 +480,9 @@ public class FoodsResource {
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public Response deleteDataset(@PathParam("id") String id) {
 		MongoCursor<Document> cursorDocMap = collection.find(new Document("_id", new ObjectId(id))).iterator();
+		/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
 
-		if (!cursorDocMap.hasNext()) {
+		if (!cursorDocMap.hasNext() && !cursorGridFSFile.hasNext()) {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "Dataset with ID " + id + " does not exist!");
 
@@ -498,6 +499,11 @@ public class FoodsResource {
 
 			collection.deleteOne(doc);
 		}
+
+		/* GRIDFS */ while (cursorGridFSFile.hasNext()) {
+		/* GRIDFS */ 	BsonObjectId bson = new BsonObjectId(new ObjectId(id));
+		/* GRIDFS */ 	bucket.delete(bson);
+		/* GRIDFS */ }
 
 		mongoClient.close();
 
