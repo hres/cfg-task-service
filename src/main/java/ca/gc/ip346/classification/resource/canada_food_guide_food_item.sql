@@ -45,8 +45,12 @@ SELECT type,
        rolled_up,
        rolled_up_update_date,
        override_small_ra_adjustment,
+       override_small_ra_adjustment_update_date,
        toddler_item,
+       toddler_item_update_date,
        replacement_code,
+       replacement_code_update_date,
        commit_date,
-       comments
+       comments,
+       comments_update_date
   FROM canada_food_guide_food_item

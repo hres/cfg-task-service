@@ -650,7 +650,7 @@ public class FoodsResource {
 
 		Map<String, String> updateDatePair = new HashMap<String, String>();
 		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate"                  );
-		updateDatePair.put("comments",                    ""                                   );
+		updateDatePair.put("comments",                    "commentsUpdateDate"                 );
 		updateDatePair.put("containsAddedFat",            "containsAddedFatUpdateDate"         );
 		updateDatePair.put("containsAddedSodium",         "containsAddedSodiumUpdateDate"      );
 		updateDatePair.put("containsAddedSugar",          "containsAddedSugarUpdateDate"       );
@@ -660,9 +660,9 @@ public class FoodsResource {
 		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate" );
 		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate"                );
 		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate"                );
-		updateDatePair.put("marketedToKids",              ""                                   );
-		updateDatePair.put("overrideSmallRaAdjustment",   ""                                   );
-		updateDatePair.put("replacementCode",             ""                                   );
+		updateDatePair.put("marketedToKids",              "marketedToKidsUpdateDate"           );
+		updateDatePair.put("overrideSmallRaAdjustment",   "overrideSmallRaAdjustmentUpdateDate");
+		updateDatePair.put("replacementCode",             "replacementCodeUpdateDate"          );
 		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate"                 );
 		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate"               );
 		updateDatePair.put("satfatImputationReference",   "satfatImputationDate"               );
@@ -1098,7 +1098,7 @@ public class FoodsResource {
 
 		Map<String, String> updateDatePair = new HashMap<String, String>();
 		updateDatePair.put("cfgCode",                     "cfgCodeUpdateDate"                  );
-		updateDatePair.put("comments",                    ""                                   );
+		updateDatePair.put("comments",                    "commentsUpdateDate"                 );
 		updateDatePair.put("containsAddedFat",            "containsAddedFatUpdateDate"         );
 		updateDatePair.put("containsAddedSodium",         "containsAddedSodiumUpdateDate"      );
 		updateDatePair.put("containsAddedSugar",          "containsAddedSugarUpdateDate"       );
@@ -1108,9 +1108,9 @@ public class FoodsResource {
 		updateDatePair.put("containsSugarSubstitutes",    "containsSugarSubstitutesUpdateDate" );
 		updateDatePair.put("foodGuideServingG",           "foodGuideUpdateDate"                );
 		updateDatePair.put("foodGuideServingMeasure",     "foodGuideUpdateDate"                );
-		updateDatePair.put("marketedToKids",              ""                                   );
-		updateDatePair.put("overrideSmallRaAdjustment",   ""                                   );
-		updateDatePair.put("replacementCode",             ""                                   );
+		updateDatePair.put("marketedToKids",              "marketedToKidsUpdateDate"           );
+		updateDatePair.put("overrideSmallRaAdjustment",   "overrideSmallRaAdjustmentUpdateDate");
+		updateDatePair.put("replacementCode",             "replacementCodeUpdateDate"          );
 		updateDatePair.put("rolledUp",                    "rolledUpUpdateDate"                 );
 		updateDatePair.put("satfatAmountPer100g",         "satfatImputationDate"               );
 		updateDatePair.put("satfatImputationReference",   "satfatImputationDate"               );

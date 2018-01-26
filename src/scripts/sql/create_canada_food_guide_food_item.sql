@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS canada_food_guide_food_item (
 	override_small_ra_adjustment             boolean,
 	override_small_ra_adjustment_update_date date,
 	toddler_item                             boolean,
-	marketed_to_kids_update_date             date,
+	toddler_item_update_date                 date,
 	replacement_code                         int4,
 	replacement_code_update_date             date,
 	commit_date                              date,
