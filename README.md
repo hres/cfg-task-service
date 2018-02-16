@@ -35,6 +35,9 @@ The instructions for setting up tomcat https and all the certificate scripts are
 
 https://github.com/hres/cfg-classification-keycloak/tree/master/scripts/ssl#how-to-configure-tomcat-for-https
 
+At the time of this writing, the cfg-task-service app expects the tomcat.keystore to be found at /etc/tomcat8/ssl/
+If this is not the actual location create a symbolic link to the correct location.
+
 ---
 
 ## How to build cfg-task-service.war
