@@ -18,6 +18,12 @@ The availability of the above tools is assumed throughout the instructions on th
 
 ---
 
+## Add Keycloak libraries to tomcat install
+
+1. Download the OpenID Tomcat client adapters found at:
+http://www.keycloak.org/archive/downloads-3.3.0.html
+2. Extract the contents of the archive into tomcat's /lib folder e.g. /opt/tomcat/lib
+
 ## How to build cfg-task-service.war
 
 To deploy the [cfg-task-services], do the following:
