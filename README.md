@@ -17,6 +17,9 @@ These need be setup in order for the application/services to function on [Tomcat
 ---
 
 ## How to Install/Update MongoDB database and collection to the latest and greatest 
+Mongo installation instructions for a Ubuntu install can be found at:
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+
 The following are instructions on setting up a MongoDB database and collection (equivalent of table)
 
 Launch the mongo shell (equivalent to psql or msql) as the mongodb user: sudo -Hu mongodb mongo
