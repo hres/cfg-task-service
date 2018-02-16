@@ -74,7 +74,8 @@ Similarly for the [cfg-classification-services]:
 1. Execute
 	`sudo apt-get install postgresql` to install PostgreSQL
 2. Modify the file /etc/postgresql/9.5/main/pg_hba.conf  Change the entries under "Database administrative login by Unix domain socket" to 
-local 	all	all	trust
+
+`local 		all		all		trust`
 
 2. From the project's scripts/sql directory, run
 	`psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database:
