@@ -11,13 +11,10 @@ This project uses the following components and features:
 * Tomcat     8.0  (at the time of this writing, the prescribed HRE tomcat version is 8.0.32)
 * MongoDB    3.4.2 LTS
 * PostgreSQL 9.5
-
-The instructions on this page assume you have installed the following tools:
-
 * Maven
 * Git
 
-All The above need be setup in order for the application/services to function on [Tomcat 8.0 on HRES]
+The availability of the above tools is assumed throughout the instructions on this page.
 
 ---
 
