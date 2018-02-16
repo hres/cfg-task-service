@@ -35,6 +35,8 @@ The instructions for setting up tomcat https and all the certificate scripts are
 
 https://github.com/hres/cfg-classification-keycloak/tree/master/scripts/ssl#how-to-configure-tomcat-for-https
 
+---
+
 ## How to build cfg-task-service.war
 
 To deploy the [cfg-task-services], do the following:
