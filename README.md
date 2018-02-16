@@ -22,6 +22,7 @@ The availability of the above tools is assumed throughout the instructions on th
 
 1. Download the OpenID Tomcat client adapters found at:
 http://www.keycloak.org/archive/downloads-3.3.0.html at the time of this writing the file was named
+
 keycloak-tomcat8-adapter-dist-3.3.0.Final.tar.gz
 
 2. Extract the contents of the archive into tomcat's /lib folder e.g. /opt/tomcat/lib
