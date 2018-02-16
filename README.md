@@ -24,6 +24,8 @@ The availability of the above tools is assumed throughout the instructions on th
 http://www.keycloak.org/archive/downloads-3.3.0.html
 2. Extract the contents of the archive into tomcat's /lib folder e.g. /opt/tomcat/lib
 
+---
+
 ## How to build cfg-task-service.war
 
 To deploy the [cfg-task-services], do the following:
