@@ -65,7 +65,7 @@ Similarly for the [cfg-classification-services]:
 
 	https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 
-2.  Rename [mongodb.properties.template] to mongodb.properties. It is found in the folder main/java/ca/gc/ip346/util/
+2.  Rename [mongodb.properties.template] to mongodb.properties. It is found in the deployed app under the folder WEB-INF/classes/ca/gc/ip346/util/
 
 ---
 
