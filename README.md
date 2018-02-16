@@ -71,8 +71,10 @@ Similarly for the [cfg-classification-services]:
 
 ## How to Install/Update PostgreSQL schema/data to the latest and greatest
 
-1. On the command-line run `sudo apt-get install postgresql` to install PostgreSQL
-2. On the command-line from the `scripts/sql` directory, run `psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database:
+1. Execute
+	`sudo apt-get install postgresql` to install PostgreSQL
+2. From the project's `scripts/sql` directory, run
+	`psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database:
 	1. `DROP DATABASE cnfadm;`
 	2. `CREATE DATABASE cnfadm;`
 	3. `\c cnfadm`
