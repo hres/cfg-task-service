@@ -12,6 +12,11 @@ This project uses the following components and features:
 * MongoDB    3.4.2 LTS
 * PostgreSQL 9.5
 
+The below instructions assume you have installed the following tools:
+
+* Maven
+* Git
+
 These need be setup in order for the application/services to function on [Tomcat 8.0 on HRES]
 
 ---
