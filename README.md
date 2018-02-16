@@ -16,6 +16,26 @@ These need be setup in order for the application/services to function on [Tomcat
 
 ---
 
+## How to build cfg-task-service.war
+
+To deploy the [cfg-task-services], do the following:
+
+1. `cd ~/repositories`
+2. `git clone https://github.com/hres/cfg-task-service.git`
+3. `cd cfg-task-service`
+4. `mvn clean install`
+5. copy `target/cfg-task-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
+
+Similarly for the [cfg-classification-services]:
+
+1. `cd ~/repositories`
+2. `git clone https://github.com/hres/cfg-classification-service.git`
+3. `cd cfg-classification-service`
+4. `mvn clean install`
+5. copy `target/cfg-classification-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
+
+---
+
 ## How to Install/Update MongoDB database and collection to the latest and greatest 
 1.  Follow the Mongo installation instructions for a Ubuntu install found at:
 
@@ -45,23 +65,7 @@ Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template
 ---
 
 
-## Maven Build and Deployment
 
-To deploy the [cfg-task-services], do the following:
-
-1. `cd ~/repositories`
-2. `git clone https://github.com/hres/cfg-task-service.git`
-3. `cd cfg-task-service`
-4. `mvn clean install`
-5. copy `target/cfg-task-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
-
-Similarly for the [cfg-classification-services]:
-
-1. `cd ~/repositories`
-2. `git clone https://github.com/hres/cfg-classification-service.git`
-3. `cd cfg-classification-service`
-4. `mvn clean install`
-5. copy `target/cfg-classification-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
 
 ## Confirm Service is Running and Connecting to PostgreSQL Database
 
