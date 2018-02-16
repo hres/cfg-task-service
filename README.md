@@ -65,9 +65,7 @@ Similarly for the [cfg-classification-services]:
 
 	https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 
-The following are instructions on setting up a MongoDB database and collection (equivalent of table)
-
-Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template] to mongodb.properties (cp mongdb.properties.template mongdb.properties).  Change the `host` and `port` properties in the mongodb.properties file in order to allow the Java API to connect to it.
+2.  Rename [mongodb.properties.template] to mongodb.properties. It is found in the folder main/java/ca/gc/ip346/util/
 
 ---
 
