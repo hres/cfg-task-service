@@ -8,7 +8,7 @@ This project uses the following components and features:
 
 * Java       8
 * Maven      3.3.9
-* Tomcat     8.0
+* Tomcat     8.0  (at the time of this writing, the prescibed HRE tomcat version is 8.0.32)
 * MongoDB    3.4.2 LTS
 * PostgreSQL 9.5
 
