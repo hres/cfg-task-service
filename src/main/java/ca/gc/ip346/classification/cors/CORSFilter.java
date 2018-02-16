@@ -49,7 +49,7 @@ public class CORSFilter implements ContainerResponseFilter {
 		}
 
 		asterisk.delete(0, asterisk.length()).append("http"); // asterisk.append("://localhost:4200");
-		if (httpServletRequest.getServerPort() == 443) { // what about 8443?
+		if (httpServletRequest.getServerPort() == 8443 || httpServletRequest.getServerPort() == 443) { // what about 8443?
 			asterisk.append("s");
 		}    if (httpServletRequest.getServerName().equals("localhost"))                              asterisk.append("://never.gonna.happen");
 		else if (httpServletRequest.getServerName().equals("52.235.40.44"))                           asterisk.append("://lam-dev.canadaeast.cloudapp.azure.com");
