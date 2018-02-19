@@ -48,7 +48,7 @@ To deploy the [cfg-task-services], do the following:
 2. `git clone https://github.com/hres/cfg-task-service.git`
 3. `cd cfg-task-service`
 4. `mvn clean install`
-5. copy `target/cfg-task-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
+5. `copy` `target/cfg-task-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
 
 Similarly for the [cfg-classification-services]:
 
@@ -56,7 +56,7 @@ Similarly for the [cfg-classification-services]:
 2. `git clone https://github.com/hres/cfg-classification-service.git`
 3. `cd cfg-classification-service`
 4. `mvn clean install`
-5. copy `target/cfg-classification-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
+5. `copy` `target/cfg-classification-service.war` to `webapps` directory of [Tomcat 8.0 on HRES]
 
 ---
 
@@ -74,13 +74,14 @@ Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template
 ## How to Install/Update PostgreSQL schema/data to the latest and greatest
 
 1. On the command-line run `sudo apt-get install postgresql` to install PostgreSQL
-2. On the command-line from the `scripts/sql` directory, run `psql` and login to postgres and ensure you are **not** connected to the `cnfadm` database:
-	1. `DROP DATABASE cnfadm;`
-	2. `CREATE DATABASE cnfadm;`
-	3. `\c cnfadm`
-	4. `\i create_table_and_load_data.psql`
-3. Copy and rename [db.properties.template] to db.properties (cp db.properties.template db.properties)
-4. Change the relevant properties in the db.properties file order to establish connectivity from within Java.
+2. On the command-line from the `src/scripts/sql` directory, run `psql` and login to `postgres` database as `postgres` user and ensure you are **not** connected to the `cfg_db_dev` database:
+	1. `DROP DATABASE cfg_db_dev;`
+	2. `CREATE DATABASE cfg_db_dev;`
+	3. `CREATE USER cfg_db_user PASSWORD 'password';`
+	4. `\c cfg_db_dev cfg_db_user`
+	5. `\i HRE_create_table_and_load_data.psql`
+3. Copy and rename [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
+4. Change the relevant properties in the `db.properties` file in order to establish connectivity from within Java.
 
 ---
 
