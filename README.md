@@ -65,15 +65,15 @@ Similarly for the [cfg-classification-services]:
 
 	https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 
-The following are instructions on setting up a MongoDB database and collection (equivalent of table)
-
-Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template] to mongodb.properties (cp mongdb.properties.template mongdb.properties).  Change the `host` and `port` properties in the mongodb.properties file in order to allow the Java API to connect to it.
+2.  Rename [mongodb.properties.template] to mongodb.properties. It is found in the deployed app under the folder WEB-INF/classes/ca/gc/ip346/util/
 
 ---
 
 ## How to Install/Update PostgreSQL schema/data to the latest and greatest
 
 1. On the command-line run `sudo apt-get install postgresql` to install PostgreSQL
+2. Modify the file `/etc/postgresql/9.5/main/pg_hba.conf`.  Change the entries under "Database administrative login by Unix domain socket" to:
+`local        all        all        trust`
 2. On the command-line from the `src/scripts/sql` directory, run `psql` and login to `postgres` database as `postgres` user and ensure you are **not** connected to the `cfg_db_dev` database:
 	1. `DROP DATABASE cfg_db_dev;`
 	2. `CREATE DATABASE cfg_db_dev;`
@@ -85,12 +85,6 @@ Now that MongoDB is up-and-running, copy and rename [mongodb.properties.template
 
 ---
 
-
-
-
-## Confirm Service is Running and Connecting to PostgreSQL Database
-
-Run [Test]
 
 ## UML Deployment Diagram
 
