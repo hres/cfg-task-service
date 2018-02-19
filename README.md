@@ -73,15 +73,15 @@ Similarly for the [cfg-classification-services]:
 
 1. On the command-line run `sudo apt-get install postgresql` to install PostgreSQL
 2. Modify the file `/etc/postgresql/9.5/main/pg_hba.conf`.  Change the entries under "Database administrative login by Unix domain socket" to:
-`local        all        all        trust`
-2. On the command-line from the `src/scripts/sql` directory, run `psql` and login to `postgres` database as `postgres` user and ensure you are **not** connected to the `cfg_db_dev` database:
-	1. `DROP DATABASE cfg_db_dev;`
-	2. `CREATE DATABASE cfg_db_dev;`
-	3. `CREATE USER cfg_db_user PASSWORD 'password';`
-	4. `\c cfg_db_dev cfg_db_user`
-	5. `\i HRE_create_table_and_load_data.psql`
-3. Copy and rename [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
-4. Change the relevant properties in the `db.properties` file in order to establish connectivity from within Java.
+`local`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`all`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`all`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`trust`
+3. On the command-line from the `src/scripts/sql` directory, run `psql` and login to `postgres` database as `postgres` user and ensure you are **not** connected to the `cfg_db_dev` database:
+	- `DROP DATABASE cfg_db_dev;`
+	- `CREATE DATABASE cfg_db_dev;`
+	- `CREATE USER cfg_db_user PASSWORD 'password';`
+	- `\c cfg_db_dev cfg_db_user`
+	- `\i HRE_create_table_and_load_data.psql`
+4. Copy and rename [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
+5. Change the relevant properties in the `db.properties` file in order to establish connectivity from within Java.
 
 ---
 
