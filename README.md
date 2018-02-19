@@ -89,12 +89,6 @@ Similarly for the [cfg-classification-services]:
 ---
 
 
-
-
-## Confirm Service is Running and Connecting to PostgreSQL Database
-
-Run [Test]
-
 ## UML Deployment Diagram
 
 ![UML Deployment Diagram](src/main/resources/UML-deployment-diagram.png "UML Deployment Diagram")
