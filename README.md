@@ -78,12 +78,17 @@ Similarly for the [cfg-classification-services]:
 
 	`psql postgres postgres` to login as postgres user
 
-	- `DROP DATABASE cfg_db_dev;` (if its already there, use `\l` to check)
+	`DROP DATABASE cfg_db_dev;` (if its already there, use `\l` to check)
 	
-	- `CREATE DATABASE cfg_db_dev;`
-	- `CREATE USER cfg_db_user PASSWORD 'password';`
-	- `\c cfg_db_dev cfg_db_user`
-	- `\i HRE_create_table_and_load_data.psql`
+	`CREATE DATABASE cfg_db_dev;`
+	
+	`CREATE USER cfg_db_user PASSWORD 'password';`
+	
+	`\c cfg_db_dev cfg_db_user`
+	
+	`SET datestyle TO MDY;`
+	
+	`\i HRE_create_table_and_load_data.psql`
 4. Copy and rename [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
 5. Change the relevant properties in the `db.properties` file in order to establish connectivity from within Java.
 
