@@ -77,7 +77,9 @@ Similarly for the [cfg-classification-services]:
 3. On the command-line from the `src/scripts/sql` directory, run
 
 `psql postgres postgres` to login as postgres user
-	- `DROP DATABASE cfg_db_dev;` (if its already there) use `\l` to check
+
+	- `DROP DATABASE cfg_db_dev;` (if its already there, use `\l` to check)
+	
 	- `CREATE DATABASE cfg_db_dev;`
 	- `CREATE USER cfg_db_user PASSWORD 'password';`
 	- `\c cfg_db_dev cfg_db_user`
