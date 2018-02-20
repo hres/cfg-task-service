@@ -89,6 +89,9 @@ Similarly for the [cfg-classification-services]:
 	`SET datestyle TO MDY;`
 	
 	`\i HRE_create_table_and_load_data.psql`
+	
+	`CTRL-D` to exit
+	
 4. Copy and rename [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
 5. Change the relevant properties in the `db.properties` file in order to establish connectivity from within Java.
 
