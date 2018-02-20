@@ -93,7 +93,7 @@ Similarly for the [cfg-classification-services]:
 	`CTRL-D` to exit
 	
 4. In the deployed project folder cfg-task-service/WEB-INF/classes/ca/gc/ip346/util/  Copy and rename [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
-5. Change the relevant properties in the `db.properties` file in order to establish connectivity from within Java.
+ Verify property settings in above file.
 
 ---
 
