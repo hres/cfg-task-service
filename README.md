@@ -92,8 +92,8 @@ Similarly for the [cfg-classification-services]:
 	
 	`CTRL-D` to exit
 	
-4. In the deployed project folder cfg-task-service/WEB-INF/classes/ca/gc/ip346/util/  Copy and rename [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
- Verify property settings in above file.
+4. In the deployed project folder cfg-task-service/WEB-INF/classes/ca/gc/ip346/util/  Copy [db.properties.template] to `db.properties` (`cp db.properties.template db.properties`)
+ Verify property settings the file.
 
 ---
 
