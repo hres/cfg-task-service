@@ -74,8 +74,10 @@ Similarly for the [cfg-classification-services]:
 1. On the command-line run `sudo apt-get install postgresql` to install PostgreSQL
 2. Modify the file `/etc/postgresql/9.5/main/pg_hba.conf`.  Change the entries under "Database administrative login by Unix domain socket" to:
 `local`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`all`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`all`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`trust`
-3. On the command-line from the `src/scripts/sql` directory, run `psql` and login to `postgres` database as `postgres` user and ensure you are **not** connected to the `cfg_db_dev` database:
-	- `DROP DATABASE cfg_db_dev;`
+3. On the command-line from the `src/scripts/sql` directory, run
+
+`psql postgres postgres` to login as postgres user
+	- `DROP DATABASE cfg_db_dev;` (if its already there) use `\l` to check
 	- `CREATE DATABASE cfg_db_dev;`
 	- `CREATE USER cfg_db_user PASSWORD 'password';`
 	- `\c cfg_db_dev cfg_db_user`
