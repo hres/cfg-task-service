@@ -177,7 +177,7 @@ public class UploadRESTService {
 		if ((request.getServerPort() == 80) || (request.getServerPort() == 443)) {
 			return RequestURL.getHost() + ClassificationProperties.getEndPoint();
 		} else if ((request.getServerPort() == 8080) || (request.getServerPort() == 8443)) {
-			return RequestURL.getHost() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
+			return RequestURL.getHost() + ":8080" + /* request.getServerPort() + */ ClassificationProperties.getEndPoint();
 		}
 		return RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 	}
