@@ -81,7 +81,7 @@
 				<executions>
 					<execution>
 						<id>Renaming build artifacts</id>
-						<phase>compile</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
