@@ -13,7 +13,8 @@ public class Dataset {
 	private String owner;
 	private String status;
 	private String comments;
-	private Date modifiedDate;
+	private Date   modifiedDate;
+	private Date   creationDate;
 
 	/**
 	 * @return the data
@@ -125,5 +126,19 @@ public class Dataset {
 	 */
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
+	}
+
+	/**
+	 * @return the creationDate
+	 */
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	/**
+	 * @param creationDate the creationDate to set
+	 */
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 }
