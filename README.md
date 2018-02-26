@@ -59,7 +59,7 @@ Similarly for the [cfg-classification-services]:
 
 ---
 
-## How to Install/Update MongoDB database and collection to the latest and greatest 
+## How to Install MongoDB database
 1.  Follow the Mongo installation instructions for a Ubuntu install found at:
 
 	https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
