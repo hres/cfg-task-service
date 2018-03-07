@@ -49,6 +49,7 @@ public class RulesResource {
 
 	/**
 	 * Sprint 5 - Build REST service to return rulesets
+	 * @return Response
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -74,6 +75,8 @@ public class RulesResource {
 
 	/**
 	 * Sprint 5 - Build REST service to return a particular ruleset
+	 * @param id the ruleset id
+	 * @return Response
 	 */
 	@GET
 	@Path("/{id}")
@@ -96,6 +99,7 @@ public class RulesResource {
 
 	/**
 	 * Sprint 5 - Build REST service to create new ruleset
+	 * @return Response
 	 */
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -109,6 +113,9 @@ public class RulesResource {
 
 	/**
 	 * Sprint 10 - Build REST service to update an existing ruleset
+	 * @param id the ruleset id
+	 * @param changes the changes to be updated
+	 * @return Response
 	 */
 	@PUT
 	@Path("/{id}")
@@ -139,6 +146,8 @@ public class RulesResource {
 
 	/**
 	 * Sprint 5 - Build REST service to delete an existing ruleset
+	 * @param id the ruleset id
+	 * @return Response
 	 */
 	@DELETE
 	@Path("/{id}")
@@ -161,6 +170,7 @@ public class RulesResource {
 
 	/**
 	 * Sprint 10 - Build REST service to return the next available ruleset slot or null
+	 * @return Return
 	 */
 	@GET
 	@Path("/slot")
