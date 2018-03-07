@@ -101,7 +101,7 @@ public class UploadRESTService {
 
 		for (String rule : streams.keySet()) {
 			OutputStream outputStream = null;
-			String filePath = SLASH + home + SLASH + RULESETS_ROOT + SLASH + rule + SLASH + slot + SLASH + rule + EXTENSION;
+			String filePath = SLASH + home + SLASH + RULESETS_ROOT + SLASH + rule + SLASH + slot + SLASH + rule + slot + EXTENSION;
 
 			try {
 				int read     = 0;
