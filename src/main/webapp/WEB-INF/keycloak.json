@@ -11,7 +11,7 @@
 	"expose-token" : false,
 	"allow-any-hostname" : false,
 	"truststore": "/etc/tomcat8/ssl/tomcat.keystore",
-	"truststore-password": "password",
+	"truststore-password": "cfgmImsddsg1",
 	"token-minimum-time-to-live" : 10,
 	"min-time-between-jwks-requests" : 10,
 	"public-key-cache-ttl": 86400,
