@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -155,6 +156,9 @@ public class FoodsResource {
 		}
 	}
 
+	/**
+	 * @return Response
+	 */
 	@OPTIONS
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -165,6 +169,10 @@ public class FoodsResource {
 		return getResponse(OPTIONS, Response.Status.OK, msg);
 	}
 
+	/**
+	 * @param search the search criteria
+	 * @return Response
+	 */
 	@GET
 	@Path("/search")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -176,6 +184,9 @@ public class FoodsResource {
 		return doSearchCriteria(search);
 	}
 
+	/**
+	 * @return Response
+	 */
 	@OPTIONS
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -186,6 +197,10 @@ public class FoodsResource {
 		return getResponse(OPTIONS, Response.Status.OK, msg);
 	}
 
+	/**
+	 * @param dataset the payload to be saved
+	 * @return Response
+	 */
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -204,6 +219,12 @@ public class FoodsResource {
 				.append("owner",        dataset.getOwner())
 				.append("status",       dataset.getStatus())
 				.append("comments",     dataset.getComments());
+			Date date = new Date();
+
+			logger.debug("[01;03;31m" + date.getTime() + "[00;00m");
+
+			doc.append("modifiedDate", date.getTime());
+			doc.append("creationDate", date.getTime());
 
 			/* GRIDFS */ /* COMMENT */ // InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
 			/* GRIDFS */ InputStream streamToUploadFrom = new ByteArrayInputStream(serialize(doc).getBytes());
@@ -277,25 +298,30 @@ public class FoodsResource {
 	//     return getResponse(OPTIONS, Response.Status.OK, msg);
 	// }
 
+	/**
+	 * @param env the environment prod or sandbox
+	 * @return Response
+	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
 	public /* List<Map<String, String>> */ Response getDatasets(@QueryParam("env") String env) {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find().iterator(); // remove!!! 'eq("env", env)'
 
 		MongoCursor<Document> cursorDocMap = collection.find(eq("env", env)).iterator();
 		while (cursorDocMap.hasNext()) {
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			Document doc = cursorDocMap.next();
 			map.put("id", doc.get("_id").toString());
 
-			if (doc.get("name"        ) != null) map.put("name",         doc.get("name"        ).toString());
-			if (doc.get("env"         ) != null) map.put("env",          doc.get("env"         ).toString());
-			if (doc.get("owner"       ) != null) map.put("owner",        doc.get("owner"       ).toString());
-			if (doc.get("status"      ) != null) map.put("status",       doc.get("status"      ).toString());
-			if (doc.get("comments"    ) != null) map.put("comments",     doc.get("comments"    ).toString());
-			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.getDate("modifiedDate").toString());
+			if (doc.get("name"        ) != null) map.put("name",         doc.get("name"        ));
+			if (doc.get("env"         ) != null) map.put("env",          doc.get("env"         ));
+			if (doc.get("owner"       ) != null) map.put("owner",        doc.get("owner"       ));
+			if (doc.get("status"      ) != null) map.put("status",       doc.get("status"      ));
+			if (doc.get("comments"    ) != null) map.put("comments",     doc.get("comments"    ));
+			if (doc.get("modifiedDate") != null) map.put("modifiedDate", doc.getDate("modifiedDate"));
+			if (doc.get("creationDate") != null) map.put("creationDate", doc.getDate("creationDate"));
 
 			logger.debug("[01;34mModified Date: " + doc.getDate("modifiedDate") + "[00;00m");
 
@@ -313,18 +339,19 @@ public class FoodsResource {
 		/* GRIDFS */ 	ObjectMapper om = new ObjectMapper();
 		/* GRIDFS */ 	bucket.downloadToStream(file.getObjectId(), os);
 		/* GRIDFS */ 	Dataset ds = null;
-		/* GRIDFS */ 	Map<String, String> map = new HashMap<String, String>();
+		/* GRIDFS */ 	Map<String, Object> map = new HashMap<String, Object>();
 		/* GRIDFS */ 	try {
 		/* GRIDFS */ 		ds = om.readValue(os.toString(), Dataset.class);
 		/* GRIDFS */ 		if (ds.getEnv().equals("prod")) {
 		/* GRIDFS */ 			logger.debug("[01;34mDataset ID: " + file.getObjectId() + " -- " + file.getFilename() + "[00;00m");
 		/* GRIDFS */ 			map.put("id", file.getObjectId().toString());
-		/* GRIDFS */ 			if (ds.getName        () != null) map.put("name"         , ds.getName        () .toString());
-		/* GRIDFS */ 			if (ds.getEnv         () != null) map.put("env"          , ds.getEnv         () .toString());
-		/* GRIDFS */ 			if (ds.getOwner       () != null) map.put("owner"        , ds.getOwner       () .toString());
-		/* GRIDFS */ 			if (ds.getStatus      () != null) map.put("status"       , ds.getStatus      () .toString());
-		/* GRIDFS */ 			if (ds.getComments    () != null) map.put("comments"     , ds.getComments    () .toString());
-		/* GRIDFS */ 			if (ds.getModifiedDate() != null) map.put("modifiedDate" , ds.getModifiedDate() .toString());
+		/* GRIDFS */ 			if (ds.getName        () != null) map.put("name"         , ds.getName        ());
+		/* GRIDFS */ 			if (ds.getEnv         () != null) map.put("env"          , ds.getEnv         ());
+		/* GRIDFS */ 			if (ds.getOwner       () != null) map.put("owner"        , ds.getOwner       ());
+		/* GRIDFS */ 			if (ds.getStatus      () != null) map.put("status"       , ds.getStatus      ());
+		/* GRIDFS */ 			if (ds.getComments    () != null) map.put("comments"     , ds.getComments    ());
+		/* GRIDFS */ 			if (ds.getModifiedDate() != null) map.put("modifiedDate" , ds.getModifiedDate());
+		/* GRIDFS */ 			if (ds.getCreationDate() != null) map.put("creationDate" , ds.getCreationDate());
 		/* GRIDFS */ 			list.add(map);
 		/* GRIDFS */ 		}
 		/* GRIDFS */ 	} catch(IOException e) {
@@ -343,6 +370,10 @@ public class FoodsResource {
 		return getResponse(GET, Response.Status.OK, list);
 	}
 
+	/**
+	 * @param id the dataset id
+	 * @return Response
+	 */
 	@GET
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -474,6 +505,10 @@ public class FoodsResource {
 		return getResponse(OPTIONS, Response.Status.OK, msg);
 	}
 
+	/**
+	 * @param id the dataset id
+	 * @return Response
+	 */
 	@DELETE
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -500,7 +535,7 @@ public class FoodsResource {
 			collection.deleteOne(doc);
 		}
 
-		/* GRIDFS */ while (cursorGridFSFile.hasNext()) {
+		/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
 		/* GRIDFS */ 	BsonObjectId bson = new BsonObjectId(new ObjectId(id));
 		/* GRIDFS */ 	bucket.delete(bson);
 		/* GRIDFS */ }
@@ -513,6 +548,9 @@ public class FoodsResource {
 		return getResponse(DELETE, Response.Status.OK, msg);
 	}
 
+	/**
+	 * @return Response
+	 */
 	@DELETE
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
@@ -527,6 +565,11 @@ public class FoodsResource {
 		return getResponse(DELETE, Response.Status.OK, msg);
 	}
 
+	/**
+	 * @param id the dataset id
+	 * @param dataset the payload to be classified
+	 * @return Response
+	 */
 	@PUT
 	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -542,6 +585,8 @@ public class FoodsResource {
 
 		// retrive the corresponding dataset with the given id
 		MongoCursor<Document> cursorDocMap = null;
+
+		logger.debug("[01;03;31m" + "payload coming in:\n" + new GsonBuilder().setPrettyPrinting().create().toJson(dataset) + "[00;00m");
 
 		if (ObjectId.isValid(id)) {
 			System.out.println("[01;31m" + "Valid hexadecimal representation of ObjectId " + id + "[00;00m");
@@ -567,24 +612,64 @@ public class FoodsResource {
 			status = Response.Status.NOT_FOUND;
 
 			/* GRIDFS */ MongoCursor<GridFSFile> cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
+			/* GRIDFS */ 
+			/* GRIDFS */ ObjectMapper objectMapper = new ObjectMapper();
+			/* GRIDFS */ // objectMapper
+			/* GRIDFS */ 	// .configure(Feature.ALLOW_NON_NUMERIC_NUMBERS, true)
+			/* GRIDFS */ // ;
+			/* GRIDFS */ Dataset foo = null;
+			/* GRIDFS */ 
 			/* GRIDFS */ if (cursorGridFSFile.hasNext()) {
 			/* GRIDFS */ 	logger.debug("[01;34m" + "Dataset with ID " + id + " does exist in GridFS!" + "[00;00m");
 			/* GRIDFS */ 
-			/* GRIDFS */ 	// TODO: Here is where you grab the provided payload and use the existing ID to replace the old dataset with the one being uploaded.
-			/* GRIDFS */ 	Document doc = new Document()
-			/* GRIDFS */ 		.append("data",         dataset.getData()     )
-			/* GRIDFS */ 		.append("name",         dataset.getName()     )
-			/* GRIDFS */ 		.append("env",          dataset.getEnv()      )
-			/* GRIDFS */ 		.append("owner",        dataset.getOwner()    )
-			/* GRIDFS */ 		.append("status",       dataset.getStatus()   )
-			/* GRIDFS */ 		.append("comments",     dataset.getComments() );
+			/* GRIDFS */ 	// TODO: Here is where you grab the provided payload and use the existing ID
+			/* GRIDFS */ 	// TODO: to replace the old dataset with properties of the one being uploaded
+			/* GRIDFS */ 	// TODO: First, download the existing dataset corresponding to the provided ID
+			/* GRIDFS */ 	// TODO: Next, check to see whether payload's "data" is null nor not null
+			/* GRIDFS */ 	// TODO: If null, then leave the downloaded dataset Object's "data" as is
+			/* GRIDFS */ 	// TODO: If not null, then replace the downloaded dataset Object's "data" with the payload's "data"
+			/* GRIDFS */ 	// TODO: There are also constraints to be considered:
+			/* GRIDFS */ 	// TODO: "modifiedDate" should always be timestamped and
+			/* GRIDFS */ 	// TODO: "creationDate" should always be propagated
 			/* GRIDFS */ 
-			/* GRIDFS */ 	logger.debug("[01;34m" + "Dataset replacement:\n" + serialize(doc) + "[00;00m");
+			/* GRIDFS */ 	OutputStream os = new ByteArrayOutputStream();
+			/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .downloadToStream(new ObjectId(id), os);
+			/* GRIDFS */ 
+			/* GRIDFS */ 	try {
+			/* GRIDFS */ 		foo = objectMapper
+			/* GRIDFS */ 			.enable(SerializationFeature.INDENT_OUTPUT)
+			/* GRIDFS */ 			.readValue(os.toString(), Dataset.class);
+			/* GRIDFS */ 	} catch(IOException e) {
+			/* GRIDFS */ 		e.printStackTrace();
+			/* GRIDFS */ 	}
+			/* GRIDFS */ 
+			/* GRIDFS */ 	foo.setId(id);
+			/* GRIDFS */ 
+			/* GRIDFS */ 	Date date = new Date();
+			/* GRIDFS */ 	Document doc = new Document();
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 
+			/* GRIDFS */ 	doc
+			/* GRIDFS */ 		.append("data"         , dataset.getData().size() == 0 ? foo.getData() : dataset.getData())
+			/* GRIDFS */ 		.append("name"         , dataset.getName() == null ? foo.getName() : dataset.getName())
+			/* GRIDFS */ 		.append("env"          , foo.getEnv())
+			/* GRIDFS */ 		.append("owner"        , dataset.getOwner() == null ? foo.getOwner() : dataset.getOwner())
+			/* GRIDFS */ 		.append("status"       , dataset.getStatus())
+			/* GRIDFS */ 		.append("comments"     , dataset.getComments() == null ? foo.getComments() : dataset.getComments())
+			/* GRIDFS */ 		.append("modifiedDate" , date.getTime())
+			/* GRIDFS */ 		.append("creationDate" , foo.getCreationDate().getTime())
+			/* GRIDFS */ 	;
+			/* GRIDFS */ 
+			/* GRIDFS */ 	logger.debug("[01;34m" + "Dataset replacement:\n" + new GsonBuilder().setPrettyPrinting().create().toJson(doc) + "[00;00m");
 			/* GRIDFS */ 	// InputStream streamToUploadFrom = new ByteArrayInputStream(doc.toJson().getBytes());
 			/* GRIDFS */ 	InputStream streamToUploadFrom = new ByteArrayInputStream(serialize(doc).getBytes());
 			/* GRIDFS */ 	BsonObjectId bson = new BsonObjectId(new ObjectId(id));
 			/* GRIDFS */ 	bucket.delete(bson);
-			/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .uploadFromStream(bson, dataset.getName() + " (" + dataset.getData().size() + ")", streamToUploadFrom, uOptions);
+			/* GRIDFS */ 	bucket /* .withChunkSizeBytes(64512) */ .uploadFromStream(bson, dataset.getName() + "", streamToUploadFrom, uOptions);
 			/* GRIDFS */ 
 			/* GRIDFS */ 	msg.put("message", "Successfully updated GridFS dataset"); // even if nothing got updated!
 			/* GRIDFS */ 	status = Response.Status.OK;
@@ -604,7 +689,7 @@ public class FoodsResource {
 
 			mongoClient.close();
 
-			return getResponse(PUT, status, msg);
+			return getResponse(PUT, status, msg); // ANYTHING BELOW THIS LINE DOES NOT GET CALLED
 		}
 
 		while (cursorDocMap.hasNext()) {
@@ -832,6 +917,11 @@ public class FoodsResource {
 		return getResponse(OPTIONS, Response.Status.OK, msg);
 	}
 
+	/**
+	 * @param rulesetId the ruleset id
+	 * @param dataset the payload to be classified
+	 * @return Response
+	 */
 	@POST
 	@Path("/classify/{rulesetId:.*}")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -888,6 +978,9 @@ public class FoodsResource {
 
 	/**
 	 * TODO: ruleset ID
+	 * @param id the dataset id
+	 * @param rulesetId the ruleset id
+	 * @return Response
 	 */
 	@POST
 	@Path("/{id}/classify{noop: (/)?}{rulesetId: ((?<=/)\\d+)?}")
@@ -1040,7 +1133,7 @@ public class FoodsResource {
 		/* GRIDFS */ 	} catch(IOException e) {
 		/* GRIDFS */ 		e.printStackTrace();
 		/* GRIDFS */ 	}
-		/* GRIDFS */ 	logger.debug("[01;03;35m" + "all food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(foo.getData()) + "[00;00m");
+		/* GRIDFS */ 	// logger.debug("[01;03;35m" + "all food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(foo.getData()) + "[00;00m");
 		/* GRIDFS */ }
 
 		/* GRIDFS */ cursorGridFSFile = bucket.find(new Document("_id", new ObjectId(id))).iterator();
@@ -1049,7 +1142,7 @@ public class FoodsResource {
 		/* GRIDFS */ 	Boolean isInvalid = false;
 		/* GRIDFS */ 	if (foo != null) {
 		/* GRIDFS */ 		list2 = foo.getData(); // castList(foo.getData(), Object.class);
-		/* GRIDFS */ 		logger.debug("[01;03;35m" + "all food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list2.toArray()) + "[00;00m");
+		/* GRIDFS */ 		// logger.debug("[01;03;35m" + "all food items:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(list2.toArray()) + "[00;00m");
 		/* GRIDFS */ 		for (Map<String, Object> obj : list2) {
 		/* GRIDFS */ 			Map<String, Object> requiredOnly = new HashMap<String, Object>();
 		/* GRIDFS */ 			for (String key : requiredForClassification.keySet()) {
@@ -1161,6 +1254,7 @@ public class FoodsResource {
 				map.put("status",       doc.get("status"));
 				map.put("comments",     doc.get("comments"));
 				map.put("modifiedDate", doc.get("modifiedDate"));
+				map.put("creationDate", doc.get("creationDate"));
 			}
 		}
 
@@ -1181,7 +1275,7 @@ public class FoodsResource {
 		/* GRIDFS */ 		e.printStackTrace();
 		/* GRIDFS */ 	}
 		/* GRIDFS */ 
-		/* GRIDFS */ 	logger.debug("[01;34mproper JSON:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(foo) + "[00;00m");
+		/* GRIDFS */ 	// logger.debug("[01;34mproper JSON:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(foo) + "[00;00m");
 
 		/* GRIDFS */ 	map = new HashMap<String, Object>();
         /* GRIDFS */ 
@@ -1204,10 +1298,11 @@ public class FoodsResource {
 		/* GRIDFS */ 		map.put("status",       foo.getStatus());
 		/* GRIDFS */ 		map.put("comments",     foo.getComments());
 		/* GRIDFS */ 		map.put("modifiedDate", foo.getModifiedDate());
+		/* GRIDFS */ 		map.put("creationDate", foo.getCreationDate());
 		/* GRIDFS */ 	}
 		/* GRIDFS */ }
 
-		/* GRIDFS */ 		logger.debug("[01;34mPre-classification Dataset:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+		/* GRIDFS */ 		// logger.debug("[01;34mPre-classification Dataset:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
 
 
 		// mongoClient.close();
@@ -1251,7 +1346,7 @@ public class FoodsResource {
 			.request()
 			.post(Entity.entity(map, MediaType.APPLICATION_JSON));
 
-		logger.debug("[01;35m" + "request entity: " + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
+		// logger.debug("[01;35m" + "request entity: " + new GsonBuilder() [> .setDateFormat("yyyy-MM-dd") <] .setPrettyPrinting().create().toJson(map) + "[00;00m");
 
 		logger.debug("[01;31m" + "response status: " + response.getStatusInfo() + "[00;00m");
 
@@ -1268,15 +1363,22 @@ public class FoodsResource {
 			}
 		}
 
-		deserialized.put("id", id);
+		/* GRIDFS */ deserialized.put("id", id);
+		/* GRIDFS */ deserialized.put("modifiedDate", foo.getModifiedDate().getTime());
+		/* GRIDFS */ deserialized.put("creationDate", foo.getCreationDate().getTime());
 
-		logger.debug("[01;31m" + "response status: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
+		logger.debug("[01;31m" + "response sample: " + ((Map<String, Object>)dataArray.get(0)).get("sodiumAmountPer100g") + "[00;00m");
 
-		// logger.debug("[01;03;31m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(deserialized) + "[00;00m");
+		// logger.debug("[01;03;31m" + "latest and greatest:\n" + new GsonBuilder() [> .setDateFormat("yyyy-MM-dd") <] .setPrettyPrinting().create().toJson(deserialized) + "[00;00m");
 
 		return getResponse(POST, Response.Status.OK, deserialized);
 	}
 
+	/**
+	 * @param id the dataset id
+	 * @param dataset the payload to be classified
+	 * @return Response
+	 */
 	@POST
 	@Path("/{id}/flags")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -1292,6 +1394,11 @@ public class FoodsResource {
 		return response;
 	}
 
+	/**
+	 * @param id the dataset id
+	 * @param dataset the payload to be classified
+	 * @return Response
+	 */
 	@POST
 	@Path("/{id}/init")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -1307,6 +1414,11 @@ public class FoodsResource {
 		return response;
 	}
 
+	/**
+	 * @param id the dataset id
+	 * @param dataset the payload to be classified
+	 * @return Response
+	 */
 	@POST
 	@Path("/{id}/adjustment")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -1322,32 +1434,162 @@ public class FoodsResource {
 		return response;
 	}
 
+	@OPTIONS
+	@Path("/{id}/commit")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response commitDatasetPreflight() {
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "options-catch-all");
+		return getResponse(OPTIONS, Response.Status.OK, msg);
+	}
+
+	/**
+	 * @param id the dataset id
+	 * @param data the payload to be committed
+	 * @return Response
+	 */
 	@POST
 	@Path("/{id}/commit")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	// @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-	public Response commitDataset(@PathParam("id") String id, List<Map<String, Integer>> data) {
+	public Response commitDataset(@PathParam("id") String id, List<Map<String, Object>> data) {
+		Map<String, String> editables = new HashMap<String, String>();
+
+		editables.put("cfgCode",                     "cfg_code"                      );
+		editables.put("sodiumAmountPer100g",         "sodium_amount_per_100g"        );
+		editables.put("sodiumImputationReference",   "sodium_imputation_reference"   );
+		editables.put("sugarAmountPer100g",          "sugar_amount_per_100g"         );
+		editables.put("sugarImputationReference",    "sugar_imputation_reference"    );
+		editables.put("transfatAmountPer100g",       "transfat_amount_per_100g"      );
+		editables.put("transfatImputationReference", "transfat_imputation_reference" );
+		editables.put("satfatAmountPer100g",         "satfat_amount_per_100g"        );
+		editables.put("satfatImputationReference",   "satfat_imputation_reference"   );
+		editables.put("totalFatAmountPer100g",       "totalfat_amount_per_100g"      );
+		editables.put("totalFatImputationReference", "totalfat_imputation_reference" );
+		editables.put("containsAddedSodium",         "contains_added_sodium"         );
+		editables.put("containsAddedSugar",          "contains_added_sugar"          );
+		editables.put("containsFreeSugars",          "contains_free_sugars"          );
+		editables.put("containsAddedFat",            "contains_added_fat"            );
+		editables.put("containsAddedTransfat",       "contains_added_transfat"       );
+		editables.put("containsCaffeine",            "contains_caffeine"             );
+		editables.put("containsSugarSubstitutes",    "contains_sugar_substitutes"    );
+		editables.put("foodGuideServingG",           "food_guide_serving_g"          );
+		editables.put("foodGuideServingMeasure",     "food_guide_serving_measure"    );
+		editables.put("tier4ServingG",               "tier_4_serving_g"              );
+		editables.put("tier4ServingMeasure",         "tier_4_serving_measure"        );
+		editables.put("rolledUp",                    "rolled_up"                     );
+		editables.put("overrideSmallRaAdjustment",   "override_small_ra_adjustment"  );
+		editables.put("marketedToKids",              "toddler_item"                  );
+		editables.put("replacementCode",             "replacement_code"              );
+		editables.put("comments",                    "comments"                      );
+
 		Response.Status status = Response.Status.OK;
 		Map<Integer, String> msg = new HashMap<Integer, String>();
 		if (conn != null) {
 			String sql = ContentHandler.read("commit.sql", getClass());
 			try {
 				conn.setAutoCommit(false);
-				PreparedStatement stmt = conn.prepareStatement(sql); // Create PreparedStatement
-				for (Map<String, Integer> item : data) {
-					Iterator<Map.Entry<String, Integer>> iterator = item.entrySet().iterator();
+
+				// first iterate through each food-item in the data provided
+				// build the query for the PreparedStatement
+				// keep count of properties in order to determine the code's index
+				// execute it
+				for (Map<String, Object> item : data) {
+					StringBuffer sb = new StringBuffer(sql);
+					int codeIndex = 0;
+					Iterator<Map.Entry<String, Object>> iterator = item.entrySet().iterator(); // iterate through food-item
+					List<String> arr = new ArrayList<String>();
 					while (iterator.hasNext()) {
-						Map.Entry<String, Integer> entry = iterator.next();
-						if (entry.getKey().equals("cfgCode")) {
-							stmt.setInt(1, entry.getValue());
-							logger.debug("[01;03;31m" + "cfgCode: " + entry.getValue() + "[00;00m");
-						}
-						if (entry.getKey().equals("code")) {
-							stmt.setInt(2, entry.getValue());
-							logger.debug("[01;03;31m" + "code: "    + entry.getValue() + "[00;00m");
+						Map.Entry<String, Object> entry = iterator.next();
+
+						for (String property : editables.keySet()) {
+							if (entry.getKey().equals(property)) {
+								arr.add(" " + editables.get(property) + " = ?");
+								++codeIndex;
+							}
 						}
 					}
+
+					logger.debug("[01;03;35m" + "joint array elements: " + String.join(",", arr) + "[00;00m");
+
+					sb.append(String.join(",", arr));
+
+					sb.append("\n").append(" WHERE code = ?");
+
+					// logger.debug("[01;03;35m\n" + sb.toString() + "[00;00m");
+
+					PreparedStatement stmt = conn.prepareStatement(sb.toString()); // Create PreparedStatement
+
+					iterator = item.entrySet().iterator(); // iterate through same food-item
+					int placeholderIndex = 0;
+					while (iterator.hasNext()) {
+						Map.Entry<String, Object> entry = iterator.next();
+
+						/****/ if (entry.getKey().equals("cfgCode"                    )) {
+							stmt.setInt(++placeholderIndex, (Integer)entry.getValue());
+						} else if (entry.getKey().equals("sodiumAmountPer100g"        )) {
+							stmt.setDouble(++placeholderIndex, Double.parseDouble(entry.getValue().toString()));
+						} else if (entry.getKey().equals("sodiumImputationReference"  )) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						} else if (entry.getKey().equals("sugarAmountPer100g"         )) {
+							stmt.setDouble(++placeholderIndex, Double.parseDouble(entry.getValue().toString()));
+						} else if (entry.getKey().equals("sugarImputationReference"   )) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						} else if (entry.getKey().equals("transfatAmountPer100g"      )) {
+							stmt.setDouble(++placeholderIndex, Double.parseDouble(entry.getValue().toString()));
+						} else if (entry.getKey().equals("transfatImputationReference")) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						} else if (entry.getKey().equals("satfatAmountPer100g"        )) {
+							stmt.setDouble(++placeholderIndex, Double.parseDouble(entry.getValue().toString()));
+						} else if (entry.getKey().equals("satfatImputationReference"  )) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						} else if (entry.getKey().equals("totalFatAmountPer100g"      )) {
+							stmt.setDouble(++placeholderIndex, Double.parseDouble(entry.getValue().toString()));
+						} else if (entry.getKey().equals("totalFatImputationReference")) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						} else if (entry.getKey().equals("containsAddedSodium"        )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("containsAddedSugar"         )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("containsFreeSugars"         )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("containsAddedFat"           )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("containsAddedTransfat"      )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("containsCaffeine"           )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("containsSugarSubstitutes"   )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("foodGuideServingG"          )) {
+							stmt.setDouble(++placeholderIndex, Double.parseDouble(entry.getValue().toString()));
+						} else if (entry.getKey().equals("foodGuideServingMeasure"    )) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						} else if (entry.getKey().equals("tier4ServingG"              )) {
+							stmt.setDouble(++placeholderIndex, Double.parseDouble(entry.getValue().toString()));
+						} else if (entry.getKey().equals("tier4ServingMeasure"        )) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						} else if (entry.getKey().equals("rolledUp"                   )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("overrideSmallRaAdjustment"  )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("marketedToKids"             )) {
+							stmt.setBoolean(++placeholderIndex, (Boolean)entry.getValue());
+						} else if (entry.getKey().equals("replacementCode"            )) {
+							stmt.setInt(++placeholderIndex, (Integer)entry.getValue());
+						} else if (entry.getKey().equals("comments"                   )) {
+							stmt.setString(++placeholderIndex, (String)entry.getValue());
+						}
+
+						if (entry.getKey().equals("code")) {
+							stmt.setInt(++codeIndex, (Integer)entry.getValue());
+						}
+					}
+
+					logger.debug("[01;35mSQL query to follow:\n" + stmt.toString() + "[00;00m");
+
 					if (stmt.executeUpdate() > 0) {
 						msg.put(Response.Status.OK.getStatusCode(), "Successfully committed to PostgreSQL database");
 					} else {
@@ -1357,8 +1599,8 @@ public class FoodsResource {
 						conn.rollback();
 						break;
 					}
+					stmt.close();
 				}
-				stmt.close();
 				if (msg.containsKey(Response.Status.OK.getStatusCode()) && msg.size() == 1) {
 					conn.commit();
 				}
@@ -1383,6 +1625,9 @@ public class FoodsResource {
 		return getResponse(GET, status, msg);
 	}
 
+	/**
+	 * @return Response
+	 */
 	@GET
 	@Path("/status")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -2058,6 +2303,12 @@ public class FoodsResource {
 		return getResponse(GET, Response.Status.OK, list);
 	}
 
+	/**
+	 * @param method the HTTP request method
+	 * @param status the response status
+	 * @param obj thte response entity
+	 * @return Response
+	 */
 	public static Response getResponse(String method, Response.Status status, Object obj) {
 		List<String> allowedHttpOrigins = null;
 		List<String> allowedHttpHeaders = null;
@@ -2147,7 +2398,7 @@ public class FoodsResource {
 		if ((request.getServerPort() == 80) || (request.getServerPort() == 443)) {
 			return RequestURL.getHost() + ClassificationProperties.getEndPoint();
 		} else if ((request.getServerPort() == 8080) || (request.getServerPort() == 8443)) {
-			return RequestURL.getHost() + ":" + request.getServerPort() + ClassificationProperties.getEndPoint();
+			return RequestURL.getHost() + ":8080" + /* request.getServerPort() + */ ClassificationProperties.getEndPoint();
 		}
 		return RequestURL.getAddr() + ClassificationProperties.getEndPoint();
 	}
