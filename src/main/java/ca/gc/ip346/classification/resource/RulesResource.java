@@ -134,7 +134,7 @@ public class RulesResource {
 
 			map.put("message", "REST service to update an existing ruleset");
 			logger.debug("\n[01;32m" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(map) + "[00;00m");
-
+			//return FoodsResource.getResponse(PUT, Response.Status.OK, map);
 			return FoodsResource.getResponse(PUT, Response.Status.OK, response.readEntity(Object.class));
 			// return FoodsResource.getResponse(PUT, Response.Status.OK, response.readEntity(new GenericType<HashMap<String, Object>>() {}));
 		} else {

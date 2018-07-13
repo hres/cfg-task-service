@@ -71,12 +71,6 @@ public class UploadRESTService {
 		}
 		String slot = availableSlot.get("slot").toString();
 
-		// if (bean.getRefamtZ() == null || bean.getFopZ() == null || bean.getShortcutZ() == null || bean.getThresholdsZ() == null || bean.getInitZ() == null || bean.getTierZ() == null) {
-			// Map<String, String> msg = new HashMap<String, String>();
-			// msg.put("message", "Files appear to be of the wrong media-type");
-			// return FoodsResource.getResponse(POST, Response.Status.UNSUPPORTED_MEDIA_TYPE, msg);
-		// }
-
 		Map<String, InputStream> streams = new HashMap<String, InputStream>();
 		if (bean.getRefamtZ()     != null) streams.put(bean.getRefamtZ()     .getName(), bean.getRefamt());
 		if (bean.getFopZ()        != null) streams.put(bean.getFopZ()        .getName(), bean.getFop());
@@ -85,40 +79,40 @@ public class UploadRESTService {
 		if (bean.getInitZ()       != null) streams.put(bean.getInitZ()       .getName(), bean.getInit());
 		if (bean.getTierZ()       != null) streams.put(bean.getTierZ()       .getName(), bean.getTier());
 
-		// logger.debug("[01;03;34m" + "Empty: " + bean     .isRefamtEmpty() + "[00;00;00m");
-		// logger.debug("[01;03;31m" + "Empty: " + bean        .isFopEmpty() + "[00;00;00m");
-		// logger.debug("[01;03;34m" + "Empty: " + bean   .isShortcutEmpty() + "[00;00;00m");
-		// logger.debug("[01;03;31m" + "Empty: " + bean .isThresholdsEmpty() + "[00;00;00m");
-		// logger.debug("[01;03;34m" + "Empty: " + bean       .isInitEmpty() + "[00;00;00m");
-		// logger.debug("[01;03;31m" + "Empty: " + bean       .isTierEmpty() + "[00;00;00m");
-
-		// if (bean.isRefamtEmpty() || bean.isFopEmpty() || bean.isShortcutEmpty() || bean.isThresholdsEmpty() || bean.isInitEmpty() || bean.isTierEmpty()) {
 		if (bean.getRefamtZ() == null || bean.getFopZ() == null || bean.getShortcutZ() == null || bean.getThresholdsZ() == null || bean.getInitZ() == null || bean.getTierZ() == null) {
 			Map<String, String> msg = new HashMap<String, String>();
-			msg.put("message", "All files need to be selected");
+			msg.put("message", "All upload files need to be selected");
 			return FoodsResource.getResponse(POST, Response.Status.BAD_REQUEST, msg);
 		}
 
 		for (String rule : streams.keySet()) {
 			OutputStream outputStream = null;
+			InputStream inputStream = null;
+			
 			String filePath = SLASH + home + SLASH + RULESETS_ROOT + SLASH + rule + SLASH + slot + SLASH + rule + slot + EXTENSION;
-
+			logger.debug("===========output: " + filePath );
+			logger.debug("===========input: " + streams.get(rule) );
+			
 			try {
 				int read     = 0;
-				byte[] bytes = new byte[1024];
+				byte[] bytes = new byte[8 * 1024];
 				outputStream = new FileOutputStream(new File(filePath));
-				while ((read = streams.get(rule).read(bytes)) != -1) {
+				inputStream = streams.get(rule);
+				
+				while ((read = inputStream.read(bytes)) != -1) {
 					outputStream.write(bytes, 0, read);
 				}
 				outputStream.flush();
 				outputStream.close();
+				inputStream.close();
 			} catch(FileNotFoundException e) {
 				Map<String, String> msg = new HashMap<String, String>();
 				msg.put("message", "Tomcat account needs permissions to write to filesystem");
-				logger.debug("[01;03;35m" + msg.get("message") + "[00;00;00m");
 				return FoodsResource.getResponse(POST, Response.Status.UNAUTHORIZED, msg);
 			} catch(IOException e) {
-				e.printStackTrace();
+				Map<String, String> msg = new HashMap<String, String>();
+				msg.put("message", e.getMessage());
+				return FoodsResource.getResponse(POST, Response.Status.UNAUTHORIZED, msg);
 			} finally {
 				if (outputStream != null) {
 					try {
@@ -145,7 +139,9 @@ public class UploadRESTService {
 			.path("/rulesets")
 			.request()
 			.post(Entity.entity(ruleset, MediaType.APPLICATION_JSON));
-
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("message", "Upload rulesets successful.");
+		//return FoodsResource.getResponse(POST, Response.Status.OK, msg);
 		return FoodsResource.getResponse(POST, Response.Status.OK, response.readEntity(Object.class));
 	}
 

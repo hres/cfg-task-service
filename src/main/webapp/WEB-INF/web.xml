@@ -6,15 +6,17 @@
 			<name>SESSIONID</name>
 		</cookie-config>
 	</session-config>
-
+<!--  
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>foobar</web-resource-name>
 			<url-pattern>/service/*</url-pattern>
 		</web-resource-collection>
+		
 		<auth-constraint>
 			<role-name>user</role-name>
 		</auth-constraint>
+		
 	</security-constraint>
 
 	<login-config>
@@ -25,5 +27,25 @@
 	<security-role>
 		<role-name>user</role-name>
 	</security-role>
+-->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>foobar</web-resource-name>
+			<url-pattern>/cfg-task-service/service/*</url-pattern>
+		</web-resource-collection>
+		
+		<auth-constraint>
+			<role-name>wma</role-name>
+		</auth-constraint>
+		
+	</security-constraint>
 
+	<login-config>
+		<auth-method>KEYCLOAK</auth-method>
+		<realm-name>cfg-classification</realm-name>
+	</login-config>
+
+	<security-role>
+		<role-name>wma</role-name>
+	</security-role>
 </web-app>
