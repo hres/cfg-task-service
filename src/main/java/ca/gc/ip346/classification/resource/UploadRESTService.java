@@ -59,7 +59,7 @@ public class UploadRESTService {
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response uploadFile(@BeanParam Ruleset bean, @FormDataParam("rulesetname") String rulesetname) {
+	public Response uploadFile(@BeanParam Ruleset bean, @FormDataParam("rulesetname") String rulesetName) {
 		String target = buildTarget();
 		Map<?, ?> externalPath = (Map<?, ?>)getRulesetsHome().getEntity();
 		String home = externalPath.get("rulesetshome").toString().replaceAll("^\\/", "").replaceAll("\\/$", "");
@@ -70,6 +70,12 @@ public class UploadRESTService {
 			return FoodsResource.getResponse(POST, Response.Status.OK, msg);
 		}
 		String slot = availableSlot.get("slot").toString();
+		//check ruleset name duplicate
+		if(rulesetNameDuplicated(rulesetName)){
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Ruleset Name Duplicated.");
+			return FoodsResource.getResponse(POST, Response.Status.OK, msg);
+		}
 
 		Map<String, InputStream> streams = new HashMap<String, InputStream>();
 		if (bean.getRefamtZ()     != null) streams.put(bean.getRefamtZ()     .getName(), bean.getRefamt());
@@ -84,6 +90,22 @@ public class UploadRESTService {
 			msg.put("message", "All upload files need to be selected");
 			return FoodsResource.getResponse(POST, Response.Status.BAD_REQUEST, msg);
 		}
+		
+		//validate rule uploading rule files
+		StringBuilder validateError = new StringBuilder();
+		
+		for (String rule : streams.keySet()) {	
+			InputStream inputStream = streams.get(rule);
+			if(!ruleValidate(inputStream))
+				validateError.append(rule + " validate failed!\n");
+		
+		}
+		if (validateError.length() > 10) {
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", validateError.toString());
+			return FoodsResource.getResponse(POST, Response.Status.OK, msg);
+		}
+		
 
 		for (String rule : streams.keySet()) {
 			OutputStream outputStream = null;
@@ -96,7 +118,15 @@ public class UploadRESTService {
 			try {
 				int read     = 0;
 				byte[] bytes = new byte[8 * 1024];
-				outputStream = new FileOutputStream(new File(filePath));
+				
+				File file = new File(filePath);
+				
+				if(file.exists()) {
+					outputStream = new FileOutputStream(new File(filePath), false);
+				}else
+					outputStream = new FileOutputStream(new File(filePath));
+					
+				
 				inputStream = streams.get(rule);
 				
 				while ((read = inputStream.read(bytes)) != -1) {
@@ -127,11 +157,11 @@ public class UploadRESTService {
 		Map<String, Object> ruleset = new HashMap<String, Object>();
 		ruleset.put("active", true);
 		ruleset.put("isProd", false);
-		if (rulesetname == null || rulesetname.trim().isEmpty()) {
+		if (rulesetName == null || rulesetName.trim().isEmpty()) {
 			Date date = new Date();
-			rulesetname = date.toString();
+			rulesetName = date.toString();
 		}
-		ruleset.put("name", rulesetname);
+		ruleset.put("name", rulesetName);
 		ruleset.put("rulesetId", Integer.valueOf(slot));
 		Response response = ClientBuilder
 			.newClient()
@@ -176,5 +206,13 @@ public class UploadRESTService {
 			return RequestURL.getHost() + ":8080" + /* request.getServerPort() + */ ClassificationProperties.getEndPoint();
 		}
 		return RequestURL.getAddr() + ClassificationProperties.getEndPoint();
+	}
+	
+	private boolean rulesetNameDuplicated(String rulesetName) {
+		return false;
+	}
+	
+	private boolean ruleValidate(InputStream rulesetStream) {
+		return true;
 	}
 }

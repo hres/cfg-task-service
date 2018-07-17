@@ -1097,7 +1097,7 @@ public class FoodsResource {
 			}
 
 			// use validation rules on "data" property and return response if invalid
-			logger.debug("[01;03;31m" + "only required fields:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dataToBeValidated) + "[00;00m");
+			//logger.debug("[01;03;31m" + "only required fields:\n" + new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create().toJson(dataToBeValidated) + "[00;00m");
 
 			if (isInvalid) {
 				Map<String, String> msg = new HashMap<String, String>();
