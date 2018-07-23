@@ -1,8 +1,8 @@
 {
 	"realm" : "cfg-classification",
 	"resource" : "cfg-task-service",
-	"auth-server-url" : "https://keycloak.canadaeast.cloudapp.azure.com/auth",
-	"ssl-required" : "all",
+	"auth-server-url" : "http://localhost:7080/auth",
+	"ssl-required" : "none",
 	"use-resource-role-mappings" : false,
 	"enable-cors" : true,
 	"bearer-only" : true,
@@ -10,10 +10,7 @@
 	"enable-basic-auth" : false,
 	"expose-token" : false,
 	"allow-any-hostname" : false,
-	"truststore": "/etc/tomcat8/ssl/tomcat.keystore",
-	"truststore-password": "cfgmImsddsg1",
-	"token-minimum-time-to-live" : 10,
-	"min-time-between-jwks-requests" : 10,
-	"public-key-cache-ttl": 86400,
 	"public-client":true
 }
+
+
