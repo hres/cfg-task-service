@@ -2,6 +2,8 @@ package ca.gc.ip346.classification.resource;
 
 import static javax.ws.rs.HttpMethod.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,12 +12,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
-// import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,10 +30,15 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.Message;
 
 import ca.gc.ip346.classification.model.Ruleset;
 import ca.gc.ip346.util.ClassificationProperties;
 import ca.gc.ip346.util.RequestURL;
+import ca.gc.ip346.util.Utils;
 
 @Path("")
 public class UploadRESTService {
@@ -41,6 +48,9 @@ public class UploadRESTService {
 	private static final String RULESETS_ROOT = "dtables";
 	private static final String SLASH         = "/";
 	private static final String EXTENSION     = ".xls";
+	
+	private static final int BUFFER_SIZE = 8192;
+	
 
 	@Context
 	private HttpServletRequest request;
@@ -70,54 +80,72 @@ public class UploadRESTService {
 			return FoodsResource.getResponse(POST, Response.Status.OK, msg);
 		}
 		String slot = availableSlot.get("slot").toString();
-		//check ruleset name duplicate
-		if(rulesetNameDuplicated(rulesetName)){
-			Map<String, String> msg = new HashMap<String, String>();
-			msg.put("message", "Ruleset Name Duplicated.");
-			return FoodsResource.getResponse(POST, Response.Status.OK, msg);
-		}
-
-		Map<String, InputStream> streams = new HashMap<String, InputStream>();
-		if (bean.getRefamtZ()     != null) streams.put(bean.getRefamtZ()     .getName(), bean.getRefamt());
-		if (bean.getFopZ()        != null) streams.put(bean.getFopZ()        .getName(), bean.getFop());
-		if (bean.getShortcutZ()   != null) streams.put(bean.getShortcutZ()   .getName(), bean.getShortcut());
-		if (bean.getThresholdsZ() != null) streams.put(bean.getThresholdsZ() .getName(), bean.getThresholds());
-		if (bean.getInitZ()       != null) streams.put(bean.getInitZ()       .getName(), bean.getInit());
-		if (bean.getTierZ()       != null) streams.put(bean.getTierZ()       .getName(), bean.getTier());
-
+		
+		Map<String, InputStream> streamsRulesetValide = new HashMap<String, InputStream>();
+		if (bean.getRefamtZ()     != null) streamsRulesetValide.put(bean.getRefamtZ()     .getName(), bean.getRefamt());
+		if (bean.getFopZ()        != null) streamsRulesetValide.put(bean.getFopZ()        .getName(), bean.getFop());
+		if (bean.getShortcutZ()   != null) streamsRulesetValide.put(bean.getShortcutZ()   .getName(), bean.getShortcut());
+		if (bean.getThresholdsZ() != null) streamsRulesetValide.put(bean.getThresholdsZ() .getName(), bean.getThresholds());
+		if (bean.getInitZ()       != null) streamsRulesetValide.put(bean.getInitZ()       .getName(), bean.getInit());
+		if (bean.getTierZ()       != null) streamsRulesetValide.put(bean.getTierZ()       .getName(), bean.getTier());
+		
+		Map<String, InputStream> streamsRulesetCreate = new HashMap<String, InputStream>();
+		if (bean.getRefamtZ()     != null) streamsRulesetCreate.put(bean.getRefamtZ()     .getName(), copyInputStream(bean.getRefamt()));
+		if (bean.getFopZ()        != null) streamsRulesetCreate.put(bean.getFopZ()        .getName(), copyInputStream(bean.getFop()));
+		if (bean.getShortcutZ()   != null) streamsRulesetCreate.put(bean.getShortcutZ()   .getName(), copyInputStream(bean.getShortcut()));
+		if (bean.getThresholdsZ() != null) streamsRulesetCreate.put(bean.getThresholdsZ() .getName(), copyInputStream(bean.getThresholds()));
+		if (bean.getInitZ()       != null) streamsRulesetCreate.put(bean.getInitZ()       .getName(), copyInputStream(bean.getInit()));
+		if (bean.getTierZ()       != null) streamsRulesetCreate.put(bean.getTierZ()       .getName(), copyInputStream(bean.getTier()));
+		
+		
 		if (bean.getRefamtZ() == null || bean.getFopZ() == null || bean.getShortcutZ() == null || bean.getThresholdsZ() == null || bean.getInitZ() == null || bean.getTierZ() == null) {
 			Map<String, String> msg = new HashMap<String, String>();
 			msg.put("message", "All upload files need to be selected");
 			return FoodsResource.getResponse(POST, Response.Status.BAD_REQUEST, msg);
 		}
 		
+		//check ruleset name duplicate
+		if(rulesetNameDuplicated(rulesetName)){
+			Map<String, String> msg = new HashMap<String, String>();
+			msg.put("message", "Ruleset Name Duplicated.");
+			return FoodsResource.getResponse(POST, Response.Status.BAD_REQUEST, msg);
+		}
+
+		
 		//validate rule uploading rule files
-		StringBuilder validateError = new StringBuilder();
+		StringBuilder 	validateError = new StringBuilder();
+		InputStream 	inputStream = null;
+		OutputStream 	outputStream = null;
+		String 			validate = null;
 		
-		for (String rule : streams.keySet()) {	
-			InputStream inputStream = streams.get(rule);
-			if(!ruleValidate(inputStream))
-				validateError.append(rule + " validate failed!\n");
-		
+		for (String rule : streamsRulesetValide.keySet()) {	
+			inputStream = streamsRulesetValide.get(rule);
+			
+			validate = ruleValidate(rule, inputStream);
+			if(validate != null) {
+				validateError.append(rule + " Rule File validate failed!=> <br>" + validate + " <br>");
+				System.out.println(rule + " Rule File validate failed!=>" + validate + "\n");
+			}
+			
+			
 		}
 		if (validateError.length() > 10) {
 			Map<String, String> msg = new HashMap<String, String>();
-			msg.put("message", validateError.toString());
-			return FoodsResource.getResponse(POST, Response.Status.OK, msg);
+			msg.put("message", Utils.toHtml(validateError.toString()));
+			return FoodsResource.getResponse(POST, Response.Status.BAD_REQUEST, msg);
 		}
 		
 
-		for (String rule : streams.keySet()) {
-			OutputStream outputStream = null;
-			InputStream inputStream = null;
+		//write rule files	
+		String filePath = null;
+		
+		for (String rule : streamsRulesetCreate.keySet()) {
 			
-			String filePath = SLASH + home + SLASH + RULESETS_ROOT + SLASH + rule + SLASH + slot + SLASH + rule + slot + EXTENSION;
-			logger.debug("===========output: " + filePath );
-			logger.debug("===========input: " + streams.get(rule) );
-			
+			filePath = SLASH + home + SLASH + RULESETS_ROOT + SLASH + rule + SLASH + slot + SLASH + rule + slot + EXTENSION;
+
 			try {
 				int read     = 0;
-				byte[] bytes = new byte[8 * 1024];
+				byte[] bytes = new byte[BUFFER_SIZE];
 				
 				File file = new File(filePath);
 				
@@ -127,22 +155,28 @@ public class UploadRESTService {
 					outputStream = new FileOutputStream(new File(filePath));
 					
 				
-				inputStream = streams.get(rule);
+				inputStream = streamsRulesetCreate.get(rule);
 				
-				while ((read = inputStream.read(bytes)) != -1) {
+				
+				while ((read = inputStream.read(bytes)) >= 0) {
+					System.out.println("read byte size: " + bytes + " size:" + read);
 					outputStream.write(bytes, 0, read);
 				}
+	
 				outputStream.flush();
 				outputStream.close();
-				inputStream.close();
+				//inputStream.close();
+				
 			} catch(FileNotFoundException e) {
 				Map<String, String> msg = new HashMap<String, String>();
 				msg.put("message", "Tomcat account needs permissions to write to filesystem");
 				return FoodsResource.getResponse(POST, Response.Status.UNAUTHORIZED, msg);
 			} catch(IOException e) {
-				Map<String, String> msg = new HashMap<String, String>();
-				msg.put("message", e.getMessage());
-				return FoodsResource.getResponse(POST, Response.Status.UNAUTHORIZED, msg);
+				//Map<String, String> msg = new HashMap<String, String>();
+				//msg.put("message IOException: ", e.getMessage());
+				//return FoodsResource.getResponse(POST, Response.Status.UNAUTHORIZED, msg);
+				System.out.println("ioexception: " + e.getMessage());
+				e.printStackTrace();
 			} finally {
 				if (outputStream != null) {
 					try {
@@ -151,9 +185,9 @@ public class UploadRESTService {
 						e.printStackTrace();
 					}
 				}
-			}
+			}						
 		}
-
+		
 		Map<String, Object> ruleset = new HashMap<String, Object>();
 		ruleset.put("active", true);
 		ruleset.put("isProd", false);
@@ -209,10 +243,80 @@ public class UploadRESTService {
 	}
 	
 	private boolean rulesetNameDuplicated(String rulesetName) {
+	
+		if(rulesetName.equals("") || rulesetName.isEmpty() || rulesetName.equals("undefined"))
+			return false;
+		
+		String target = buildTarget();
+		
+		Response response = ClientBuilder
+			.newClient()
+			.target(target)
+			.path("/rulesets")
+			.request()
+			.get();
+		
+		Map<String, Object> rulesetsMap = (Map<String, Object>)response.readEntity(Object.class);
+		
+		List<Map<String, Object>> rulesets =  (List<Map<String, Object>>) rulesetsMap.get("rulesets");
+		
+		for (Map<String, Object> ruleset : rulesets) {
+			System.out.println("ruleset get name: " + ruleset.get("name"));
+			if(ruleset.get("name").equals(rulesetName))
+				return true;
+		}
+		
 		return false;
 	}
 	
-	private boolean ruleValidate(InputStream rulesetStream) {
-		return true;
+	private String ruleValidate(String fileName, InputStream rulesetStream) {
+		
+		KieServices ks          = KieServices.Factory.get();		
+		KieFileSystem kfs = ks.newKieFileSystem();
+		KieBuilder kieBuilder = null;
+		//kfs.write(ks.getResources().newFileSystemResource(filePath)
+				//.setResourceType(ResourceType.DTABLE));
+		System.out.println("go into rulevalidate: file: " + fileName);
+		
+		try {			
+			kfs.write(ks.getResources().newInputStreamResource(rulesetStream)
+					.setSourcePath("/opt/ruleset/cfg-classification-rulesets/rulesets/dtables/" + fileName + ".xls"));
+			
+			kieBuilder = ks.newKieBuilder(kfs).buildAll();
+		}catch(Exception ex)
+		{
+			return("Excel rule file format Error!" + ex.getMessage());
+		}
+		
+		System.out.println("go after builder rulevalidate: file: " + fileName);
+		
+		if (kieBuilder.getResults().hasMessages(Message.Level.ERROR)) {
+			//System.out.println(kieBuilder.getResults().toString());			
+			return kieBuilder.getResults().toString();
+		}
+		
+		return null;
 	}
+	
+	private InputStream copyInputStream(InputStream in) {
+		
+		ByteArrayInputStream bais = null;
+		
+		try {
+		
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			org.apache.commons.io.IOUtils.copy(in, baos);
+			byte[] bytes = baos.toByteArray();
+			bais = new ByteArrayInputStream(bytes);
+			
+		}catch(IOException ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
+		}
+		
+		return bais;
+		
+	}
+	
+	
 }
