@@ -6,17 +6,15 @@
 			<name>SESSIONID</name>
 		</cookie-config>
 	</session-config>
-	
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>foobar</web-resource-name>
-			<url-pattern>/cfg-task-service/service/*</url-pattern>
+			<url-pattern>/service/*</url-pattern>
 		</web-resource-collection>
-		
 		<auth-constraint>
 			<role-name>user</role-name>
 		</auth-constraint>
-
 	</security-constraint>
 
 	<login-config>
@@ -27,4 +25,5 @@
 	<security-role>
 		<role-name>user</role-name>
 	</security-role>
+
 </web-app>
